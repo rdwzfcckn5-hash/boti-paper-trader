@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071018">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Boti Kraken Paper Trader</title>
+<style>
+:root{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
+  color-scheme:dark;
+  --bg:#071018;--panel:#0d1720;--panel2:#101e28;--line:#20313d;--muted:#8da2b2;
+  --text:#eef5fb;--green:#22c786;--red:#ef5a6a;--amber:#e5ac43;--blue:#6e7cff;
+}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text)}
+body{min-height:100vh}.app{max-width:1600px;margin:0 auto;padding:14px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.brand{font-size:21px;font-weight:900}.muted{color:var(--muted);font-size:12px}
+.live{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:900}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--red)}.dot.ok{background:var(--green);box-shadow:0 0 0 4px #22c78622}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.btn{min-height:42px;border:1px solid #29404f;border-radius:10px;background:#0b151d;color:var(--text);padding:8px 12px;font-weight:800}
+.btn.active{background:var(--blue);border-color:var(--blue)}.btn.green{background:#139b68;border-color:#139b68}.btn.red{background:#c94454;border-color:#c94454}
+.layout{display:grid;grid-template-columns:minmax(0,2.25fr) minmax(330px,.75fr);gap:12px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.chartPanel{padding:10px}.marketHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:4px 4px 9px}
+.symbol{font-size:13px;color:var(--muted);font-weight:800}.price{font-size:31px;font-weight:950;letter-spacing:-.04em}
+.change{font-size:12px;margin-top:2px}.good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}
+#chart{height:560px;width:100%;border-top:1px solid #172631;border-bottom:1px solid #172631}
+.legend{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:8px 4px;color:var(--muted);font-size:11px}
+.sw{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.s50{background:#7d88ff}.s200{background:#e4aa45}.sv{background:#5d7890}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.stat{background:var(--panel2);border-radius:10px;padding:10px}.lab{font-size:11px;color:var(--muted)}.val{font-size:15px;font-weight:900;margin-top:3px}
+.sidecol{display:flex;flex-direction:column;gap:12px}.trendCard{padding:14px}
+.trendTitle{font-size:11px;color:var(--muted);font-weight:800}.trendState{font-size:27px;font-weight:950;margin-top:3px}
+.confbar{height:8px;border-radius:999px;background:#182834;overflow:hidden;margin-top:9px}.conffill{height:100%;width:0;background:var(--amber)}
+.siggrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.sig{border:1px solid #223541;background:#0a141c;border-radius:10px;padding:9px}.sig b{display:block;margin-top:3px}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.metric{background:#101e28;border-radius:10px;padding:9px}
+.orderHead{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--line)}.orderHead .btn{flex:1}
+form{padding:12px}label{display:block;color:#9fb1bf;font-size:12px;margin:9px 0 5px}
+input,select{width:100%;min-height:44px;border:1px solid #29404f;border-radius:10px;background:#09141c;color:white;padding:9px 10px;font-size:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.primary{width:100%;min-height:48px;border:0;border-radius:11px;color:white;font-weight:950;margin-top:12px;background:#139b68}.primary.short{background:#c94454}
+.calc{background:#101a22;border:1px solid #20333f;border-radius:10px;padding:10px;margin-top:10px;font-size:12px;line-height:1.55}
+.position{padding:12px}.poshead{display:flex;justify-content:space-between;gap:10px;align-items:center}.pnl{font-size:23px;font-weight:950}
+.posgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}.hidden{display:none!important}
+.tabs{display:flex;gap:8px;margin-bottom:10px}.scroll{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-space:nowrap}
+.historyHead{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:12px}
+.note{font-size:11px;color:var(--muted);margin-top:7px}
+@media(max-width:950px){.layout{grid-template-columns:1fr}#chart{height:460px}.sidecol{display:grid;grid-template-columns:1fr 1fr}.position{grid-column:1/-1}}
+@media(max-width:680px){.app{padding:8px}#chart{height:390px}.sidecol{display:flex}.stats{grid-template-columns:1fr 1fr}.siggrid,.metrics{grid-template-columns:1fr 1fr}.price{font-size:26px}.posgrid{grid-template-columns:1fr 1fr}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+<main class="app">
+  <div class="top">
+    <div><div class="brand">Boti Kraken Paper Trader</div><div class="muted">BTC/USD · Kraken WebSocket v2 · paper trading only</div></div>
+    <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
+  </div>
+
+  <div class="tabs">
+    <button id="tabTrade" class="btn active">Trading</button>
+    <button id="tabHistory" class="btn">Végrehajtott tradek</button>
+  </div>
+
+  <section id="tradeView">
+    <div class="layout">
+      <section>
+        <div class="panel chartPanel">
+          <div class="marketHead">
+            <div>
+              <div class="symbol">BTC/USD · SPOT MARKET DATA</div>
+              <div id="price" class="price">—</div>
+              <div id="change" class="change muted">Kraken adat betöltése…</div>
+            </div>
+            <div class="toolbar">
+              <button class="btn tf active" data-int="1">1m</button>
+              <button class="btn tf" data-int="5">5m</button>
+              <button class="btn tf" data-int="15">15m</button>
+              <button class="btn tf" data-int="60">1h</button>
+              <button id="fit" class="btn">Fit chart</button>
+            </div>
+          </div>
+          <div id="chart"></div>
+          <div class="legend">
+            <span><i class="sw s50"></i>EMA 50</span>
+            <span><i class="sw s200"></i>EMA 200</span>
+            <span><i class="sw sv"></i>Volume</span>
+            <span>Drag = pan · pinch/scroll = zoom · crosshair = OHLC</span>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="lab">Equity</div><div id="equity" class="val">$5,000.00</div></div>
+            <div class="stat"><div class="lab">Daily PnL</div><div id="daily" class="val">+$0.00</div></div>
+            <div class="stat"><div class="lab">3% Daily loss</div><div id="dailyRemain" class="val">$150.00 maradt</div></div>
+            <div class="stat"><div class="lab">6% Max DD</div><div id="ddRemain" class="val">$300.00 maradt</div></div>
+          </div>
+        </div>
+
+        <div class="panel position" style="margin-top:12px">
+          <div class="poshead"><div><b>Nyitott pozíció</b><div id="noPos" class="muted">Nincs nyitott trade.</div></div><div id="livePnl" class="pnl">—</div></div>
+          <div id="posDetails" class="posgrid hidden">
+            <div class="stat"><div class="lab">Side</div><div id="pSide" class="val"></div></div>
+            <div class="stat"><div class="lab">Entry</div><div id="pEntry" class="val"></div></div>
+            <div class="stat"><div class="lab">Quantity</div><div id="pQty" class="val"></div></div>
+            <div class="stat"><div class="lab">TP</div><div id="pTp" class="val"></div></div>
+            <div class="stat"><div class="lab">SL</div><div id="pSl" class="val"></div></div>
+            <div class="stat"><div class="lab">Fee</div><div id="pFee" class="val"></div></div>
+          </div>
+          <button id="closePos" class="btn hidden" style="width:100%;margin-top:10px">Pozíció zárása piaci áron</button>
+        </div>
+      </section>
+
+      <aside class="sidecol">
+        <div class="panel trendCard">
+          <div class="trendTitle">CONFIRMED TREND ENGINE</div>
+          <div id="trendState" class="trendState warn">● NEUTRAL</div>
+          <div id="trendText" class="muted">Minimum 200 gyertya után teljes megerősítés.</div>
+          <div class="confbar"><div id="confFill" class="conffill"></div></div>
+          <div class="siggrid">
+            <div class="sig"><span class="lab">EMA 50/200</span><b id="emaSig">—</b></div>
+            <div class="sig"><span class="lab">MACD</span><b id="macdSig">—</b></div>
+            <div class="sig"><span class="lab">Supertrend</span><b id="superSig">—</b></div>
+            <div class="sig"><span class="lab">Confidence</span><b id="confSig">0 / 3</b></div>
+          </div>
+          <div class="metrics">
+            <div class="metric"><div class="lab">RSI 14</div><div id="rsiVal" class="val">—</div></div>
+            <div class="metric"><div class="lab">MACD Hist.</div><div id="macdHist" class="val">—</div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="orderHead">
+            <button id="longBtn" class="btn green">LONG</button>
+            <button id="shortBtn" class="btn">SHORT</button>
+          </div>
+          <form id="order">
+            <label>Quantity BTC</label><input id="qty" type="number" min=".001" step=".001" value=".100">
+            <div class="row">
+              <div><label>Leverage</label><select id="lev"><option>1</option><option>2</option><option selected>5</option><option>10</option></select></div>
+              <div><label>Round-trip fee ($)</label><input id="fee" type="number" min="0" step=".01" value="5.30"></div>
+            </div>
+            <div class="row">
+              <div><label>TP distance %</label><input id="tpPct" type="number" min=".01" step=".01" value=".50"></div>
+              <div><label>SL distance %</label><input id="slPct" type="number" min=".01" step=".01" value=".30"></div>
+            </div>
+            <div id="calc" class="calc">Várakozás élő Kraken árra…</div>
+            <button id="open" class="primary">LONG nyitása</button>
+            <div id="msg" class="note"></div>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="historyView" class="hidden">
+    <div class="panel">
+      <div class="historyHead">
+        <div><b>Végrehajtott tradek</b><div class="muted">Az adatok ezen az eszközön maradnak.</div></div>
+        <button id="closeDay" class="btn red">Nap zárása</button>
+      </div>
+      <div class="scroll"><table><thead><tr><th>#</th><th>Nap</th><th>Idő</th><th>Side</th><th>Entry</th><th>Exit</th><th>Qty</th><th>TP%</th><th>SL%</th><th>Fee</th><th>Nettó</th><th>Zárás</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+      <div id="dayMsg" class="note" style="padding:0 12px 12px"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+let side='long', interval=1, ws=null, lastPrice=null, candles=[], reconnectTimer=null;
+let state=JSON.parse(localStorage.getItem('botiPaperStateV3')||'null')||{equity:5000,startEquity:5000,daily:0,day:1,trades:[],days:[],position:null};
+const save=()=>localStorage.setItem('botiPaperStateV3',JSON.stringify(state));
+
+if(!window.LightweightCharts){$('status').textContent='CHART LIBRARY HIBA';return}
+
+const chart=LightweightCharts.createChart($('chart'),{
+  layout:{background:{type:'solid',color:'#0d1720'},textColor:'#9fb1bf',fontSize:12},
+  grid:{vertLines:{color:'#162631'},horzLines:{color:'#162631'}},
+  rightPriceScale:{borderColor:'#29404f',scaleMargins:{top:.08,bottom:.20}},
+  timeScale:{borderColor:'#29404f',timeVisible:true,secondsVisible:false,rightOffset:8,barSpacing:8,minBarSpacing:2},
+  crosshair:{mode:LightweightCharts.CrosshairMode.Normal},
+  handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},
+  handleScale:{axisPressedMouseMove:true,mouseWheel:true,pinch:true}
+});
+const candleSeries=chart.addCandlestickSeries({upColor:'#22c786',downColor:'#ef5a6a',borderUpColor:'#22c786',borderDownColor:'#ef5a6a',wickUpColor:'#22c786',wickDownColor:'#ef5a6a'});
+const ema50Series=chart.addLineSeries({color:'#7d88ff',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
+const ema200Series=chart.addLineSeries({color:'#e4aa45',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
+const volSeries=chart.addHistogramSeries({priceFormat:{type:'volume'},priceScaleId:'vol',lastValueVisible:false,priceLineVisible:false});
+chart.priceScale('vol').applyOptions({scaleMargins:{top:.82,bottom:0}});
+
+new ResizeObserver(entries=>{for(const e of entries)chart.applyOptions({width:e.contentRect.width,height:e.contentRect.height})}).observe($('chart'));
+
+function setStatus(ok,t){$('dot').className='dot'+(ok?' ok':'');$('status').textContent=t}
+function ema(vals,p){if(!vals.length)return[];const k=2/(p+1);let e=vals[0],out=[];for(const v of vals){e=v*k+e*(1-k);out.push(e)}return out}
+function rsi(vals,p=14){if(vals.length<p+1)return null;let gains=0,loss=0;for(let i=vals.length-p;i<vals.length;i++){const d=vals[i]-vals[i-1];if(d>=0)gains+=d;else loss-=d}const ag=gains/p,al=loss/p;if(al===0)return 100;return 100-(100/(1+ag/al))}
+function macd(vals){if(vals.length<35)return null;const f=ema(vals,12),s=ema(vals,26),m=f.map((v,i)=>v-s[i]),sig=ema(m,9),i=vals.length-1;return{m:m[i],sig:sig[i],hist:m[i]-sig[i]}}
+function atr(cs,p=10){if(cs.length<2)return[];let tr=[];for(let i=0;i<cs.length;i++){const prev=i?cs[i-1].close:cs[i].open;tr.push(Math.max(cs[i].high-cs[i].low,Math.abs(cs[i].high-prev),Math.abs(cs[i].low-prev)))}return ema(tr,p)}
+function supertrend(cs,p=10,mult=3){
+ if(cs.length<p+2)return 0; const a=atr(cs,p);let fu=[],fl=[],st=[],dir=-1;
+ for(let i=0;i<cs.length;i++){
+  const hl=(cs[i].high+cs[i].low)/2,bu=hl+mult*a[i],bl=hl-mult*a[i];
+  fu[i]=i?((bu<fu[i-1]||cs[i-1].close>fu[i-1])?bu:fu[i-1]):bu;
+  fl[i]=i?((bl>fl[i-1]||cs[i-1].close<fl[i-1])?bl:fl[i-1]):bl;
+  if(!i){st[i]=fu[i];continue}
+  if(st[i-1]===fu[i-1]){if(cs[i].close>fu[i]){st[i]=fl[i];dir=1}else{st[i]=fu[i];dir=-1}}
+  else{if(cs[i].close<fl[i]){st[i]=fu[i];dir=-1}else{st[i]=fl[i];dir=1}}
+ }
+ return dir;
+}
+function updateIndicators(){
+ if(candles.length<30)return;
+ const closes=candles.map(c=>c.close),e50=ema(closes,50),e200=ema(closes,200);
+ ema50Series.setData(candles.map((c,i)=>({time:c.time,value:e50[i]})).slice(Math.max(0,50-1)));
+ ema200Series.setData(candles.map((c,i)=>({time:c.time,value:e200[i]})).slice(Math.max(0,200-1)));
+ const i=closes.length-1, has200=closes.length>=200;
+ const eb=has200&&e50[i]>e200[i]&&closes[i]>e50[i], er=has200&&e50[i]<e200[i]&&closes[i]<e50[i];
+ const md=macd(closes), mb=md&&md.m>md.sig&&md.m>0, mr=md&&md.m<md.sig&&md.m<0;
+ const sd=supertrend(candles), sb=sd===1, sr=sd===-1;
+ const bull=[eb,mb,sb].filter(Boolean).length,bear=[er,mr,sr].filter(Boolean).length,best=Math.max(bull,bear);
+ const lab=(b,r)=>b?'BULLISH':r?'BEARISH':'NEUTRAL';
+ $('emaSig').textContent=has200?lab(eb,er):'WAIT 200';
+ $('macdSig').textContent=lab(mb,mr);$('superSig').textContent=lab(sb,sr);$('confSig').textContent=best+' / 3';
+ $('confFill').style.width=(best/3*100)+'%';$('confFill').style.background=best===3?(bull===3?'#22c786':'#ef5a6a'):'#e5ac43';
+ const rv=rsi(closes);$('rsiVal').textContent=rv===null?'—':rv.toFixed(1);$('macdHist').textContent=md?md.hist.toFixed(2):'—';
+ if(bull===3){$('trendState').textContent='▲ BULLISH';$('trendState').className='trendState good';$('trendText').textContent='3/3 megerősített bullish trend.'}
+ else if(bear===3){$('trendState').textContent='▼ BEARISH';$('trendState').className='trendState bad';$('trendText').textContent='3/3 megerősített bearish trend.'}
+ else{$('trendState').textContent='● NEUTRAL';$('trendState').className='trendState warn';$('trendText').textContent=has200?'Nincs 3/3 egyezés.':'EMA200-hoz további gyertyák szükségesek.'}
+}
+function render(){
+ candleSeries.setData(candles);
+ volSeries.setData(candles.map(c=>({time:c.time,value:c.volume||0,color:c.close>=c.open?'#22c78655':'#ef5a6a55'})));
+ updateIndicators(); updateTradeUI();
+}
+function normalizeOhlc(item){
+ const t=Math.floor(new Date(item.interval_begin||item.timestamp||Date.now()).getTime()/1000);
+ return {time:t,open:Number(item.open),high:Number(item.high),low:Number(item.low),close:Number(item.close),volume:Number(item.volume||0)}
+}
+function upsertCandle(c){
+ const idx=candles.findIndex(x=>x.time===c.time);
+ if(idx>=0)candles[idx]=c; else candles.push(c);
+ candles.sort((a,b)=>a.time-b.time); if(candles.length>500)candles=candles.slice(-500);
+ lastPrice=c.close;
+}
+function connect(){
+ clearTimeout(reconnectTimer); if(ws){try{ws.close()}catch(e){}}
+ setStatus(false,'CONNECTING…');
+ ws=new WebSocket('wss://ws.kraken.com/v2');
+ ws.onopen=()=>{
+  setStatus(true,'KRAKEN LIVE');
+  ws.send(JSON.stringify({method:'subscribe',params:{channel:'ticker',symbol:['BTC/USD'],snapshot:true}}));
+  ws.send(JSON.stringify({method:'subscribe',params:{channel:'ohlc',symbol:['BTC/USD'],interval:interval,snapshot:true}}));
+ };
+ ws.onmessage=e=>{
+  try{
+   const m=JSON.parse(e.data);
+   if(m.channel==='ticker'&&Array.isArray(m.data)&&m.data[0]){
+    const d=m.data[0],px=Number(d.last||d.last_price||d.close);
+    if(Number.isFinite(px)){lastPrice=px;$('price').textContent='$'+fmt(px);updateTradeUI()}
+   }
+   if(m.channel==='ohlc'&&Array.isArray(m.data)){
+    for(const item of m.data){const c=normalizeOhlc(item);if(Number.isFinite(c.open)&&Number.isFinite(c.close))upsertCandle(c)}
+    if(candles.length){const first=candles[0].open,ch=(candles[candles.length-1].close-first)/first*100;$('change').textContent=(ch>=0?'+':'')+ch.toFixed(2)+'% · '+candles.length+' gyertya';$('change').className='change '+(ch>=0?'good':'bad')}
+    render();
+   }
+  }catch(err){console.warn(err)}
+ };
+ ws.onerror=()=>setStatus(false,'WS HIBA');
+ ws.onclose=()=>{setStatus(false,'ÚJRACSATLAKOZÁS…');reconnectTimer=setTimeout(connect,1800)}
+}
+function resubscribe(newInt){
+ interval=newInt;candles=[];candleSeries.setData([]);ema50Series.setData([]);ema200Series.setData([]);volSeries.setData([]);
+ document.querySelectorAll('.tf').forEach(b=>b.classList.toggle('active',Number(b.dataset.int)===interval));
+ connect();
+}
+function calcLevels(){
+ if(!lastPrice)return null;const tp=Math.max(.01,Number($('tpPct').value)||.5)/100,sl=Math.max(.01,Number($('slPct').value)||.3)/100;
+ return{tp:side==='long'?lastPrice*(1+tp):lastPrice*(1-tp),sl:side==='long'?lastPrice*(1-sl):lastPrice*(1+sl),tpPct:tp*100,slPct:sl*100}
+}
+function unreal(){const p=state.position;if(!p||lastPrice===null)return 0;return(p.side==='long'?lastPrice-p.entry:p.entry-lastPrice)*p.qty}
+function updateTradeUI(){
+ if(lastPrice!==null)$('price').textContent='$'+fmt(lastPrice);
+ $('equity').textContent='$'+fmt(state.equity+unreal());$('daily').textContent=(state.daily>=0?'+':'')+'$'+fmt(state.daily);$('daily').className='val '+(state.daily>=0?'good':'bad');
+ $('dailyRemain').textContent='$'+fmt(Math.max(0,150-Math.max(0,-state.daily)))+' maradt';
+ $('ddRemain').textContent='$'+fmt(Math.max(0,300-Math.max(0,state.startEquity-(state.equity+unreal()))))+' maradt';
+ const l=calcLevels();if(l)$('calc').innerHTML=`<b>${side.toUpperCase()}</b> · Entry $${fmt(lastPrice)}<br>TP $${fmt(l.tp)} (${l.tpPct.toFixed(2)}%) · SL $${fmt(l.sl)} (${l.slPct.toFixed(2)}%)`;
+ const p=state.position;
+ if(p){const u=unreal();$('noPos').classList.add('hidden');$('posDetails').classList.remove('hidden');$('closePos').classList.remove('hidden');$('livePnl').textContent=(u>=0?'+':'')+'$'+fmt(u);$('livePnl').className='pnl '+(u>=0?'good':'bad');$('pSide').textContent=p.side.toUpperCase();$('pEntry').textContent='$'+fmt(p.entry);$('pQty').textContent=p.qty.toFixed(3)+' BTC';$('pTp').textContent='$'+fmt(p.tp);$('pSl').textContent='$'+fmt(p.sl);$('pFee').textContent='$'+fmt(p.fee);checkStops()}
+ else{$('noPos').classList.remove('hidden');$('posDetails').classList.add('hidden');$('closePos').classList.add('hidden');$('livePnl').textContent='—';$('livePnl').className='pnl'}
+ renderHistory();
+}
+function setSide(s){side=s;$('longBtn').className='btn'+(s==='long'?' green':'');$('shortBtn').className='btn'+(s==='short'?' red':'');$('open').textContent=(s==='long'?'LONG':'SHORT')+' nyitása';$('open').className='primary'+(s==='short'?' short':'');updateTradeUI()}
+function closePosition(reason='MANUAL'){const p=state.position;if(!p||lastPrice===null)return;const gross=(p.side==='long'?lastPrice-p.entry:p.entry-lastPrice)*p.qty,net=gross-p.fee;state.equity+=net;state.daily+=net;state.trades.push({day:state.day,time:new Date().toLocaleString('hu-HU'),side:p.side,entry:p.entry,exit:lastPrice,qty:p.qty,tpPct:p.tpPct,slPct:p.slPct,fee:p.fee,net,reason});state.position=null;save();$('msg').textContent='Pozíció zárva · '+reason+' · '+(net>=0?'+':'')+'$'+fmt(net);updateTradeUI()}
+function checkStops(){const p=state.position;if(!p||lastPrice===null)return;const tp=(p.side==='long'&&lastPrice>=p.tp)||(p.side==='short'&&lastPrice<=p.tp),sl=(p.side==='long'&&lastPrice<=p.sl)||(p.side==='short'&&lastPrice>=p.sl);if(tp)closePosition('TP');else if(sl)closePosition('SL')}
+function renderHistory(){const b=$('historyBody');b.innerHTML='';if(!state.trades.length){b.innerHTML='<tr><td colspan="12" class="muted">Még nincs lezárt trade.</td></tr>';return}[...state.trades].reverse().forEach((t,i)=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${state.trades.length-i}</td><td>${t.day}</td><td>${t.time}</td><td>${t.side.toUpperCase()}</td><td>$${fmt(t.entry)}</td><td>$${fmt(t.exit)}</td><td>${t.qty.toFixed(3)}</td><td>${t.tpPct.toFixed(2)}%</td><td>${t.slPct.toFixed(2)}%</td><td>-$${fmt(t.fee)}</td><td class="${t.net>=0?'good':'bad'}">${t.net>=0?'+':''}$${fmt(t.net)}</td><td>${t.reason}</td>`;b.appendChild(tr)})}
+document.querySelectorAll('.tf').forEach(b=>b.addEventListener('click',()=>resubscribe(Number(b.dataset.int))));
+$('fit').addEventListener('click',()=>chart.timeScale().fitContent());
+$('longBtn').addEventListener('click',()=>setSide('long'));$('shortBtn').addEventListener('click',()=>setSide('short'));
+['tpPct','slPct'].forEach(id=>$(id).addEventListener('input',updateTradeUI));
+$('order').addEventListener('submit',e=>{e.preventDefault();if(state.position){$('msg').textContent='Már van nyitott pozíció.';return}if(lastPrice===null){$('msg').textContent='Nincs élő Kraken ár.';return}const l=calcLevels();state.position={side,entry:lastPrice,qty:Math.max(.001,Number($('qty').value)||.1),fee:Math.max(0,Number($('fee').value)||0),tp:l.tp,sl:l.sl,tpPct:l.tpPct,slPct:l.slPct,leverage:Number($('lev').value)};save();updateTradeUI()});
+$('closePos').addEventListener('click',()=>closePosition('MANUAL'));
+$('tabTrade').addEventListener('click',()=>{$('tradeView').classList.remove('hidden');$('historyView').classList.add('hidden');$('tabTrade').classList.add('active');$('tabHistory').classList.remove('active')});
+$('tabHistory').addEventListener('click',()=>{$('tradeView').classList.add('hidden');$('historyView').classList.remove('hidden');$('tabTrade').classList.remove('active');$('tabHistory').classList.add('active');renderHistory()});
+$('closeDay').addEventListener('click',()=>{if(state.position){$('dayMsg').textContent='Napzárás előtt zárd a nyitott pozíciót.';return}state.days.push({day:state.day,net:state.daily,equity:state.equity,date:new Date().toLocaleDateString('hu-HU')});$('dayMsg').textContent=`${state.day}. nap lezárva · ${state.daily>=0?'+':''}$${fmt(state.daily)}`;state.day++;state.daily=0;save();updateTradeUI()});
+setSide('long');connect();updateTradeUI();
+})();
+</script>
+</body>
+</html>
