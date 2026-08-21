@@ -1,9 +1,0 @@
-{
-  "name": "Boti Kraken Paper Trader V9 Fee Accurate",
-  "short_name": "Boti Trader",
-  "start_url": "./?v=9",
-  "display": "standalone",
-  "background_color": "#071018",
-  "theme_color": "#071018",
-  "description": "200K Kraken BTC/USD paper trader with EEA derivatives maker/taker fees, live chart, indicators and MAE/MFE."
-}
