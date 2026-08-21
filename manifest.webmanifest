@@ -1,0 +1,9 @@
+{
+  "name": "Boti Kraken Paper Trader V9.3",
+  "short_name": "Boti Trader",
+  "start_url": "./?v=9.3",
+  "display": "standalone",
+  "background_color": "#071018",
+  "theme_color": "#071018",
+  "description": "Kraken BTC/USD paper trader with 5K-200K account profiles, 0.20% auto risk sizing, R-multiple journal, reset and Excel export."
+}
