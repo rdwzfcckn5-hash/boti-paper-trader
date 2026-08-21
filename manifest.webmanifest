@@ -1,0 +1,9 @@
+{
+  "name": "Boti Kraken Paper Trader",
+  "short_name": "Boti Trader",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#071018",
+  "theme_color": "#071018",
+  "description": "Kraken market data alapú BTC/USD paper trading gyakorló app."
+}
