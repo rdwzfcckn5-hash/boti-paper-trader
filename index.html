@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Boti Kraken Paper Trader V10.0.2 PRO TERMINAL</title>
+<title>Boti Kraken Paper Trader V10.2 PUSH PAGE + DRAG LEVELS</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -40,6 +40,11 @@ body{min-height:100vh}
 .good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}
 .ohlcbar{min-height:31px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:6px 4px;color:#b3c2cd;font-size:11px;border-top:1px solid #172631}
 #mainChart{height:560px;width:100%;border-top:1px solid #172631}
+#mainChartWrap{position:relative;border-radius:12px;overflow:hidden}
+.trendTint{position:absolute;inset:0;pointer-events:none;opacity:.12;border-radius:12px;z-index:0;transition:background .2s ease}
+.chartPositionBox{position:absolute;right:12px;top:12px;z-index:5;min-width:250px;max-width:290px;background:rgba(7,16,24,.92);border:1px solid #29404f;border-radius:12px;padding:10px 12px;box-shadow:0 14px 32px rgba(0,0,0,.28);backdrop-filter:blur(5px);pointer-events:none}
+.chartPositionBox .toprow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.chartPositionBox .sidebadge{padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.03em}.chartPositionBox .sidebadge.long{background:#123825;color:#78f1bc}.chartPositionBox .sidebadge.short{background:#3b1620;color:#ff9aa6}.chartPositionBox .big{font-size:20px;font-weight:950;letter-spacing:-.03em}.chartPositionBox .grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.chartPositionBox .mini{background:#101a22;border:1px solid #20333f;border-radius:9px;padding:6px 8px}.chartPositionBox .mini .lab{font-size:10px;color:var(--muted)}.chartPositionBox .mini .val2{font-size:13px;font-weight:900;margin-top:2px}.chartPositionBox .hint{font-size:10px;color:var(--muted);margin-top:7px}.chartPositionBox .rrgood{color:var(--green)}.chartPositionBox .rrbad{color:var(--red)}
+.confluenceStrip{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px;position:relative;z-index:2}.confPill,.srPill{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;border:1px solid #29404f;background:#0b151d;font-size:11px;font-weight:800}.confPill.good,.srPill.good{border-color:#1e6b51;color:#9cf0cf}.confPill.bad,.srPill.bad{border-color:#7c3540;color:#ffb1b9}.confPill.warn,.srPill.warn{border-color:#725c2c;color:#ffd58e}.confPill.neutral,.srPill.neutral{color:#d8e5ef}.srZoneBar{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0;position:relative;z-index:2}
 .indicatorPane{display:grid;grid-template-columns:1fr;gap:2px;border-top:1px solid #172631}
 .miniHead{height:24px;display:flex;align-items:center;gap:10px;padding:0 5px;color:var(--muted);font-size:10px;background:#0a141c}
 #rsiChart{height:125px;width:100%}
@@ -68,7 +73,7 @@ body{min-height:100vh}
 .mtfbox{text-align:center;border:1px solid #223541;border-radius:9px;background:#0a141c;padding:7px 4px}
 .mtfbox b{display:block;font-size:11px;margin-top:3px}
 .orderHead{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--line)}
-.orderHead .btn{flex:1}
+.orderHead .btn{flex:1}.orderHead.inline{padding:8px 0 0;border-bottom:0}
 form{padding:12px}
 label{display:block;color:#9fb1bf;font-size:12px;margin:9px 0 5px}
 input,select,textarea{width:100%;min-height:44px;border:1px solid #29404f;border-radius:10px;background:#09141c;color:white;padding:9px 10px;font-size:16px}
@@ -107,6 +112,9 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 .analyticsGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:0 12px 12px}.analyticsGrid .stat{margin:0}
 .replayBar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 4px;border-top:1px solid #172631}.replayBar .btn{min-height:34px;padding:5px 9px;font-size:11px}.replayBar input[type=range]{flex:1;min-width:180px;min-height:24px;padding:0}.replayBadge{font-size:11px;font-weight:900;color:var(--amber)}
 .levelEdit{display:grid;grid-template-columns:1fr 1fr auto;gap:7px;margin-top:9px}.levelEdit input{min-height:38px;font-size:13px}.levelEdit .btn{min-height:38px}
+.pushPage{max-width:1180px;margin:0 auto;padding:8px 0 30px}.pushPageHead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.pushPageTitle{font-size:27px;font-weight:950;letter-spacing:-.03em}.pushPage .alerts{margin-bottom:0}.pushPage .alert{padding:13px}.pushPage .alertSettings{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.pushPage .alertOpt{min-height:48px;font-size:12px}.pushPage .alertTestPanel,.pushPage .pushSetup{padding:12px}.pushPage .pushActions .btn{min-width:150px}.pushPageBadge{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid #29404f;border-radius:999px;background:#0b151d;font-size:11px;font-weight:900;color:#9fb1bf}
+#mainChartWrap.dragging-level{cursor:ns-resize;touch-action:none}.dragZone{position:absolute;left:0;right:0;z-index:3;pointer-events:none;opacity:.16;border-top:1px solid transparent;border-bottom:1px solid transparent}.dragZone.reward{background:#22c786;border-color:#22c786}.dragZone.risk{background:#ef5a6a;border-color:#ef5a6a}.dragZone.active{opacity:.26}.dragLevelHint{position:absolute;left:12px;z-index:6;pointer-events:none;padding:5px 8px;border-radius:8px;background:rgba(7,16,24,.94);border:1px solid #29404f;font-size:11px;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.25)}.dragLevelHint.good{color:#8cf0c9;border-color:#1e6b51}.dragLevelHint.bad{color:#ff9aa6;border-color:#7c3540}.dragLevelHint.warn{color:#ffd58e;border-color:#725c2c}.dragHandle{position:absolute;right:4px;z-index:6;pointer-events:none;transform:translateY(-50%);font-size:10px;font-weight:950;padding:4px 7px;border-radius:999px;background:rgba(7,16,24,.96);border:1px solid #29404f}.dragHandle.tp{color:#8cf0c9;border-color:#1e6b51}.dragHandle.sl{color:#ff9aa6;border-color:#7c3540}.dragHandle.be{color:#ffd58e;border-color:#725c2c}.dragHelp{font-size:10px;color:var(--muted);padding:5px 4px 0}.pushBack{min-width:150px}
+@media(max-width:760px){.pushPage .alertSettings{grid-template-columns:1fr}.pushPageTitle{font-size:22px}.dragLevelHint{left:6px;font-size:10px}.dragHandle{right:2px;font-size:9px}.pushBack{width:100%}}
 @media(max-width:800px){.flowMetrics{grid-template-columns:repeat(2,1fr)}.flowGrid{grid-template-columns:1fr}.analyticsGrid{grid-template-columns:repeat(2,1fr)}}
 .maxchart .layout{grid-template-columns:1fr}
 .maxchart .sidecol,.maxchart .position,.maxchart .stats{display:none!important}
@@ -132,6 +140,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
   .posgrid{grid-template-columns:1fr 1fr}
   #tvChart{height:620px}
 }
+@media(max-width:760px){.chartPositionBox{position:static;max-width:none;margin:8px 0 0;pointer-events:none}.chartPositionBox .grid{grid-template-columns:1fr 1fr}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -139,18 +148,19 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 </head>
 <body>
 <main id="app" class="app">
-  <div class="top">
+  <div id="mainTop" class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V10.0.2 PRO TERMINAL</div>
+      <div class="brand">Boti Kraken Paper Trader V10.2 PUSH PAGE + DRAG LEVELS</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
   </div>
 
-  <div class="tabs">
+  <div id="mainTabs" class="tabs">
     <button id="tabTrade" class="btn active" type="button">Trading</button>
     <button id="tabHistory" class="btn" type="button">Trade napló</button>
     <button id="resetAll" class="btn red" type="button">RESET 200K</button>
+    <button id="openPushPage" class="btn" type="button">🔔 PUSH</button>
     <div class="profilePick">
       <span>FIÓKPROFIL</span>
       <select id="profileSelect">
@@ -164,7 +174,16 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
     </div>
   </div>
 
-  <div class="alerts">
+  <section id="pushView" class="pushPage hidden">
+    <div class="pushPageHead">
+      <div>
+        <div class="pushPageBadge">24/7 · Cloudflare + OneSignal</div>
+        <div class="pushPageTitle">PUSH / Értesítési központ</div>
+        <div class="muted">Minden riasztás, háttérmonitor, teszt és szinkron egy külön oldalon.</div>
+      </div>
+      <button id="backFromPush" class="btn pushBack" type="button">← Vissza a főmenübe</button>
+    </div>
+    <div class="alerts">
     <div class="alert">
       <div>
         <b>Alkalmazásértesítések + háttér PUSH</b>
@@ -214,7 +233,8 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
       <div id="pushServerStatus" class="pushStatus">Server monitor: —</div>
     </details>
     <div id="alertFeed" class="alertFeed"></div>
-  </div>
+    </div>
+  </section>
 
   <section id="tradeView">
     <div class="modebar">
@@ -251,9 +271,22 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               <button id="toggleBB" class="btn active" type="button">BB 20/2</button>
               <button id="toggleStructure" class="btn active" type="button">Structure</button>
               <button id="toggleSession" class="btn active" type="button">Session levels</button>
-              <span class="muted">ATR · ADX/DMI · Volume spike · BOS/CHOCH · Order flow</span>
+              <span class="muted">ATR · ADX/DMI · Volume spike · BOS/CHOCH · Order flow · Auto S/R vizualizáció</span>
             </div>
-            <div id="mainChart"></div>
+            <div id="mainChartWrap">
+              <div id="trendTint" class="trendTint"></div>
+              <div id="rewardZone" class="dragZone reward hidden"></div>
+              <div id="riskZone" class="dragZone risk hidden"></div>
+              <div id="dragHint" class="dragLevelHint hidden"></div>
+              <div id="tpDragHandle" class="dragHandle tp hidden">TP · HÚZD</div>
+              <div id="slDragHandle" class="dragHandle sl hidden">SL · HÚZD</div>
+              <div id="beDragHandle" class="dragHandle be hidden">BE NET 0</div>
+              <div id="confluenceStrip" class="confluenceStrip"></div>
+              <div id="chartPositionBox" class="chartPositionBox hidden"></div>
+              <div id="mainChart"></div>
+              <div class="dragHelp">Nyitott pozíciónál a TP és SL vonal közvetlenül húzható a grafikonon. Zöld = reward, piros = risk, BE NET 0 = díjakkal/fundinggal számolt nullszaldó.</div>
+              <div id="srZoneBar" class="srZoneBar"></div>
+            </div>
             <div id="replayBar" class="replayBar">
               <button id="replayToggle" class="btn" type="button">Replay LAB</button>
               <button id="replayBack" class="btn" type="button" disabled>◀</button>
@@ -387,10 +420,6 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         </div>
 
         <div class="panel">
-          <div class="orderHead">
-            <button id="longBtn" class="btn green" type="button">LONG</button>
-            <button id="shortBtn" class="btn" type="button">SHORT</button>
-          </div>
           <form id="order">
             <div class="row">
               <div><label>Risk / trade %</label><input id="riskPct" type="number" min=".01" step=".01" value=".20"></div>
@@ -449,19 +478,22 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               <div><label>TP distance %</label><input id="tpPct" type="number" min=".01" step=".01" value=".50"></div>
               <div><label>SL distance %</label><input id="slPct" type="number" min=".01" step=".01" value=".30"></div>
             </div>
-            <div class="row">
-              <div><label>Setup</label><input id="setupName" type="text" placeholder="pl. VWAP pullback"></div>
-              <div>
-                <label>Kraken AUTO funding</label>
-                <div class="calc" style="margin-top:0">
-                  <b id="fundingRate">Kraken funding betöltése…</b><br>
-                  <span id="funding4h" class="muted">4h ekvivalens: —</span><br>
-                  <span id="fundingPred" class="muted">Pozíció funding / óra: —</span>
-                </div>
-              </div>
+            <label>Kraken AUTO funding</label>
+            <div class="calc" style="margin-top:0">
+              <b id="fundingRate">Kraken funding betöltése…</b><br>
+              <span id="funding4h" class="muted">4h ekvivalens: —</span><br>
+              <span id="fundingPred" class="muted">Pozíció funding / óra: —</span>
             </div>
-            <label>Megjegyzés</label>
-            <textarea id="tradeNote" placeholder="Miért léptél be / mi történt a trade-ben?"></textarea>
+
+            <label>Setup</label>
+            <input id="setupName" type="text" placeholder="pl. VWAP pullback">
+
+            <div class="orderHead inline">
+              <button id="longBtn" class="btn green" type="button">LONG</button>
+              <button id="shortBtn" class="btn" type="button">SHORT</button>
+            </div>
+
+            <textarea id="tradeNote" class="hidden"></textarea>
             <div id="calc" class="calc">Várakozás élő Kraken árra…</div>
             <button id="open" class="primary" type="submit">LONG nyitása</button>
             <div id="msg" class="note"></div>
@@ -558,9 +590,13 @@ const save=()=>{
 
 let side='long', interval=1, lastPrice=null, candles=[], ws=null, reconnectTimer=null, mode='simple', tvLoaded=false;
 let lastTrendState='NEUTRAL', mtfTimer=null;
-let entryPriceLine=null,tpPriceLine=null,slPriceLine=null;
+let entryPriceLine=null,tpPriceLine=null,slPriceLine=null,bePriceLine=null;
+let levelDrag=null;
 let bbUpperSeries=null,bbMidSeries=null,bbLowerSeries=null;
 let prevHighLine=null,prevLowLine=null,dayHighLine=null,dayLowLine=null;
+let swingLines=[];
+let lastClosedTradeMarker=null;
+let currentVisualState={trend:'NEUTRAL',confidence:0,structure:'—',rsi:null,macd:null,adx:null,atr:null,volX:null,rr:null};
 let showBB=true,showStructure=true,showSession=true;
 const bookBids=new Map(),bookAsks=new Map();
 let recentTape=[],cvd=0,tradesPerSecond=[],flowUiTimer=null;
@@ -703,13 +739,110 @@ function renderKeyLevels(){
   if(lv.dayHigh)dayHighLine=candleSeries.createPriceLine({price:lv.dayHigh,color:'#8da2b2',lineWidth:1,lineStyle:3,axisLabelVisible:false,title:'DH'});
   if(lv.dayLow)dayLowLine=candleSeries.createPriceLine({price:lv.dayLow,color:'#8da2b2',lineWidth:1,lineStyle:3,axisLabelVisible:false,title:'DL'});
 }
+function clearSwingLines(){for(const l of swingLines){if(l){try{candleSeries.removePriceLine(l)}catch(e){}}}swingLines=[]}
+function renderSwingLevels(structure){
+  clearSwingLines();
+  const host=$('srZoneBar'); if(host)host.innerHTML='';
+  if(!showStructure||!structure)return;
+  const highs=(structure.highs||[]).slice(-2).reverse();
+  const lows=(structure.lows||[]).slice(-2).reverse();
+  const defs=[];
+  highs.forEach((h,idx)=>defs.push({price:h.price,label:idx===0?'R1':'R2',cls:h.label==='HH'?'good':'warn',title:h.label}));
+  lows.forEach((l,idx)=>defs.push({price:l.price,label:idx===0?'S1':'S2',cls:l.label==='HL'?'good':'bad',title:l.label}));
+  defs.forEach(d=>{
+    swingLines.push(candleSeries.createPriceLine({price:d.price,color:d.label[0]==='R'?'#e5ac43':'#22c786',lineWidth:1,lineStyle:3,axisLabelVisible:false,title:d.label}));
+    if(host){const el=document.createElement('span');el.className='srPill '+(d.cls||'neutral');el.textContent=d.label+' $'+fmt(d.price)+' · '+d.title;host.appendChild(el)}
+  });
+}
+function updateTrendTint(stateName){
+  const el=$('trendTint'); if(!el)return;
+  let bg='linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 100%)';
+  if(stateName==='BULLISH')bg='linear-gradient(180deg, rgba(34,199,134,.28) 0%, rgba(34,199,134,.04) 45%, rgba(34,199,134,.12) 100%)';
+  else if(stateName==='BEARISH')bg='linear-gradient(180deg, rgba(239,90,106,.28) 0%, rgba(239,90,106,.04) 45%, rgba(239,90,106,.12) 100%)';
+  else bg='linear-gradient(180deg, rgba(229,172,67,.16) 0%, rgba(229,172,67,.02) 45%, rgba(229,172,67,.08) 100%)';
+  el.style.background=bg;
+}
+function updateConfluenceStrip(v,a,i,atr,adx,volX){
+  const host=$('confluenceStrip'); if(!host)return;
+  const pills=[
+    ['Trend',v.state,v.state==='BULLISH'?'good':v.state==='BEARISH'?'bad':'warn'],
+    ['Fast EMA',labelVote(v.items.fast),v.items.fast>0?'good':v.items.fast<0?'bad':'neutral'],
+    ['Main EMA',i>=199?labelVote(v.items.main):'WAIT 200',v.items.main>0?'good':v.items.main<0?'bad':'warn'],
+    ['VWAP',labelVote(v.items.vwap),v.items.vwap>0?'good':v.items.vwap<0?'bad':'neutral'],
+    ['MACD',labelVote(v.items.macd),v.items.macd>0?'good':v.items.macd<0?'bad':'neutral'],
+    ['Super',labelVote(v.items.super),v.items.super>0?'good':v.items.super<0?'bad':'neutral'],
+    ['RSI',a.rsi[i]===null?'—':a.rsi[i].toFixed(1),a.rsi[i]>55?'good':a.rsi[i]<45?'bad':'warn'],
+    ['ADX',adx===null?'—':adx.toFixed(1),adx>=25?'good':adx>=18?'warn':'neutral'],
+    ['Vol',volX?volX.toFixed(2)+'x':'—',volX>=2?'good':volX>=1.2?'warn':'neutral'],
+    ['Struct',lastStructure.label||'—',classForState(lastStructure.state||'NEUTRAL')]
+  ];
+  host.innerHTML=pills.map(([lab,val,cls])=>'<span class="confPill '+cls+'"><b>'+lab+'</b> '+val+'</span>').join('');
+}
+function nearestCandleTimeFromMs(ms){
+  if(!candles.length)return null;
+  const sec=Math.floor(Number(ms)/1000);
+  let nearest=candles[candles.length-1].time, best=Math.abs(nearest-sec);
+  for(const c of candles){ const d=Math.abs(c.time-sec); if(d<best){best=d; nearest=c.time;} }
+  return nearest;
+}
+function buildTradeMarkers(){
+  const arr=[];
+  const p=state.position;
+  if(p){
+    const tm=nearestCandleTimeFromMs(p.entryTime);
+    if(tm)arr.push({time:tm,position:p.side==='long'?'belowBar':'aboveBar',color:p.side==='long'?'#22c786':'#ef5a6a',shape:p.side==='long'?'arrowUp':'arrowDown',text:p.side==='long'?'LONG':'SHORT'});
+  }
+  if(lastClosedTradeMarker)arr.push(lastClosedTradeMarker);
+  return arr;
+}
+function updateChartPositionBox(){
+  const box=$('chartPositionBox'); if(!box)return;
+  const p=state.position;
+  if(!p||lastPrice===null){box.classList.add('hidden');box.innerHTML='';return;}
+  const gross=unreal();
+  const estCloseFee=feeFor(lastPrice,p.qty,p.exitExec,p.feeTier);
+  const funding=fundingLive();
+  const netEst=gross-p.openFee-estCloseFee+funding;
+  const liveR=Number(p.plannedRiskUsd)>0?netEst/Number(p.plannedRiskUsd):0;
+  const toTp=Math.abs((p.tp-lastPrice)/(lastPrice||1)*100);
+  const toSl=Math.abs((p.sl-lastPrice)/(lastPrice||1)*100);
+  const sideCls=p.side==='long'?'long':'short';
+  const trend=currentVisualState.trend||'NEUTRAL';
+  box.classList.remove('hidden');
+  box.innerHTML=''+
+    '<div class="toprow"><span class="sidebadge '+sideCls+'">'+p.side.toUpperCase()+'</span><span class="confPill '+classForState(trend)+'">'+trend+'</span></div>'+
+    '<div class="big '+(netEst>=0?'rrgood':'rrbad')+'">'+(netEst>=0?'+':'')+'$'+fmt(netEst)+' · '+(liveR>=0?'+':'')+liveR.toFixed(2)+'R</div>'+
+    '<div class="muted" style="font-size:11px;margin-top:2px">Entry $'+fmt(p.entry)+' · Live $'+fmt(lastPrice)+' · Qty '+p.qty.toFixed(3)+' BTC</div>'+
+    '<div class="grid">'+
+      '<div class="mini"><div class="lab">TP</div><div class="val2">$'+fmt(p.tp)+'</div><div class="lab">'+toTp.toFixed(2)+'% távolság</div></div>'+
+      '<div class="mini"><div class="lab">SL</div><div class="val2">$'+fmt(p.sl)+'</div><div class="lab">'+toSl.toFixed(2)+'% távolság</div></div>'+
+      '<div class="mini"><div class="lab">MFE</div><div class="val2">'+(p.mfeUsd>=0?'+':'')+'$'+fmt(p.mfeUsd)+'</div><div class="lab">'+(p.mfePct>=0?'+':'')+p.mfePct.toFixed(3)+'%</div></div>'+
+      '<div class="mini"><div class="lab">MAE</div><div class="val2">'+(p.maeUsd>=0?'+':'')+'$'+fmt(p.maeUsd)+'</div><div class="lab">'+(p.maePct>=0?'+':'')+p.maePct.toFixed(3)+'%</div></div>'+
+      '<div class="mini"><div class="lab">Bias / Structure</div><div class="val2">'+currentVisualState.structure+'</div><div class="lab">Conf. '+Math.round(currentVisualState.confidence||0)+'%</div></div>'+
+      '<div class="mini"><div class="lab">RSI / ADX</div><div class="val2">'+(currentVisualState.rsi==null?'—':Number(currentVisualState.rsi).toFixed(1))+' / '+(currentVisualState.adx==null?'—':Number(currentVisualState.adx).toFixed(1))+'</div><div class="lab">Vol '+((currentVisualState.volX||0)?Number(currentVisualState.volX).toFixed(2)+'x':'—')+'</div></div>'+
+    '</div>'+
+    '<div class="hint">Vizual box: entry / TP / SL / live R / confluence egy helyen.</div>';
+}
+
 function renderVolumeProfile(){const vp=volumeProfileApprox(candles.slice(-Math.min(candles.length,240)),18);if(!vp)return;$('volumeProfile').innerHTML='<div class="muted" style="margin-bottom:5px">POC $'+fmt(vp.poc)+' · VAH $'+fmt(vp.vah)+' · VAL $'+fmt(vp.val)+'</div>'+[...vp.bins].reverse().map(b=>'<div class="vpRow"><span>$'+((b.low+b.high)/2).toFixed(0)+'</span><div class="vpTrack"><div class="vpFill" style="width:'+(vp.maxVol?b.vol/vp.maxVol*100:0).toFixed(0)+'%"></div></div><span>'+b.vol.toFixed(1)+'</span></div>').join('')}
 
 function removePositionLines(){
-  [entryPriceLine,tpPriceLine,slPriceLine].forEach(line=>{
+  [entryPriceLine,tpPriceLine,slPriceLine,bePriceLine].forEach(line=>{
     if(line){try{candleSeries.removePriceLine(line)}catch(e){}}
   });
-  entryPriceLine=tpPriceLine=slPriceLine=null;
+  entryPriceLine=tpPriceLine=slPriceLine=bePriceLine=null;
+  hideLevelDragVisuals();
+}
+function breakEvenPrice(p){
+  if(!p||!Number(p.qty))return null;
+  const q=Number(p.qty),entry=Number(p.entry),rate=feeRate(p.exitExec,p.feeTier),funding=fundingLive();
+  const openFee=Number(p.openFee)||0;
+  if(p.side==='long'){
+    const den=q*(1-rate);if(!(den>0))return null;
+    return (entry*q+openFee-funding)/den;
+  }
+  const den=q*(1+rate);if(!(den>0))return null;
+  return (entry*q+funding-openFee)/den;
 }
 function syncPositionLines(){
   removePositionLines();
@@ -719,12 +852,79 @@ function syncPositionLines(){
     price:Number(p.entry),color:'#8da2b2',lineWidth:2,lineStyle:2,axisLabelVisible:true,title:'ENTRY'
   });
   tpPriceLine=candleSeries.createPriceLine({
-    price:Number(p.tp),color:'#22c786',lineWidth:2,lineStyle:0,axisLabelVisible:true,title:'TP'
+    price:Number(p.tp),color:'#22c786',lineWidth:2,lineStyle:0,axisLabelVisible:true,title:'TP · HÚZD'
   });
   slPriceLine=candleSeries.createPriceLine({
-    price:Number(p.sl),color:'#ef5a6a',lineWidth:2,lineStyle:0,axisLabelVisible:true,title:'SL'
+    price:Number(p.sl),color:'#ef5a6a',lineWidth:2,lineStyle:0,axisLabelVisible:true,title:'SL · HÚZD'
   });
+  const be=breakEvenPrice(p);
+  if(Number.isFinite(be))bePriceLine=candleSeries.createPriceLine({
+    price:be,color:'#e5ac43',lineWidth:1,lineStyle:2,axisLabelVisible:true,title:'BE NET 0'
+  });
+  updateLevelDragVisuals();
 }
+function chartPriceY(price){try{return candleSeries.priceToCoordinate(Number(price))}catch(e){return null}}
+function chartYPrice(y){try{return candleSeries.coordinateToPrice(Number(y))}catch(e){return null}}
+function setBand(el,a,b,active=false){
+  if(!el||a===null||b===null||!Number.isFinite(a)||!Number.isFinite(b)){if(el)el.classList.add('hidden');return}
+  const top=Math.min(a,b),height=Math.max(2,Math.abs(a-b));
+  el.style.top=top+'px';el.style.height=height+'px';el.classList.remove('hidden');el.classList.toggle('active',!!active);
+}
+function positionHandle(el,y){if(!el)return;if(y===null||!Number.isFinite(y)){el.classList.add('hidden');return}el.style.top=y+'px';el.classList.remove('hidden')}
+function hideLevelDragVisuals(){
+  ['rewardZone','riskZone','dragHint','tpDragHandle','slDragHandle','beDragHandle'].forEach(id=>{const el=$(id);if(el)el.classList.add('hidden')});
+  const wrap=$('mainChartWrap');if(wrap)wrap.classList.remove('dragging-level');
+}
+function updateLevelDragVisuals(activeKind=null,activePrice=null){
+  const p=state.position;if(!p){hideLevelDragVisuals();return}
+  const entryY=chartPriceY(p.entry),tpY=chartPriceY(activeKind==='tp'&&Number.isFinite(activePrice)?activePrice:p.tp),slY=chartPriceY(activeKind==='sl'&&Number.isFinite(activePrice)?activePrice:p.sl);
+  const be=breakEvenPrice(p),beY=Number.isFinite(be)?chartPriceY(be):null;
+  setBand($('rewardZone'),entryY,tpY,activeKind==='tp');
+  setBand($('riskZone'),entryY,slY,activeKind==='sl');
+  positionHandle($('tpDragHandle'),tpY);positionHandle($('slDragHandle'),slY);positionHandle($('beDragHandle'),beY);
+  if(bePriceLine&&Number.isFinite(be))try{bePriceLine.applyOptions({price:be,title:'BE NET 0'})}catch(e){}
+  if(activeKind&&Number.isFinite(activePrice)){
+    const y=chartPriceY(activePrice),hint=$('dragHint');
+    const favorable=p.side==='long'?activePrice>=p.entry:activePrice<=p.entry;
+    hint.textContent=(activeKind==='tp'?'TP':'SL')+' $'+fmt(activePrice)+' · '+(favorable?'ZÖLD / profit oldal':'PIROS / veszteség oldal')+' · BE $'+fmt(be||p.entry);
+    hint.className='dragLevelHint '+(favorable?'good':'bad');hint.style.top=Math.max(4,(y||0)-36)+'px';hint.classList.remove('hidden');
+  }else $('dragHint').classList.add('hidden');
+}
+function dragDistanceToLevel(y,price){const py=chartPriceY(price);return py===null?Infinity:Math.abs(py-y)}
+function finishLevelDrag(commit=true){
+  if(!levelDrag)return;
+  const d=levelDrag,p=state.position;
+  if(commit&&p&&Number.isFinite(d.price)&&d.price>0){
+    if(d.kind==='tp')p.tp=d.price;else p.sl=d.price;
+    save();syncPositionLines();updateTradeUI();schedulePushBackendSync(true);
+    pushAppAlert((d.kind==='tp'?'TP':'SL')+' grafikonon frissítve: $'+fmt(d.price),'good');
+  }else updateLevelDragVisuals();
+  levelDrag=null;$('mainChartWrap').classList.remove('dragging-level');
+}
+function initLevelDragging(){
+  const host=$('mainChart');if(!host)return;
+  host.addEventListener('pointerdown',ev=>{
+    const p=state.position;if(!p||mode!=='simple')return;
+    const r=host.getBoundingClientRect(),y=ev.clientY-r.top;
+    const dTp=dragDistanceToLevel(y,p.tp),dSl=dragDistanceToLevel(y,p.sl);
+    if(Math.min(dTp,dSl)>24)return;
+    const kind=dTp<=dSl?'tp':'sl';
+    levelDrag={kind,price:Number(kind==='tp'?p.tp:p.sl),pointerId:ev.pointerId};
+    $('mainChartWrap').classList.add('dragging-level');
+    try{host.setPointerCapture(ev.pointerId)}catch(e){}
+    ev.preventDefault();ev.stopPropagation();
+    updateLevelDragVisuals(kind,levelDrag.price);
+  },{passive:false});
+  host.addEventListener('pointermove',ev=>{
+    if(!levelDrag||ev.pointerId!==levelDrag.pointerId)return;
+    const r=host.getBoundingClientRect(),y=Math.max(0,Math.min(r.height,ev.clientY-r.top)),price=chartYPrice(y);
+    if(Number.isFinite(price)&&price>0){levelDrag.price=price;updateLevelDragVisuals(levelDrag.kind,price)}
+    ev.preventDefault();ev.stopPropagation();
+  },{passive:false});
+  host.addEventListener('pointerup',ev=>{if(levelDrag&&ev.pointerId===levelDrag.pointerId){ev.preventDefault();finishLevelDrag(true)}},{passive:false});
+  host.addEventListener('pointercancel',ev=>{if(levelDrag&&ev.pointerId===levelDrag.pointerId)finishLevelDrag(false)});
+}
+
 
 function saveAlertSettings(){
   localStorage.setItem(ALERT_SETTINGS_KEY,JSON.stringify(alertSettings));
@@ -747,7 +947,7 @@ function bindAlertSetting(id,key){
     saveAlertSettings();
     const label=$(id).parentElement.innerText.trim();
     pushAppAlert((alertSettings[key]?'Bekapcsolva: ':'Kikapcsolva: ')+label,'warn');
-    // V10.0.2: minden kapcsoló azonnal szinkronizál a Cloudflare háttérmonitorral.
+    // V10.2: minden kapcsoló azonnal szinkronizál a Cloudflare háttérmonitorral.
     schedulePushBackendSync(true);
     if(alertSettings[key] && pushConfigured()){
       setTimeout(()=>testAlertPush(key,true),700);
@@ -902,7 +1102,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.0.2',
+        appVersion:'10.2.0',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -1547,14 +1747,18 @@ function renderAllIndicators(){
   }
   lastStructure=a.structure||{state:'NEUTRAL',label:'—',markers:[]};
   const allMarkers=showStructure?markers.concat(lastStructure.markers||[]):markers;
-  candleSeries.setMarkers(allMarkers.slice(-120));
+  candleSeries.setMarkers(allMarkers.concat(buildTradeMarkers()).slice(-200));
   checkSupertrendConfirmedAlert(a);
   renderVolumeProfile();renderKeyLevels();
   const i=candles.length-1,v=voteAt(a,candles,i);
   const atr=a.adx.atr[i],adx=a.adx.adx[i],pdi=a.adx.pdi[i],mdi=a.adx.mdi[i];
   const vols=candles.slice(Math.max(0,i-20),i).map(c=>Number(c.volume||0));const avgVol=vols.length?vols.reduce((x,y)=>x+y,0)/vols.length:0;const volX=avgVol?Number(candles[i].volume||0)/avgVol:0;
   $('atrMetric').textContent=atr===null?'—':'$'+atr.toFixed(1);$('adxMetric').textContent=adx===null?'—':adx.toFixed(1)+' · '+(pdi>mdi?'+DI':'-DI');$('adxMetric').className=adx>=25?'good':adx>=18?'warn':'bad';$('volMetric').textContent=volX?volX.toFixed(2)+'x':'—';$('volMetric').className=volX>=2?'good':volX>=1.2?'warn':'';$('structureMetric').textContent=lastStructure.label;$('structureMetric').className=classForState(lastStructure.state);
+  currentVisualState={trend:v.state,confidence:v.confidence,structure:lastStructure.label||'—',rsi:a.rsi[i],macd:a.macd.hist[i],adx,atr,volX};
+  renderSwingLevels(lastStructure);
+  updateConfluenceStrip(v,a,i,atr,adx,volX);
   updateTrend(v,a,i);
+  updateChartPositionBox();
 }
 function updateTrend(v,a,i){
   const st=v.state;
@@ -1589,6 +1793,7 @@ function updateTrend(v,a,i){
     $('setupState').textContent='VÁRAKOZÁS';$('setupState').className='warn';
     $('setupText').textContent='Nincs elég megerősítés.';
   }
+  updateTrendTint(st);
   lastTrendState=st;
 }
 
@@ -2088,6 +2293,8 @@ function updateTradeUI(){
     removePositionLines();
     $('noPos').classList.remove('hidden');$('posDetails').classList.add('hidden');$('closePos').classList.add('hidden');$('levelEdit').classList.add('hidden');$('livePnl').textContent='—';$('livePnl').className='pnl';
   }
+  updateChartPositionBox();
+  updateLevelDragVisuals(levelDrag?.kind,levelDrag?.price);
   checkThresholdAlerts();
   if(!$('historyView').classList.contains('hidden'))renderHistory();
 }
@@ -2129,6 +2336,7 @@ function closePosition(reason='MANUAL'){
     note:p.note||'',entryExec:p.entryExec,exitExec:p.exitExec,feeTier:p.feeTier,
     lowest:p.lowest,highest:p.highest,maeUsd:p.maeUsd,mfeUsd:p.mfeUsd,maePct:p.maePct,mfePct:p.mfePct
   });
+  lastClosedTradeMarker={time:candles.length?candles[candles.length-1].time:nearestCandleTimeFromMs(Date.now()),position:p.side==='long'?'aboveBar':'belowBar',color:net>=0?'#22c786':'#ef5a6a',shape:'circle',text:(net>=0?'+':'')+realizedR.toFixed(1)+'R'};
   state.position=null;removePositionLines();save();
   $('msg').textContent='Pozíció zárva · '+reason+' · Gross '+(gross>=0?'+':'')+'$'+fmt(gross)+' · Fee -$'+fmt(totalFee)+(funding?' · Funding '+fundingSignedText(funding):'')+' · Net '+(net>=0?'+':'')+'$'+fmt(net)+' · '+(realizedR>=0?'+':'')+realizedR.toFixed(2)+'R';
 
@@ -2243,10 +2451,25 @@ $('order').addEventListener('submit',e=>{
 });
 $('closePos').addEventListener('click',()=>closePosition('MANUAL'));
 $('applyLevels').addEventListener('click',()=>{const p=state.position;if(!p)return;const tp=Number($('editTp').value),sl=Number($('editSl').value);if(!Number.isFinite(tp)||!Number.isFinite(sl)){pushAppAlert('Érvénytelen TP/SL ár.','bad');return}if(p.side==='long'&&!(tp>p.entry&&sl<p.entry)){pushAppAlert('LONG-nál TP > entry és SL < entry szükséges.','warn');return}if(p.side==='short'&&!(tp<p.entry&&sl>p.entry)){pushAppAlert('SHORT-nál TP < entry és SL > entry szükséges.','warn');return}p.tp=tp;p.sl=sl;save();syncPositionLines();updateTradeUI();schedulePushBackendSync(true);pushAppAlert('TP/SL frissítve a charton és a háttér monitorban.','good')});
-$('tabTrade').addEventListener('click',()=>{$('tradeView').classList.remove('hidden');$('historyView').classList.add('hidden');$('tabTrade').classList.add('active');$('tabHistory').classList.remove('active')});
-$('tabHistory').addEventListener('click',()=>{$('tradeView').classList.add('hidden');$('historyView').classList.remove('hidden');$('tabTrade').classList.remove('active');$('tabHistory').classList.add('active');renderHistory()});
+function showMainView(which='trade'){
+  $('pushView').classList.add('hidden');$('mainTop').classList.remove('hidden');$('mainTabs').classList.remove('hidden');
+  const hist=which==='history';$('tradeView').classList.toggle('hidden',hist);$('historyView').classList.toggle('hidden',!hist);
+  $('tabTrade').classList.toggle('active',!hist);$('tabHistory').classList.toggle('active',hist);
+  if(hist)renderHistory();
+}
+function showPushPage(){
+  $('mainTop').classList.add('hidden');$('mainTabs').classList.add('hidden');$('tradeView').classList.add('hidden');$('historyView').classList.add('hidden');$('pushView').classList.remove('hidden');
+  syncAlertSettingsUI();loadPushConfigUI();refreshPushServerStatus();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('tabTrade').addEventListener('click',()=>showMainView('trade'));
+$('tabHistory').addEventListener('click',()=>showMainView('history'));
+$('openPushPage').addEventListener('click',showPushPage);
+$('backFromPush').addEventListener('click',()=>showMainView('trade'));
 
 
+
+initLevelDragging();
 syncAlertSettingsUI();
 bindAlertSetting('alertSupertrend','supertrend');
 bindSTTimeframe('alertST1',1);
