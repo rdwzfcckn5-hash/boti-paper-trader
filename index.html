@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Boti Kraken Paper Trader V9.9.2 PUSH FIX</title>
+<title>Boti Kraken Paper Trader V10 PRO TERMINAL</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -87,6 +87,27 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 .historyHead{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:12px}
 .note{font-size:11px;color:var(--muted);margin-top:7px}
 #tvChart{height:820px;width:100%;background:#0d1720}
+.terminalTools{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 4px;border-top:1px solid #172631}
+.terminalTools .btn{min-height:34px;padding:5px 9px;font-size:11px}
+.fullscreenHost:fullscreen,.fullscreenHost:-webkit-full-screen{background:#071018;padding:8px;width:100vw;height:100vh;overflow:auto}
+.fullscreenHost:fullscreen .chartPanel,.fullscreenHost:-webkit-full-screen .chartPanel{height:100%;display:flex;flex-direction:column}
+.fullscreenHost:fullscreen #simplePane,.fullscreenHost:-webkit-full-screen #simplePane{display:flex;flex-direction:column;flex:1;min-height:0}
+.fullscreenHost:fullscreen #proPane,.fullscreenHost:-webkit-full-screen #proPane{display:flex;flex-direction:column;flex:1;min-height:0}
+.fullscreenHost:fullscreen #mainChart,.fullscreenHost:-webkit-full-screen #mainChart{height:calc(100vh - 300px)!important}
+.fullscreenHost:fullscreen #tvChart,.fullscreenHost:-webkit-full-screen #tvChart{height:calc(100vh - 170px)!important}
+.fullscreenHost:fullscreen #rsiChart,.fullscreenHost:-webkit-full-screen #rsiChart{height:130px!important}
+.fullscreenHost:fullscreen #macdChart,.fullscreenHost:-webkit-full-screen #macdChart{height:150px!important}
+.flowCard{padding:12px}
+.flowHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.flowLive{font-size:10px;font-weight:900}
+.flowMetrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.flowMetric{background:#101e28;border-radius:8px;padding:7px;min-width:0}.flowMetric b{display:block;margin-top:2px;overflow:hidden;text-overflow:ellipsis}
+.flowGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.bookBox,.tapeBox,.profileBox{border:1px solid #223541;border-radius:9px;background:#09141c;overflow:hidden}.flowBoxHead{padding:7px 8px;font-size:10px;color:var(--muted);font-weight:900;border-bottom:1px solid #1b2c37}
+.bookSide{padding:4px 6px}.bookRow{position:relative;display:grid;grid-template-columns:1fr .8fr;gap:5px;padding:2px 3px;font-variant-numeric:tabular-nums;font-size:10px}.bookRow .bar{position:absolute;top:1px;bottom:1px;right:0;opacity:.12;z-index:0}.bookRow span{position:relative;z-index:1}.askRow .bar{background:var(--red)}.bidRow .bar{background:var(--green)}
+.tapeList{max-height:180px;overflow:auto;padding:4px 6px}.tapeRow{display:grid;grid-template-columns:1fr .7fr .7fr;gap:5px;font-size:10px;padding:2px 1px;font-variant-numeric:tabular-nums}
+.profileBars{padding:6px}.vpRow{display:grid;grid-template-columns:.9fr 1.4fr .7fr;gap:5px;align-items:center;font-size:10px;padding:2px 0}.vpTrack{height:7px;background:#14232d;border-radius:99px;overflow:hidden}.vpFill{height:100%;background:#6e7cff}.sessionGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;padding:6px}.sessionItem{background:#101e28;border-radius:7px;padding:6px;font-size:10px}
+.analyticsGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:0 12px 12px}.analyticsGrid .stat{margin:0}
+.replayBar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 4px;border-top:1px solid #172631}.replayBar .btn{min-height:34px;padding:5px 9px;font-size:11px}.replayBar input[type=range]{flex:1;min-width:180px;min-height:24px;padding:0}.replayBadge{font-size:11px;font-weight:900;color:var(--amber)}
+.levelEdit{display:grid;grid-template-columns:1fr 1fr auto;gap:7px;margin-top:9px}.levelEdit input{min-height:38px;font-size:13px}.levelEdit .btn{min-height:38px}
+@media(max-width:800px){.flowMetrics{grid-template-columns:repeat(2,1fr)}.flowGrid{grid-template-columns:1fr}.analyticsGrid{grid-template-columns:repeat(2,1fr)}}
 .maxchart .layout{grid-template-columns:1fr}
 .maxchart .sidecol,.maxchart .position,.maxchart .stats{display:none!important}
 .maxchart #mainChart{height:650px}
@@ -120,8 +141,8 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V9.9.2 PUSH FIX</div>
-      <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · FAST LIVE · 24/7 Cloudflare + OneSignal PUSH · Supertrend · TP/SL · Equity/Daily</div>
+      <div class="brand">Boti Kraken Paper Trader V10 PRO TERMINAL</div>
+      <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
   </div>
@@ -173,8 +194,10 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         <button id="pushConfigSave" class="btn" type="button">Beállítás mentése</button>
         <button id="pushSyncNow" class="btn" type="button">Szinkron most</button>
         <button id="pushTest" class="btn" type="button">Teszt PUSH</button>
+        <button id="pushTestDelayed" class="btn" type="button">Háttér teszt +60s</button>
       </div>
       <div id="pushStatus" class="pushStatus">Háttér PUSH még nincs konfigurálva.</div>
+      <div id="pushServerStatus" class="pushStatus">Server monitor: —</div>
     </details>
     <div id="alertFeed" class="alertFeed"></div>
   </div>
@@ -184,12 +207,13 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
       <button id="modeSimple" class="btn active" type="button">Egyszerű jelző chart</button>
       <button id="modePro" class="btn" type="button">TradingView PRO</button>
       <button id="maxChart" class="btn" type="button">Chart MAX</button>
+      <button id="chartFullscreen" class="btn" type="button">Teljes képernyő</button>
       <span class="modehint">Custom mód = Kraken OHLC + saját indikátorok · PRO = hivatalos TradingView Advanced Chart</span>
     </div>
 
     <div class="layout">
       <section>
-        <div class="panel chartPanel">
+        <div id="chartHost" class="panel chartPanel fullscreenHost">
           <div class="marketHead">
             <div>
               <div class="symbol">BTC/USD · KRAKEN SPOT LIVE</div>
@@ -209,7 +233,21 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 
           <div id="simplePane">
             <div id="ohlcBar" class="ohlcbar">Mozgasd a keresztet a gyertyákon az OHLC adatokhoz.</div>
+            <div class="terminalTools">
+              <button id="toggleBB" class="btn active" type="button">BB 20/2</button>
+              <button id="toggleStructure" class="btn active" type="button">Structure</button>
+              <button id="toggleSession" class="btn active" type="button">Session levels</button>
+              <span class="muted">ATR · ADX/DMI · Volume spike · BOS/CHOCH · Order flow</span>
+            </div>
             <div id="mainChart"></div>
+            <div id="replayBar" class="replayBar">
+              <button id="replayToggle" class="btn" type="button">Replay LAB</button>
+              <button id="replayBack" class="btn" type="button" disabled>◀</button>
+              <button id="replayPlay" class="btn" type="button" disabled>▶</button>
+              <button id="replayNext" class="btn" type="button" disabled>▶|</button>
+              <input id="replaySlider" type="range" min="0" max="100" value="100" disabled>
+              <span id="replayStatus" class="replayBadge">LIVE</span>
+            </div>
             <div class="indicatorPane">
               <div class="miniHead"><b>RSI 14</b><span>30 / 70 zónák</span></div>
               <div id="rsiChart"></div>
@@ -223,6 +261,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               <span><i class="sw s200"></i>EMA 200</span>
               <span><i class="sw svwap"></i>Daily VWAP</span>
               <span><i class="sw sst"></i>Supertrend 10/3</span>
+              <span>BB = Bollinger 20/2</span><span>HH/HL/LH/LL + BOS/CHOCH</span>
               <span>▲/▼ = megerősített trendváltás</span>
             </div>
           </div>
@@ -263,6 +302,11 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
             <div class="stat"><div class="lab">Planned risk</div><div id="pRisk" class="val"></div></div>
             <div class="stat"><div class="lab">Planned RR</div><div id="pRR" class="val"></div></div>
             <div class="stat"><div class="lab">Funding accrued</div><div id="pFunding" class="val"></div></div>
+          </div>
+          <div id="levelEdit" class="levelEdit hidden">
+            <input id="editTp" type="number" step="0.1" placeholder="TP price">
+            <input id="editSl" type="number" step="0.1" placeholder="SL price">
+            <button id="applyLevels" class="btn" type="button">TP/SL frissítés</button>
           </div>
           <button id="closePos" class="btn hidden" style="width:100%;margin-top:10px" type="button">Pozíció zárása piaci áron</button>
         </div>
@@ -306,6 +350,28 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
           </div>
         </div>
 
+        <div id="orderFlowCard" class="panel flowCard">
+          <div class="flowHead"><div><b>KRAKEN ORDER FLOW · BTC/USD</b><div class="muted">L2 book + live taker tape · Kraken WebSocket v2</div></div><span id="flowLive" class="flowLive warn">CONNECTING</span></div>
+          <div class="flowMetrics">
+            <div class="flowMetric"><span class="lab">Spread</span><b id="flowSpread">—</b></div>
+            <div class="flowMetric"><span class="lab">Bid imbalance</span><b id="flowImbalance">—</b></div>
+            <div class="flowMetric"><span class="lab">CVD session</span><b id="flowCvd">—</b></div>
+            <div class="flowMetric"><span class="lab">Trades / sec</span><b id="flowTps">—</b></div>
+            <div class="flowMetric"><span class="lab">ATR 14</span><b id="atrMetric">—</b></div>
+            <div class="flowMetric"><span class="lab">ADX 14</span><b id="adxMetric">—</b></div>
+            <div class="flowMetric"><span class="lab">Volume x20</span><b id="volMetric">—</b></div>
+            <div class="flowMetric"><span class="lab">Structure</span><b id="structureMetric">—</b></div>
+          </div>
+          <div class="flowGrid">
+            <div class="bookBox"><div class="flowBoxHead">ORDER BOOK · TOP 8</div><div id="askBook" class="bookSide"></div><div style="padding:5px 8px;text-align:center;border-top:1px solid #1b2c37;border-bottom:1px solid #1b2c37;font-size:11px"><b id="midBook">—</b></div><div id="bidBook" class="bookSide"></div></div>
+            <div class="tapeBox"><div class="flowBoxHead">LIVE TRADES TAPE</div><div id="tapeList" class="tapeList"></div></div>
+          </div>
+          <div class="flowGrid">
+            <div class="profileBox"><div class="flowBoxHead">CANDLE VOLUME PROFILE · APPROX.</div><div id="volumeProfile" class="profileBars"></div></div>
+            <div class="profileBox"><div class="flowBoxHead">SESSION / KEY LEVELS</div><div id="sessionLevels" class="sessionGrid"></div></div>
+          </div>
+        </div>
+
         <div class="panel">
           <div class="orderHead">
             <button id="longBtn" class="btn green" type="button">LONG</button>
@@ -333,7 +399,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               </div>
             </div>
             <div class="row">
-              <div><label>Leverage</label><select id="lev"><option>1</option><option>2</option><option selected>5</option><option>10</option></select></div>
+              <div><label>Leverage</label><select id="lev"><option>1</option><option>2</option><option>5</option><option selected>10</option></select></div>
               <div><label>Kraken EEA 30d fee tier</label>
                 <select id="feeTier">
                   <option value="0" selected>$0+</option>
@@ -406,6 +472,13 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         <div class="stat"><div class="lab">Összes trade</div><div id="allCount" class="val">0</div></div>
         <div class="stat"><div class="lab">Lezárt napok</div><div id="daysCount" class="val">0</div></div>
       </div>
+      <div class="analyticsGrid">
+        <div class="stat"><div class="lab">Win rate</div><div id="winRateStat" class="val">—</div></div>
+        <div class="stat"><div class="lab">Profit factor</div><div id="pfStat" class="val">—</div></div>
+        <div class="stat"><div class="lab">Avg realized R</div><div id="avgRStat" class="val">—</div></div>
+        <div class="stat"><div class="lab">Expectancy / trade</div><div id="expectancyStat" class="val">—</div></div>
+        <div class="stat"><div class="lab">Max loss streak</div><div id="lossStreakStat" class="val">—</div></div>
+      </div>
       <div class="scroll">
         <table>
           <thead><tr>
@@ -463,6 +536,7 @@ let activeProfile=Number(localStorage.getItem(ACTIVE_PROFILE_KEY))||200000;
 if(!PROFILE_VALUES.includes(activeProfile))activeProfile=200000;
 let state=loadProfile(activeProfile);
 const save=()=>{
+  if(replayMode)return;
   localStorage.setItem(profileStore(state.startEquity),JSON.stringify(state));
   localStorage.setItem(ACTIVE_PROFILE_KEY,String(state.startEquity));
   schedulePushBackendSync();
@@ -471,6 +545,14 @@ const save=()=>{
 let side='long', interval=1, lastPrice=null, candles=[], ws=null, reconnectTimer=null, mode='simple', tvLoaded=false;
 let lastTrendState='NEUTRAL', mtfTimer=null;
 let entryPriceLine=null,tpPriceLine=null,slPriceLine=null;
+let bbUpperSeries=null,bbMidSeries=null,bbLowerSeries=null;
+let prevHighLine=null,prevLowLine=null,dayHighLine=null,dayLowLine=null;
+let showBB=true,showStructure=true,showSession=true;
+const bookBids=new Map(),bookAsks=new Map();
+let recentTape=[],cvd=0,tradesPerSecond=[],flowUiTimer=null;
+let lastStructure={state:'NEUTRAL',label:'—',markers:[]};
+let replayMode=false,replaySource=[],replayIndex=0,replayTimer=null,replaySavedState=null;
+let pushSubscriptionId='',pushStatusTimer=null;
 
 let wsWatchdog=null,lastWsMessageAt=0,lastMarketTickAt=0,reconnectAttempts=0,hiddenAt=0;
 let indicatorTimer=null,uiTimer=null,pendingLivePrice=null,liveFramePending=false;
@@ -546,6 +628,9 @@ const ema200Series=mainChart.addLineSeries({color:'#e4aa45',lineWidth:2,priceLin
 const vwapSeries=mainChart.addLineSeries({color:'#f0f2f4',lineWidth:1,lineStyle:2,priceLineVisible:false,lastValueVisible:false});
 const stBullSeries=mainChart.addLineSeries({color:'#22c786',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
 const stBearSeries=mainChart.addLineSeries({color:'#ef5a6a',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
+bbUpperSeries=mainChart.addLineSeries({color:'#6e7cff99',lineWidth:1,lineStyle:1,priceLineVisible:false,lastValueVisible:false});
+bbMidSeries=mainChart.addLineSeries({color:'#6e7cff55',lineWidth:1,lineStyle:2,priceLineVisible:false,lastValueVisible:false});
+bbLowerSeries=mainChart.addLineSeries({color:'#6e7cff99',lineWidth:1,lineStyle:1,priceLineVisible:false,lastValueVisible:false});
 const volumeSeries=mainChart.addHistogramSeries({priceScaleId:'vol',priceFormat:{type:'volume'},lastValueVisible:false,priceLineVisible:false});
 mainChart.priceScale('vol').applyOptions({scaleMargins:{top:.83,bottom:0}});
 
@@ -574,6 +659,37 @@ mainChart.timeScale().subscribeVisibleLogicalRangeChange(range=>{
 });
 
 function setStatus(ok,t){$('dot').className='dot'+(ok?' ok':'');$('status').textContent=t}
+function sortedBook(map,desc=true,limit=8){return [...map.entries()].map(([price,qty])=>({price:Number(price),qty:Number(qty)})).sort((a,b)=>desc?b.price-a.price:a.price-b.price).slice(0,limit)}
+function applyBookLevels(map,levels,clear=false){if(clear)map.clear();for(const x of (levels||[])){const p=Number(x.price),q=Number(x.qty);if(!Number.isFinite(p)||!Number.isFinite(q))continue;if(q===0)map.delete(p);else map.set(p,q)}}
+function recordFlowTrade(t){
+  const qty=Number(t.qty),price=Number(t.price),side=String(t.side||'').toLowerCase();if(!Number.isFinite(qty)||!Number.isFinite(price))return;
+  if(side==='buy')cvd+=qty;else if(side==='sell')cvd-=qty;
+  const ts=t.timestamp?new Date(t.timestamp).getTime():Date.now();recentTape.unshift({price,qty,side,ts});recentTape=recentTape.slice(0,30);tradesPerSecond.push(ts);const cut=Date.now()-1000;tradesPerSecond=tradesPerSecond.filter(x=>x>=cut);scheduleFlowUI();
+}
+function scheduleFlowUI(){if(flowUiTimer)return;flowUiTimer=setTimeout(()=>{flowUiTimer=null;renderFlowUI()},120)}
+function renderFlowUI(){
+  if(!$('flowSpread'))return;const bids=sortedBook(bookBids,true,8),asks=sortedBook(bookAsks,false,8);const bestBid=bids[0]?.price,bestAsk=asks[0]?.price;const spread=(bestAsk&&bestBid)?bestAsk-bestBid:null;
+  const bq=bids.reduce((a,b)=>a+b.qty,0),aq=asks.reduce((a,b)=>a+b.qty,0),imb=(bq+aq)?bq/(bq+aq)*100:null;
+  $('flowSpread').textContent=spread===null?'—':'$'+spread.toFixed(2);$('flowImbalance').textContent=imb===null?'—':imb.toFixed(0)+'% BID';$('flowImbalance').className=imb>55?'good':imb<45?'bad':'warn';$('flowCvd').textContent=(cvd>=0?'+':'')+cvd.toFixed(3)+' BTC';$('flowCvd').className=cvd>0?'good':cvd<0?'bad':'warn';$('flowTps').textContent=String(tradesPerSecond.length);
+  const maxQ=Math.max(0.000001,...bids.map(x=>x.qty),...asks.map(x=>x.qty));
+  $('askBook').innerHTML=[...asks].reverse().map(x=>'<div class="bookRow askRow"><div class="bar" style="width:'+Math.min(100,x.qty/maxQ*100).toFixed(0)+'%"></div><span class="bad">'+x.price.toFixed(1)+'</span><span>'+x.qty.toFixed(4)+'</span></div>').join('');
+  $('bidBook').innerHTML=bids.map(x=>'<div class="bookRow bidRow"><div class="bar" style="width:'+Math.min(100,x.qty/maxQ*100).toFixed(0)+'%"></div><span class="good">'+x.price.toFixed(1)+'</span><span>'+x.qty.toFixed(4)+'</span></div>').join('');
+  $('midBook').textContent=(bestBid&&bestAsk)?'$'+((bestBid+bestAsk)/2).toFixed(1):'—';
+  $('tapeList').innerHTML=recentTape.slice(0,22).map(t=>'<div class="tapeRow"><span class="'+(t.side==='buy'?'good':'bad')+'">'+(t.side==='buy'?'BUY':'SELL')+'</span><span>'+t.price.toFixed(1)+'</span><span>'+t.qty.toFixed(4)+'</span></div>').join('');
+  $('flowLive').textContent=(bids.length&&asks.length)?'LIVE':'WAIT';$('flowLive').className='flowLive '+((bids.length&&asks.length)?'good':'warn');
+}
+function removeLevelLines(){for(const l of [prevHighLine,prevLowLine,dayHighLine,dayLowLine]){if(l){try{candleSeries.removePriceLine(l)}catch(e){}}}prevHighLine=prevLowLine=dayHighLine=dayLowLine=null}
+function renderKeyLevels(){
+  removeLevelLines();const lv=keyLevels(candles);if(!lv)return;
+  const item=(label,v)=>'<div class="sessionItem"><span class="lab">'+label+'</span><br><b>'+(v?'$'+fmt(v):'—')+'</b></div>';
+  $('sessionLevels').innerHTML=item('PDH',lv.pdh)+item('PDL',lv.pdl)+item('DAY HIGH',lv.dayHigh)+item('DAY LOW',lv.dayLow);
+  if(!showSession)return;
+  if(lv.pdh)prevHighLine=candleSeries.createPriceLine({price:lv.pdh,color:'#e5ac43',lineWidth:1,lineStyle:2,axisLabelVisible:true,title:'PDH'});
+  if(lv.pdl)prevLowLine=candleSeries.createPriceLine({price:lv.pdl,color:'#e5ac43',lineWidth:1,lineStyle:2,axisLabelVisible:true,title:'PDL'});
+  if(lv.dayHigh)dayHighLine=candleSeries.createPriceLine({price:lv.dayHigh,color:'#8da2b2',lineWidth:1,lineStyle:3,axisLabelVisible:false,title:'DH'});
+  if(lv.dayLow)dayLowLine=candleSeries.createPriceLine({price:lv.dayLow,color:'#8da2b2',lineWidth:1,lineStyle:3,axisLabelVisible:false,title:'DL'});
+}
+function renderVolumeProfile(){const vp=volumeProfileApprox(candles.slice(-Math.min(candles.length,240)),18);if(!vp)return;$('volumeProfile').innerHTML='<div class="muted" style="margin-bottom:5px">POC $'+fmt(vp.poc)+' · VAH $'+fmt(vp.vah)+' · VAL $'+fmt(vp.val)+'</div>'+[...vp.bins].reverse().map(b=>'<div class="vpRow"><span>$'+((b.low+b.high)/2).toFixed(0)+'</span><div class="vpTrack"><div class="vpFill" style="width:'+(vp.maxVol?b.vol/vp.maxVol*100:0).toFixed(0)+'%"></div></div><span>'+b.vol.toFixed(1)+'</span></div>').join('')}
 
 function removePositionLines(){
   [entryPriceLine,tpPriceLine,slPriceLine].forEach(line=>{
@@ -677,8 +793,9 @@ async function initOneSignalPush(){
         pushInitializing=false;
         const perm=OneSignal.Notifications.permission;
         const optedIn=!!OneSignal.User?.PushSubscription?.optedIn;
-        const subId=OneSignal.User?.PushSubscription?.id||'';
+        const subId=OneSignal.User?.PushSubscription?.id||'';pushSubscriptionId=subId||pushSubscriptionId;
         const active=!!(perm&&optedIn&&subId);
+        try{if(OneSignal.User?.PushSubscription?.addEventListener&&!OneSignal.User.PushSubscription.__botiBound){OneSignal.User.PushSubscription.__botiBound=true;OneSignal.User.PushSubscription.addEventListener('change',ev=>{const id=OneSignal.User?.PushSubscription?.id||'';if(id){pushSubscriptionId=id;schedulePushBackendSync(true);setTimeout(refreshPushServerStatus,1000)}})}}catch(e){}
         $('notifyToggle').textContent=active?'PUSH: BE':'PUSH engedélyezése';
         $('notifyToggle').classList.toggle('green',active);
         setPushStatus(
@@ -718,7 +835,7 @@ async function requestBackgroundPushPermission(){
       await OneSignal.Notifications.requestPermission();
       const ok=OneSignal.Notifications.permission;
       const optedIn=!!OneSignal.User?.PushSubscription?.optedIn;
-      const subId=OneSignal.User?.PushSubscription?.id||'';
+      const subId=OneSignal.User?.PushSubscription?.id||'';pushSubscriptionId=subId||pushSubscriptionId;
       const active=!!(ok&&optedIn&&subId);
       $('notifyToggle').textContent=active?'PUSH: BE':'PUSH nincs kész';
       $('notifyToggle').classList.toggle('green',active);
@@ -729,6 +846,15 @@ async function requestBackgroundPushPermission(){
       setPushStatus('Push engedély hiba: '+String(err&&err.message||err),'bad');
     }
   });
+}
+async function refreshPushServerStatus(){
+  if(!pushConfigured()||!pushClientId)return;
+  try{
+    const r=await fetch(pushBaseUrl()+'/status?clientId='+encodeURIComponent(pushClientId),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();
+    const age=j.lastRun?Math.max(0,Math.round((Date.now()-j.lastRun)/1000)):null;const pushAge=j.lastPushAt?Math.max(0,Math.round((Date.now()-j.lastPushAt)/1000)):null;
+    $('pushServerStatus').textContent='Server monitor: '+(age===null?'még nincs cron futás':age+' mp-e futott')+' · subscription '+(j.subscriptionPresent?'OK':'HIÁNYZIK')+(pushAge!==null?' · last push '+pushAge+' mp':'');
+    $('pushServerStatus').className='pushStatus '+(age!==null&&age<180&&j.subscriptionPresent?'good':'warn');
+  }catch(err){$('pushServerStatus').textContent='Server monitor hiba: '+String(err&&err.message||err);$('pushServerStatus').className='pushStatus bad'}
 }
 function compactPushState(){
   const p=state.position;
@@ -752,14 +878,16 @@ async function syncPushBackend(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         clientId:pushClientId,
-        appVersion:'9.9.2',
+        subscriptionId:pushSubscriptionId||'',
+        appVersion:'10.0.0',
         state:compactPushState(),
         alerts:alertSettings
       })
     });
     if(!r.ok)throw new Error('HTTP '+r.status+' '+await r.text());
     const j=await r.json();
-    setPushStatus('Cloudflare szinkron OK · '+new Date(j.serverTime||Date.now()).toLocaleTimeString('hu-HU'),'good');
+    setPushStatus('Cloudflare szinkron OK · '+new Date(j.serverTime||Date.now()).toLocaleTimeString('hu-HU')+(j.subscriptionPresent?' · direct subscription OK':''),'good');
+    refreshPushServerStatus();
     return true;
   }catch(err){
     setPushStatus('Cloudflare sync hiba: '+String(err&&err.message||err),'bad');
@@ -779,11 +907,23 @@ async function testBackgroundPush(){
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({clientId:pushClientId})
     });
-    if(!r.ok)throw new Error('HTTP '+r.status+' '+await r.text());
-    setPushStatus('Teszt PUSH elküldve. Ha az app a Főképernyőről fut és engedélyezett, meg kell érkeznie.','good');
+    const txt=await r.text();if(!r.ok)throw new Error('HTTP '+r.status+' '+txt);let j={};try{j=JSON.parse(txt)}catch(e){}
+    setPushStatus('Teszt PUSH elküldve · OneSignal message '+(j.messageId||'OK')+' · zárd be az appot és ellenőrizd a kézbesítést.','good');
+    refreshPushServerStatus();
   }catch(err){
     setPushStatus('Teszt PUSH hiba: '+String(err&&err.message||err),'bad');
   }
+}
+
+async function testBackgroundPushDelayed(){
+  if(!pushConfigured()){document.querySelector('.pushSetup').open=true;setPushStatus('Előbb konfiguráld a push hátteret.','warn');return}
+  await syncPushBackend();
+  try{
+    const r=await fetch(pushBaseUrl()+'/test-push',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clientId:pushClientId,delaySeconds:60})});
+    const txt=await r.text();if(!r.ok)throw new Error('HTTP '+r.status+' '+txt);let j={};try{j=JSON.parse(txt)}catch(e){}
+    setPushStatus('Háttér teszt ütemezve +60 mp-re · message '+(j.messageId||'OK')+'. MOST zárd be teljesen az appot.','good');
+    pushAppAlert('Háttér PUSH teszt: 60 mp múlva érkeznie kell bezárt appnál.','warn');
+  }catch(err){setPushStatus('Háttér teszt hiba: '+String(err&&err.message||err),'bad')}
 }
 
 
@@ -1088,12 +1228,72 @@ function dailyVwap(cs){
   }
   return out;
 }
+function smaStd(values,p=20,mult=2){
+  const mid=new Array(values.length).fill(null),upper=new Array(values.length).fill(null),lower=new Array(values.length).fill(null);
+  let sum=0,sum2=0;
+  for(let i=0;i<values.length;i++){
+    const v=values[i];sum+=v;sum2+=v*v;
+    if(i>=p){const old=values[i-p];sum-=old;sum2-=old*old}
+    if(i>=p-1){const mean=sum/p;const variance=Math.max(0,sum2/p-mean*mean);const sd=Math.sqrt(variance);mid[i]=mean;upper[i]=mean+mult*sd;lower[i]=mean-mult*sd}
+  }
+  return {mid,upper,lower};
+}
+function adxArrays(cs,p=14){
+  const tr=trueRange(cs),plusDM=[0],minusDM=[0];
+  for(let i=1;i<cs.length;i++){
+    const up=cs[i].high-cs[i-1].high,down=cs[i-1].low-cs[i].low;
+    plusDM.push(up>down&&up>0?up:0);minusDM.push(down>up&&down>0?down:0);
+  }
+  const atr=rma(tr,p),pdm=rma(plusDM,p),mdm=rma(minusDM,p);
+  const pdi=new Array(cs.length).fill(null),mdi=new Array(cs.length).fill(null),dx=new Array(cs.length).fill(null),adx=new Array(cs.length).fill(null);
+  for(let i=0;i<cs.length;i++){
+    if(atr[i]===null||!atr[i]||pdm[i]===null||mdm[i]===null)continue;
+    pdi[i]=100*pdm[i]/atr[i];mdi[i]=100*mdm[i]/atr[i];const den=pdi[i]+mdi[i];dx[i]=den?100*Math.abs(pdi[i]-mdi[i])/den:0;
+  }
+  const start=p-1,seedEnd=start+p-1;
+  if(seedEnd<cs.length){let sum=0,cnt=0;for(let i=start;i<=seedEnd;i++){if(dx[i]!==null){sum+=dx[i];cnt++}}if(cnt){adx[seedEnd]=sum/cnt;for(let i=seedEnd+1;i<cs.length;i++){if(dx[i]!==null)adx[i]=(adx[i-1]*(p-1)+dx[i])/p}}}
+  return {atr,pdi,mdi,adx};
+}
+function marketStructure(cs,wing=2){
+  const highs=[],lows=[],markers=[];
+  for(let i=wing;i<cs.length-wing;i++){
+    let hi=true,lo=true;
+    for(let k=1;k<=wing;k++){
+      if(cs[i].high<=cs[i-k].high||cs[i].high<cs[i+k].high)hi=false;
+      if(cs[i].low>=cs[i-k].low||cs[i].low>cs[i+k].low)lo=false;
+    }
+    if(hi){const prev=highs[highs.length-1];const label=!prev?'SH':cs[i].high>prev.price?'HH':'LH';highs.push({i,time:cs[i].time,price:cs[i].high,label});markers.push({time:cs[i].time,position:'aboveBar',color:label==='HH'?'#22c786':'#e5ac43',shape:'circle',text:label})}
+    if(lo){const prev=lows[lows.length-1];const label=!prev?'SL':cs[i].low>prev.price?'HL':'LL';lows.push({i,time:cs[i].time,price:cs[i].low,label});markers.push({time:cs[i].time,position:'belowBar',color:label==='HL'?'#22c786':'#ef5a6a',shape:'circle',text:label})}
+  }
+  const lh=highs[highs.length-1],plh=highs[highs.length-2],ll=lows[lows.length-1],pll=lows[lows.length-2];
+  let state='NEUTRAL',label='MIXED';
+  if(lh&&ll&&lh.label==='HH'&&ll.label==='HL'){state='BULLISH';label='HH + HL'}
+  else if(lh&&ll&&lh.label==='LH'&&ll.label==='LL'){state='BEARISH';label='LH + LL'}
+  const last=cs[cs.length-1];
+  if(plh&&last&&last.close>plh.price){const choch=state==='BEARISH';markers.push({time:last.time,position:'aboveBar',color:'#22c786',shape:'arrowUp',text:choch?'CHOCH↑':'BOS↑'});label+=(choch?' · CHOCH↑':' · BOS↑')}
+  if(pll&&last&&last.close<pll.price){const choch=state==='BULLISH';markers.push({time:last.time,position:'belowBar',color:'#ef5a6a',shape:'arrowDown',text:choch?'CHOCH↓':'BOS↓'});label+=(choch?' · CHOCH↓':' · BOS↓')}
+  return {state,label,markers:markers.slice(-50),highs,lows};
+}
+function volumeProfileApprox(cs,bins=18){
+  if(!cs.length)return null;const lo=Math.min(...cs.map(c=>c.low)),hi=Math.max(...cs.map(c=>c.high));if(!(hi>lo))return null;
+  const step=(hi-lo)/bins,arr=Array.from({length:bins},(_,i)=>({low:lo+i*step,high:lo+(i+1)*step,vol:0}));
+  for(const c of cs){const typ=(c.high+c.low+c.close)/3;let idx=Math.floor((typ-lo)/step);idx=Math.max(0,Math.min(bins-1,idx));arr[idx].vol+=Number(c.volume||0)}
+  const total=arr.reduce((a,b)=>a+b.vol,0),poc=arr.reduce((a,b)=>b.vol>a.vol?b:a,arr[0]);
+  const sorted=[...arr].sort((a,b)=>b.vol-a.vol);let acc=0,inc=[];for(const b of sorted){inc.push(b);acc+=b.vol;if(acc>=total*.70)break}
+  return {bins:arr,poc:(poc.low+poc.high)/2,val:Math.min(...inc.map(b=>b.low)),vah:Math.max(...inc.map(b=>b.high)),maxVol:Math.max(...arr.map(b=>b.vol))};
+}
+function budapestDayKey(ts){try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Budapest',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(ts*1000))}catch(e){return new Date(ts*1000).toISOString().slice(0,10)}}
+function keyLevels(cs){
+  if(!cs.length)return null;const lastKey=budapestDayKey(cs[cs.length-1].time),days={};for(const c of cs){const k=budapestDayKey(c.time);(days[k]||(days[k]=[])).push(c)}const keys=Object.keys(days).sort();const cur=days[lastKey]||[],prevKey=keys[keys.length-2],prev=prevKey?days[prevKey]:[];
+  return {dayHigh:cur.length?Math.max(...cur.map(c=>c.high)):null,dayLow:cur.length?Math.min(...cur.map(c=>c.low)):null,pdh:prev.length?Math.max(...prev.map(c=>c.high)):null,pdl:prev.length?Math.min(...prev.map(c=>c.low)):null};
+}
 function compute(cs){
   if(cs.length<30)return null;
   const closes=cs.map(c=>c.close);
   const e9=ema(closes,9),e21=ema(closes,21),e50=ema(closes,50),e200=ema(closes,200);
   const rsi=rsiArray(closes,14),macd=macdArrays(closes),vw=dailyVwap(cs),st=supertrendArrays(cs,10,3);
-  return {closes,e9,e21,e50,e200,rsi,macd,vw,st};
+  const bb=smaStd(closes,20,2),adx=adxArrays(cs,14),structure=marketStructure(cs,2);
+  return {closes,e9,e21,e50,e200,rsi,macd,vw,st,bb,adx,structure};
 }
 function voteAt(a,cs,i){
   const votes={bull:0,bear:0,items:{}};
@@ -1262,6 +1462,7 @@ function renderAllIndicators(){
   ema9Series.setData(lineData(a.e9,8));ema21Series.setData(lineData(a.e21,20));
   ema50Series.setData(lineData(a.e50,49));ema200Series.setData(candles.length>=200?lineData(a.e200,199):[]);
   vwapSeries.setData(lineData(a.vw,0));
+  if(showBB){bbUpperSeries.setData(lineData(a.bb.upper,19));bbMidSeries.setData(lineData(a.bb.mid,19));bbLowerSeries.setData(lineData(a.bb.lower,19))}else{bbUpperSeries.setData([]);bbMidSeries.setData([]);bbLowerSeries.setData([])}
 
   const bull=[],bear=[];
   for(let i=0;i<candles.length;i++){
@@ -1296,10 +1497,15 @@ function renderAllIndicators(){
     }
     prev=v.state;
   }
-  candleSeries.setMarkers(markers.slice(-100));
+  lastStructure=a.structure||{state:'NEUTRAL',label:'—',markers:[]};
+  const allMarkers=showStructure?markers.concat(lastStructure.markers||[]):markers;
+  candleSeries.setMarkers(allMarkers.slice(-120));
   checkSupertrendConfirmedAlert(a);
-
+  renderVolumeProfile();renderKeyLevels();
   const i=candles.length-1,v=voteAt(a,candles,i);
+  const atr=a.adx.atr[i],adx=a.adx.adx[i],pdi=a.adx.pdi[i],mdi=a.adx.mdi[i];
+  const vols=candles.slice(Math.max(0,i-20),i).map(c=>Number(c.volume||0));const avgVol=vols.length?vols.reduce((x,y)=>x+y,0)/vols.length:0;const volX=avgVol?Number(candles[i].volume||0)/avgVol:0;
+  $('atrMetric').textContent=atr===null?'—':'$'+atr.toFixed(1);$('adxMetric').textContent=adx===null?'—':adx.toFixed(1)+' · '+(pdi>mdi?'+DI':'-DI');$('adxMetric').className=adx>=25?'good':adx>=18?'warn':'bad';$('volMetric').textContent=volX?volX.toFixed(2)+'x':'—';$('volMetric').className=volX>=2?'good':volX>=1.2?'warn':'';$('structureMetric').textContent=lastStructure.label;$('structureMetric').className=classForState(lastStructure.state);
   updateTrend(v,a,i);
 }
 function updateTrend(v,a,i){
@@ -1428,6 +1634,9 @@ function connect(){
       params:{channel:'trade',symbol:['BTC/USD'],snapshot:false}
     }));
 
+    // L2 order book drives the pro order-flow panel.
+    ws.send(JSON.stringify({method:'subscribe',params:{channel:'book',symbol:['BTC/USD'],depth:25,snapshot:true}}));
+
     // OHLC remains the authoritative official candle source.
     ws.send(JSON.stringify({
       method:'subscribe',
@@ -1450,11 +1659,16 @@ function connect(){
       if(m.channel==='trade'&&Array.isArray(m.data)){
         // Process the newest trade last; queueLivePrice coalesces bursts to one animation frame.
         for(const t of m.data){
+          recordFlowTrade(t);
           const px=Number(t.price);
           if(!Number.isFinite(px))continue;
           const ts=t.timestamp?new Date(t.timestamp).getTime():Date.now();
           queueLivePrice(px,Number.isFinite(ts)?ts:Date.now());
         }
+      }
+
+      if(m.channel==='book'&&Array.isArray(m.data)&&m.data[0]){
+        const d=m.data[0];applyBookLevels(bookBids,d.bids,m.type==='snapshot');applyBookLevels(bookAsks,d.asks,m.type==='snapshot');scheduleFlowUI();
       }
 
       if(m.channel==='ohlc'&&Array.isArray(m.data)){
@@ -1528,6 +1742,19 @@ mainChart.subscribeCrosshairMove(param=>{
     $('ohlcBar').innerHTML='O <b>'+fmt(d.open)+'</b> · H <b>'+fmt(d.high)+'</b> · L <b>'+fmt(d.low)+'</b> · C <b>'+fmt(d.close)+'</b> · Vol <b>'+fmt(v?.value||0)+'</b>';
   }
 });
+
+function isFullscreenActive(){return document.fullscreenElement===$('chartHost')||document.webkitFullscreenElement===$('chartHost')}
+async function toggleChartFullscreen(){
+  const host=$('chartHost');try{if(isFullscreenActive()){if(document.exitFullscreen)await document.exitFullscreen();else if(document.webkitExitFullscreen)document.webkitExitFullscreen()}else if(host.requestFullscreen||host.webkitRequestFullscreen){if(host.requestFullscreen)await host.requestFullscreen();else host.webkitRequestFullscreen()}else{$('app').classList.toggle('maxchart');$('maxChart').classList.toggle('active')}}catch(err){pushAppAlert('Fullscreen hiba: '+String(err&&err.message||err),'bad')}setTimeout(resizeCharts,100)
+}
+function updateFullscreenButton(){const on=isFullscreenActive();$('chartFullscreen').classList.toggle('active',on);$('chartFullscreen').textContent=on?'Kilépés fullscreenből':'Teljes képernyő';setTimeout(resizeCharts,80)}
+function replayRender(){setHistoryData();lastPrice=candles[candles.length-1]?.close||null;$('price').textContent=lastPrice?'$'+fmt(lastPrice):'—';$('replaySlider').value=String(replayIndex);$('replayStatus').textContent='REPLAY '+replayIndex+'/'+replaySource.length;updateTradeUI();checkStops()}
+function replayStep(delta=1){if(!replayMode)return;replayIndex=Math.max(210,Math.min(replaySource.length,replayIndex+delta));candles=replaySource.slice(0,replayIndex);replayRender();if(replayIndex>=replaySource.length&&replayTimer){clearInterval(replayTimer);replayTimer=null;$('replayPlay').textContent='▶'}}
+function startReplay(){
+  if(replayMode){stopReplay();return}if(state.position){pushAppAlert('Replay előtt zárd a live pozíciót.','warn');return}if(candles.length<220){pushAppAlert('Replayhez legalább 220 gyertya kell.','warn');return}
+  replaySavedState=JSON.parse(JSON.stringify(state));replaySource=candles.map(c=>({...c}));replayIndex=Math.max(210,replaySource.length-120);replayMode=true;state=freshState(replaySavedState.startEquity);clearTimeout(reconnectTimer);if(ws){try{ws.onclose=null;ws.close()}catch(e){}}candles=replaySource.slice(0,replayIndex);$('replaySlider').min='210';$('replaySlider').max=String(replaySource.length);$('replaySlider').disabled=false;['replayBack','replayPlay','replayNext'].forEach(id=>$(id).disabled=false);$('replayToggle').classList.add('active');$('replayToggle').textContent='Replay kilépés';setStatus(false,'REPLAY LAB');replayRender();
+}
+function stopReplay(){if(!replayMode)return;if(replayTimer)clearInterval(replayTimer);replayTimer=null;replayMode=false;state=replaySavedState||loadProfile(activeProfile);replaySavedState=null;['replayBack','replayPlay','replayNext'].forEach(id=>$(id).disabled=true);$('replaySlider').disabled=true;$('replayToggle').classList.remove('active');$('replayToggle').textContent='Replay LAB';$('replayStatus').textContent='LIVE';loadHistory().finally(connect);updateTradeUI()}
 
 function loadTradingView(force=false){
   if(tvLoaded&&!force)return;
@@ -1687,7 +1914,7 @@ function syncProfileUI(){
   $('profileSelect').value=String(eq);
   $('resetAll').textContent='RESET '+profileShort(eq);
   $('historyTitle').textContent='Kraken Prop '+profileShort(eq)+' — Trade napló';
-  $('accountSummary').textContent=fmt(eq)+' $ paper account · 0.20% auto risk · FAST LIVE · 24/7 Cloudflare + OneSignal PUSH · Supertrend · TP/SL · Equity/Daily';
+  $('accountSummary').textContent=fmt(eq)+' $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal';
 }
 function switchProfile(eq){
   eq=Number(eq);
@@ -1807,10 +2034,11 @@ function updateTradeUI(){
     $('pRR').textContent=(Number(p.plannedRR)||0).toFixed(2)+'R';
     $('pFunding').textContent=fundingSignedText(fundingLive());
     $('pFunding').className='val '+(fundingLive()>0?'good':fundingLive()<0?'bad':'');
+    $('levelEdit').classList.remove('hidden');if(document.activeElement!==$('editTp'))$('editTp').value=Number(p.tp).toFixed(1);if(document.activeElement!==$('editSl'))$('editSl').value=Number(p.sl).toFixed(1);
     checkStops();
   }else{
     removePositionLines();
-    $('noPos').classList.remove('hidden');$('posDetails').classList.add('hidden');$('closePos').classList.add('hidden');$('livePnl').textContent='—';$('livePnl').className='pnl';
+    $('noPos').classList.remove('hidden');$('posDetails').classList.add('hidden');$('closePos').classList.add('hidden');$('levelEdit').classList.add('hidden');$('livePnl').textContent='—';$('livePnl').className='pnl';
   }
   checkThresholdAlerts();
   if(!$('historyView').classList.contains('hidden'))renderHistory();
@@ -1924,12 +2152,19 @@ function renderHistory(){
   $('todayNet').textContent=(state.daily>=0?'+':'')+'$'+fmt(state.daily);
   $('allCount').textContent=state.trades.length;
   $('daysCount').textContent=state.days.length;
+  const all=state.trades,wins=all.filter(t=>Number(t.net)>0),losses=all.filter(t=>Number(t.net)<0);const gp=wins.reduce((a,t)=>a+Number(t.net||0),0),gl=Math.abs(losses.reduce((a,t)=>a+Number(t.net||0),0));const rs=all.map(t=>Number(t.realizedR||0));const avgR=rs.length?rs.reduce((a,b)=>a+b,0)/rs.length:0;let streak=0,maxStreak=0;for(const t of all){if(Number(t.net)<0){streak++;maxStreak=Math.max(maxStreak,streak)}else streak=0}
+  $('winRateStat').textContent=all.length?(wins.length/all.length*100).toFixed(1)+'%':'—';$('pfStat').textContent=all.length?(gl? (gp/gl).toFixed(2):wins.length?'∞':'0.00'):'—';$('avgRStat').textContent=all.length?(avgR>=0?'+':'')+avgR.toFixed(2)+'R':'—';$('expectancyStat').textContent=all.length?(avgR>=0?'+':'')+avgR.toFixed(2)+'R':'—';$('lossStreakStat').textContent=all.length?String(maxStreak):'—';
 }
 
 document.querySelectorAll('.tf').forEach(b=>b.addEventListener('click',()=>changeInterval(Number(b.dataset.int))));
 $('recent').addEventListener('click',showRecent);$('allHistory').addEventListener('click',showAll);
 $('modeSimple').addEventListener('click',()=>setMode('simple'));$('modePro').addEventListener('click',()=>setMode('pro'));
 $('maxChart').addEventListener('click',()=>{$('app').classList.toggle('maxchart');$('maxChart').classList.toggle('active');setTimeout(resizeCharts,50)});
+$('chartFullscreen').addEventListener('click',toggleChartFullscreen);document.addEventListener('fullscreenchange',updateFullscreenButton);document.addEventListener('webkitfullscreenchange',updateFullscreenButton);
+$('toggleBB').addEventListener('click',()=>{showBB=!showBB;$('toggleBB').classList.toggle('active',showBB);scheduleIndicators(true)});
+$('toggleStructure').addEventListener('click',()=>{showStructure=!showStructure;$('toggleStructure').classList.toggle('active',showStructure);scheduleIndicators(true)});
+$('toggleSession').addEventListener('click',()=>{showSession=!showSession;$('toggleSession').classList.toggle('active',showSession);renderKeyLevels()});
+$('replayToggle').addEventListener('click',startReplay);$('replayBack').addEventListener('click',()=>replayStep(-1));$('replayNext').addEventListener('click',()=>replayStep(1));$('replayPlay').addEventListener('click',()=>{if(!replayMode)return;if(replayTimer){clearInterval(replayTimer);replayTimer=null;$('replayPlay').textContent='▶'}else{replayTimer=setInterval(()=>replayStep(1),700);$('replayPlay').textContent='⏸'}});$('replaySlider').addEventListener('input',()=>{if(replayMode){replayIndex=Number($('replaySlider').value);candles=replaySource.slice(0,replayIndex);replayRender()}});
 $('longBtn').addEventListener('click',()=>setSide('long'));$('shortBtn').addEventListener('click',()=>setSide('short'));
 ['tpPct','slPct','riskPct'].forEach(id=>$(id).addEventListener('input',updateTradeUI));
 $('qty').addEventListener('input',()=>{if($('qtyMode').value==='manual')updateTradeUI()});
@@ -1959,6 +2194,7 @@ $('order').addEventListener('submit',e=>{
   save();syncPositionLines();loadFunding();updateTradeUI();
 });
 $('closePos').addEventListener('click',()=>closePosition('MANUAL'));
+$('applyLevels').addEventListener('click',()=>{const p=state.position;if(!p)return;const tp=Number($('editTp').value),sl=Number($('editSl').value);if(!Number.isFinite(tp)||!Number.isFinite(sl)){pushAppAlert('Érvénytelen TP/SL ár.','bad');return}if(p.side==='long'&&!(tp>p.entry&&sl<p.entry)){pushAppAlert('LONG-nál TP > entry és SL < entry szükséges.','warn');return}if(p.side==='short'&&!(tp<p.entry&&sl>p.entry)){pushAppAlert('SHORT-nál TP < entry és SL > entry szükséges.','warn');return}p.tp=tp;p.sl=sl;save();syncPositionLines();updateTradeUI();schedulePushBackendSync(true);pushAppAlert('TP/SL frissítve a charton és a háttér monitorban.','good')});
 $('tabTrade').addEventListener('click',()=>{$('tradeView').classList.remove('hidden');$('historyView').classList.add('hidden');$('tabTrade').classList.add('active');$('tabHistory').classList.remove('active')});
 $('tabHistory').addEventListener('click',()=>{$('tradeView').classList.add('hidden');$('historyView').classList.remove('hidden');$('tabTrade').classList.remove('active');$('tabHistory').classList.add('active');renderHistory()});
 
@@ -1983,7 +2219,7 @@ $('pushConfigSave').addEventListener('click',()=>{
   schedulePushBackendSync(true);
 });
 $('pushSyncNow').addEventListener('click',()=>syncPushBackend());
-$('pushTest').addEventListener('click',testBackgroundPush);
+$('pushTest').addEventListener('click',testBackgroundPush);$('pushTestDelayed').addEventListener('click',testBackgroundPushDelayed);
 
 $('exportExcel').addEventListener('click',()=>{
   const stamp=new Date().toISOString().slice(0,10);
@@ -1997,7 +2233,7 @@ $('resetAll').addEventListener('click',()=>{
   if(!confirm('Biztosan RESET '+profileShort(eq)+'? Csak az aktív profil trade-jei, lezárt napjai, P&L-je és nyitott pozíciója törlődik.'))return;
   state=freshState(eq);save();
   $('riskPct').value='.20';$('qtyMode').value='auto';$('qty').value='.100';$('qty').readOnly=true;
-  $('lev').value='5';$('feeTier').value='0';$('entryExec').value='taker';$('exitExec').value='taker';
+  $('lev').value='10';$('feeTier').value='0';$('entryExec').value='taker';$('exitExec').value='taker';
   $('tpPct').value='.50';$('slPct').value='.30';$('setupName').value='';$('tradeNote').value='';
   $('msg').textContent='RESET kész · $'+fmt(eq)+' kezdőtőke visszaállítva.';
   $('dayMsg').textContent='Az aktív profil naplóadatai törölve.';
@@ -2029,7 +2265,7 @@ $('closeDay').addEventListener('click',()=>{
 syncProfileUI();
 loadPushConfigUI();
 initOneSignalPush();
-setInterval(()=>schedulePushBackendSync(true),30000);
+setInterval(()=>schedulePushBackendSync(true),30000);pushStatusTimer=setInterval(refreshPushServerStatus,30000);setTimeout(refreshPushServerStatus,2500);
 $('profileSelect').value=String(state.startEquity);
 if(pushConfigured()){
   $('notifyInfo').textContent='Háttér PUSH konfigurálva · Cloudflare percenként monitoroz akkor is, ha az app zárva van.';
@@ -2043,7 +2279,7 @@ if(state.position)syncPositionLines();
 loadFunding();
 fundingTimer=setInterval(loadFunding,300000);
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible')loadFunding();
+  if(document.visibilityState==='visible'&&!replayMode)loadFunding();
 });
 document.addEventListener('visibilitychange',async()=>{
   if(document.visibilityState==='hidden'){
@@ -2057,11 +2293,11 @@ document.addEventListener('visibilitychange',async()=>{
   if(away>Math.max(45000,Number(interval)*60000)){
     await loadHistory();
   }
-  connect();
+  if(!replayMode)connect();
 });
 window.addEventListener('online',()=>{
   setStatus(false,'ONLINE · RECONNECT…');
-  loadHistory().finally(connect);
+  if(!replayMode)loadHistory().finally(connect);
 });
 window.addEventListener('offline',()=>{
   setStatus(false,'OFFLINE');
@@ -2070,7 +2306,7 @@ window.addEventListener('offline',()=>{
 });
 
 loadHistory().finally(()=>{connect();refreshMTF();mtfTimer=setInterval(refreshMTF,60000)});
-updateTradeUI();
+renderFlowUI();updateTradeUI();
 })();
 </script>
 </body>
