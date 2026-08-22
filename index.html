@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="boti-icon-v1041-180.png?v=1041">
 <link rel="icon" type="image/png" sizes="192x192" href="boti-icon-v1041-192.png?v=1041">
 <link rel="icon" type="image/png" sizes="512x512" href="boti-icon-v1041-512.png?v=1041">
-<title>Boti Kraken Paper Trader V10.4.4 PUSH AUTOCONFIG</title>
+<title>Boti Kraken Paper Trader V10.4.5 SAFE ROLLBACK</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -167,7 +167,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V10.4.4 PUSH AUTOCONFIG</div>
+      <div class="brand">Boti Kraken Paper Trader V10.4.5 SAFE ROLLBACK</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
@@ -651,18 +651,13 @@ let supertrendClosedSeen={};
 
 const PUSH_CONFIG_KEY='botiPushConfigV9_9';
 const PUSH_CLIENT_KEY='botiPushClientIdV9_9';
-const DEFAULT_ONESIGNAL_APP_ID='dad7f6ae-11fa-422a-b0a2-9c5c7af9b153';
-const DEFAULT_PUSH_WORKER_URL='https://boti-trader-push.rdwzfcckn5.workers.dev';
-let pushConfig={oneSignalAppId:DEFAULT_ONESIGNAL_APP_ID,safariWebId:'',workerUrl:DEFAULT_PUSH_WORKER_URL};
+let pushConfig={oneSignalAppId:'',safariWebId:'',workerUrl:''};
 let pushClientId=localStorage.getItem(PUSH_CLIENT_KEY)||'';
 let pushSyncTimer=null,pushInitialized=false,pushInitializing=false;
 try{
   const p=JSON.parse(localStorage.getItem(PUSH_CONFIG_KEY)||'null');
   if(p)pushConfig={...pushConfig,...p};
 }catch(e){}
-if(!String(pushConfig.oneSignalAppId||'').trim())pushConfig.oneSignalAppId=DEFAULT_ONESIGNAL_APP_ID;
-if(!String(pushConfig.workerUrl||'').trim())pushConfig.workerUrl=DEFAULT_PUSH_WORKER_URL;
-try{localStorage.setItem(PUSH_CONFIG_KEY,JSON.stringify(pushConfig))}catch(e){}
 if(!pushClientId){
   pushClientId=(crypto.randomUUID?crypto.randomUUID():('boti-'+Date.now()+'-'+Math.random().toString(36).slice(2)));
   localStorage.setItem(PUSH_CLIENT_KEY,pushClientId);
@@ -1083,7 +1078,7 @@ function resetChartView(){
   try{mainChart.timeScale().fitContent()}catch(e){}
   try{mainChart.priceScale('right').applyOptions({autoScale:true})}catch(e){}
   setTimeout(()=>{try{showRecent()}catch(e){}},20);
-  const msg=$('msg');if(msg)msg.textContent='Chart nézet visszaállítva.';
+  pushAppAlert('Chart nézet visszaállítva.','good');
 }
 function initProChartGestures(){
   const host=$('mainChart');if(!host)return;
@@ -1158,12 +1153,10 @@ function setPushStatus(text,kind=''){
   el.className='pushStatus '+kind;
 }
 function loadPushConfigUI(){
-  if(!String(pushConfig.oneSignalAppId||'').trim())pushConfig.oneSignalAppId=DEFAULT_ONESIGNAL_APP_ID;
-  if(!String(pushConfig.workerUrl||'').trim())pushConfig.workerUrl=DEFAULT_PUSH_WORKER_URL;
-  $('pushOneSignalAppId').value=pushConfig.oneSignalAppId;
+  $('pushOneSignalAppId').value=pushConfig.oneSignalAppId||'';
   $('pushSafariWebId').value=pushConfig.safariWebId||'';
-  $('pushWorkerUrl').value=pushConfig.workerUrl;
-  if(pushConfigured())setPushStatus('Konfigurálva · kliens ID: '+pushClientId,'good');
+  $('pushWorkerUrl').value=pushConfig.workerUrl||'';
+  if(pushConfigured())setPushStatus('Konfigurálva · kliens ID: '+pushClientId);
 }
 function savePushConfigFromUI(){
   pushConfig={
@@ -1280,7 +1273,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.4.4',
+        appVersion:'10.4.5',
         state:compactPushState(),
         alerts:alertSettings
       })
