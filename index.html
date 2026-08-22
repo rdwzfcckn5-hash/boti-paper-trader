@@ -42,7 +42,14 @@ body{min-height:100vh}
 #mainChart{height:560px;width:100%;border-top:1px solid #172631}
 #mainChartWrap{position:relative;border-radius:12px;overflow:hidden}
 .trendTint{position:absolute;inset:0;pointer-events:none;opacity:.12;border-radius:12px;z-index:0;transition:background .2s ease}
-.chartPositionBox{position:absolute;right:12px;top:12px;z-index:5;min-width:250px;max-width:290px;background:rgba(7,16,24,.92);border:1px solid #29404f;border-radius:12px;padding:10px 12px;box-shadow:0 14px 32px rgba(0,0,0,.28);backdrop-filter:blur(5px);pointer-events:none}
+.chartPositionBox{position:absolute;left:10px;bottom:10px;right:auto;top:auto;z-index:5;min-width:0;max-width:215px;background:rgba(7,16,24,.84);border:1px solid #213544;border-radius:11px;padding:7px 9px;box-shadow:0 8px 20px rgba(0,0,0,.22);backdrop-filter:blur(4px);pointer-events:none}
+.chartPositionBox .hint{display:none}
+.chartPositionBox .compactRow{display:flex;align-items:center;gap:7px;white-space:nowrap}.chartPositionBox .compactPnl{font-size:14px;font-weight:950;letter-spacing:-.02em}.chartPositionBox .compactMeta{font-size:9px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chartPositionBox .confPill{display:none}.chartPositionBox .grid{display:none!important}
+#orderEntryCard{order:2}
+#orderFlowCard{order:3}
+.tradeEntryCard .flowHead{margin-bottom:10px}
+.tradeEntryCard .flowHead b{font-size:15px}
+.tradeEntryCard .flowHead .muted{font-size:11px}
 .chartPositionBox .toprow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.chartPositionBox .sidebadge{padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:.03em}.chartPositionBox .sidebadge.long{background:#123825;color:#78f1bc}.chartPositionBox .sidebadge.short{background:#3b1620;color:#ff9aa6}.chartPositionBox .big{font-size:20px;font-weight:950;letter-spacing:-.03em}.chartPositionBox .grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.chartPositionBox .mini{background:#101a22;border:1px solid #20333f;border-radius:9px;padding:6px 8px}.chartPositionBox .mini .lab{font-size:10px;color:var(--muted)}.chartPositionBox .mini .val2{font-size:13px;font-weight:900;margin-top:2px}.chartPositionBox .hint{font-size:10px;color:var(--muted);margin-top:7px}.chartPositionBox .rrgood{color:var(--green)}.chartPositionBox .rrbad{color:var(--red)}
 .confluenceStrip{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px;position:relative;z-index:2}.confPill,.srPill{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;border:1px solid #29404f;background:#0b151d;font-size:11px;font-weight:800}.confPill.good,.srPill.good{border-color:#1e6b51;color:#9cf0cf}.confPill.bad,.srPill.bad{border-color:#7c3540;color:#ffb1b9}.confPill.warn,.srPill.warn{border-color:#725c2c;color:#ffd58e}.confPill.neutral,.srPill.neutral{color:#d8e5ef}.srZoneBar{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0;position:relative;z-index:2}
 .indicatorPane{display:grid;grid-template-columns:1fr;gap:2px;border-top:1px solid #172631}
@@ -140,7 +147,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
   .posgrid{grid-template-columns:1fr 1fr}
   #tvChart{height:620px}
 }
-@media(max-width:760px){.chartPositionBox{position:static;max-width:none;margin:8px 0 0;pointer-events:none}.chartPositionBox .grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.chartPositionBox{position:absolute;left:6px;bottom:6px;right:auto;top:auto;max-width:190px;min-width:0;margin:0;padding:6px 8px;pointer-events:none}.chartPositionBox .compactPnl{font-size:12px}.chartPositionBox .compactMeta{font-size:8px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -419,7 +426,8 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
           </div>
         </div>
 
-        <div class="panel">
+        <div id="orderEntryCard" class="panel tradeEntryCard">
+          <div class="flowHead"><div><b>LONG / SHORT POZÍCIÓNYITÁS · BTC/USD</b><div class="muted">Gyors belépés risk sizing + fee / funding számítással</div></div></div>
           <form id="order">
             <div class="row">
               <div><label>Risk / trade %</label><input id="riskPct" type="number" min=".01" step=".01" value=".20"></div>
@@ -495,7 +503,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 
             <textarea id="tradeNote" class="hidden"></textarea>
             <div id="calc" class="calc">Várakozás élő Kraken árra…</div>
-            <button id="open" class="primary" type="submit">LONG nyitása</button>
+            <button id="open" class="primary" type="submit">LONG pozíciónyitás</button>
             <div id="msg" class="note"></div>
           </form>
         </div>
@@ -804,24 +812,14 @@ function updateChartPositionBox(){
   const funding=fundingLive();
   const netEst=gross-p.openFee-estCloseFee+funding;
   const liveR=Number(p.plannedRiskUsd)>0?netEst/Number(p.plannedRiskUsd):0;
-  const toTp=Math.abs((p.tp-lastPrice)/(lastPrice||1)*100);
-  const toSl=Math.abs((p.sl-lastPrice)/(lastPrice||1)*100);
   const sideCls=p.side==='long'?'long':'short';
-  const trend=currentVisualState.trend||'NEUTRAL';
   box.classList.remove('hidden');
   box.innerHTML=''+
-    '<div class="toprow"><span class="sidebadge '+sideCls+'">'+p.side.toUpperCase()+'</span><span class="confPill '+classForState(trend)+'">'+trend+'</span></div>'+
-    '<div class="big '+(netEst>=0?'rrgood':'rrbad')+'">'+(netEst>=0?'+':'')+'$'+fmt(netEst)+' · '+(liveR>=0?'+':'')+liveR.toFixed(2)+'R</div>'+
-    '<div class="muted" style="font-size:11px;margin-top:2px">Entry $'+fmt(p.entry)+' · Live $'+fmt(lastPrice)+' · Qty '+p.qty.toFixed(3)+' BTC</div>'+
-    '<div class="grid">'+
-      '<div class="mini"><div class="lab">TP</div><div class="val2">$'+fmt(p.tp)+'</div><div class="lab">'+toTp.toFixed(2)+'% távolság</div></div>'+
-      '<div class="mini"><div class="lab">SL</div><div class="val2">$'+fmt(p.sl)+'</div><div class="lab">'+toSl.toFixed(2)+'% távolság</div></div>'+
-      '<div class="mini"><div class="lab">MFE</div><div class="val2">'+(p.mfeUsd>=0?'+':'')+'$'+fmt(p.mfeUsd)+'</div><div class="lab">'+(p.mfePct>=0?'+':'')+p.mfePct.toFixed(3)+'%</div></div>'+
-      '<div class="mini"><div class="lab">MAE</div><div class="val2">'+(p.maeUsd>=0?'+':'')+'$'+fmt(p.maeUsd)+'</div><div class="lab">'+(p.maePct>=0?'+':'')+p.maePct.toFixed(3)+'%</div></div>'+
-      '<div class="mini"><div class="lab">Bias / Structure</div><div class="val2">'+currentVisualState.structure+'</div><div class="lab">Conf. '+Math.round(currentVisualState.confidence||0)+'%</div></div>'+
-      '<div class="mini"><div class="lab">RSI / ADX</div><div class="val2">'+(currentVisualState.rsi==null?'—':Number(currentVisualState.rsi).toFixed(1))+' / '+(currentVisualState.adx==null?'—':Number(currentVisualState.adx).toFixed(1))+'</div><div class="lab">Vol '+((currentVisualState.volX||0)?Number(currentVisualState.volX).toFixed(2)+'x':'—')+'</div></div>'+
+    '<div class="compactRow">'+
+      '<span class="sidebadge '+sideCls+'">'+p.side.toUpperCase()+'</span>'+
+      '<span class="compactPnl '+(netEst>=0?'rrgood':'rrbad')+'">'+(netEst>=0?'+':'')+'$'+fmt(netEst)+' · '+(liveR>=0?'+':'')+liveR.toFixed(2)+'R</span>'+
     '</div>'+
-    '<div class="hint">Vizual box: entry / TP / SL / live R / confluence egy helyen.</div>';
+    '<div class="compactMeta">Entry $'+fmt(p.entry)+' · TP $'+fmt(p.tp)+' · SL $'+fmt(p.sl)+'</div>';
 }
 
 function renderVolumeProfile(){const vp=volumeProfileApprox(candles.slice(-Math.min(candles.length,240)),18);if(!vp)return;$('volumeProfile').innerHTML='<div class="muted" style="margin-bottom:5px">POC $'+fmt(vp.poc)+' · VAH $'+fmt(vp.vah)+' · VAL $'+fmt(vp.val)+'</div>'+[...vp.bins].reverse().map(b=>'<div class="vpRow"><span>$'+((b.low+b.high)/2).toFixed(0)+'</span><div class="vpTrack"><div class="vpFill" style="width:'+(vp.maxVol?b.vol/vp.maxVol*100:0).toFixed(0)+'%"></div></div><span>'+b.vol.toFixed(1)+'</span></div>').join('')}
@@ -2300,7 +2298,7 @@ function updateTradeUI(){
 }
 function setSide(s){
   side=s;$('longBtn').className='btn'+(s==='long'?' green':'');$('shortBtn').className='btn'+(s==='short'?' red':'');
-  $('open').textContent=(s==='long'?'LONG':'SHORT')+' nyitása';$('open').className='primary'+(s==='short'?' short':'');updateTradeUI();
+  $('open').textContent=(s==='long'?'LONG':'SHORT')+' pozíciónyitás';$('open').className='primary'+(s==='short'?' short':'');updateTradeUI();
 }
 function closePosition(reason='MANUAL'){
   const p=state.position;if(!p||lastPrice===null)return;trackExcursions(lastPrice);
