@@ -1,0 +1,9 @@
+{
+  "name": "Boti Kraken Paper Trader V9.6",
+  "short_name": "Boti Trader",
+  "start_url": "./?v=9.6",
+  "display": "standalone",
+  "background_color": "#071018",
+  "theme_color": "#071018",
+  "description": "Kraken paper trader with automatic official historical funding rate integration, account profiles, auto risk, TP/SL chart levels, alerts and Excel journal."
+}
