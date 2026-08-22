@@ -1,13 +1,13 @@
 {
   "id": "/boti-paper-trader/",
-  "name": "Boti Kraken Paper Trader V10.4.3 REVERSE ACTIONS",
+  "name": "Boti Kraken Paper Trader V10.4.4 PUSH AUTOCONFIG",
   "short_name": "Boti Trader",
-  "start_url": "./?v=10.4.3",
+  "start_url": "./?v=10.4.4",
   "scope": "./",
   "display": "standalone",
   "background_color": "#071018",
   "theme_color": "#071018",
-  "description": "Kraken BTC/USD paper trading terminal with draggable/pinnable compact position HUD, quick LONG/SHORT re-entry, professional iPad gestures, drag TP/SL and 24/7 push alerts.",
+  "description": "Kraken BTC/USD paper trading terminal with quick HUD, reverse actions, professional gestures, drag TP/SL and automatic 24/7 push configuration.",
   "icons": [
     {
       "src": "boti-icon-v1041-192.png?v=1041",
