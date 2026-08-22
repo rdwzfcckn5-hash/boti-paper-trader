@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Boti Kraken Paper Trader V10.3 PRO GESTURES</title>
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<title>Boti Kraken Paper Trader V10.4 QUICK HUD</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -45,11 +48,15 @@ body{min-height:100vh}
 .advancedOrder{margin-top:9px;border:1px solid #29404f;border-radius:10px;background:#09141c;padding:0 10px}.advancedOrder summary{cursor:pointer;padding:10px 0;font-size:12px;font-weight:900;color:#dce8f1}.advancedOrder .advancedBody{padding:0 0 10px}.advancedOrder[open] summary{border-bottom:1px solid #1b2c37;margin-bottom:8px}
 #mainChartWrap{position:relative;border-radius:12px;overflow:hidden}
 .trendTint{position:absolute;inset:0;pointer-events:none;opacity:.12;border-radius:12px;z-index:0;transition:background .2s ease}
-.chartPositionBox{position:absolute;left:10px;bottom:10px;right:auto;top:auto;z-index:5;min-width:0;max-width:215px;background:rgba(7,16,24,.84);border:1px solid #213544;border-radius:11px;padding:7px 9px;box-shadow:0 8px 20px rgba(0,0,0,.22);backdrop-filter:blur(4px);pointer-events:none}
+.chartUtilityRow{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:42px;padding:5px 4px 3px;position:relative;z-index:8;border-top:1px solid #172631}.hudDock{display:flex;align-items:center;justify-content:flex-end;min-height:34px;flex:1}.gestureHint{padding:0;min-height:32px;flex:0 0 auto}.gestureHint>span:not(#gestureState){display:none!important}
+.chartPositionBox{position:relative;left:auto;bottom:auto;right:auto;top:auto;z-index:12;min-width:0;max-width:215px;background:rgba(7,16,24,.82);border:1px solid #213544;border-radius:11px;padding:7px 9px;box-shadow:0 8px 20px rgba(0,0,0,.18);backdrop-filter:blur(5px);pointer-events:auto;touch-action:none;-webkit-user-select:none;user-select:none;cursor:grab;transition:border-color .15s,box-shadow .15s,opacity .15s}
+.chartPositionBox.free{position:absolute;margin:0;z-index:30}.chartPositionBox.dragging{cursor:grabbing;border-color:#6e7cff;box-shadow:0 12px 30px rgba(0,0,0,.38),0 0 0 2px rgba(110,124,255,.18);opacity:.96}.chartPositionBox.awaitingPin{border-color:#e5ac43}.chartPositionBox.pinned{border-color:#29404f}
 .chartPositionBox .hint{display:none}
 .chartPositionBox .compactRow{display:flex;align-items:center;gap:7px;white-space:nowrap}.chartPositionBox .compactPnl{font-size:14px;font-weight:950;letter-spacing:-.02em}.chartPositionBox .compactMeta{font-size:9px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chartPositionBox .confPill{display:none}.chartPositionBox .grid{display:none!important}
-#orderEntryCard{order:2}
-#orderFlowCard{order:3}
+.hudActions{position:absolute;right:0;top:-35px;display:flex;gap:5px;pointer-events:auto}.hudAction{width:31px;height:31px;border:1px solid #29404f;border-radius:9px;background:#09141c;color:#eef5fb;font-weight:950;font-size:15px;display:grid;place-items:center;padding:0}.hudAction.pin{border-color:#1e6b51;color:#8ef0c8}.hudAction.reset{border-color:#725c2c;color:#ffd58e}.hudResetMini{margin-left:1px;width:22px;height:22px;border:0;border-radius:7px;background:#172631;color:#9fb1bf;font-size:12px;font-weight:900;padding:0;display:grid;place-items:center}.quickHudButtons{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:190px}.quickHudBtn{min-height:32px;border:1px solid #29404f;border-radius:9px;background:#0b151d;color:#eef5fb;font-size:11px;font-weight:950;letter-spacing:.03em}.quickHudBtn.long{background:#139b68;border-color:#139b68}.quickHudBtn.short{background:#c94454;border-color:#c94454}
+#orderEntryCard{order:0}
+.sidecol>.trendCard{order:1}
+#orderFlowCard{order:2}
 .tradeEntryCard .flowHead{margin-bottom:10px}
 .tradeEntryCard .flowHead b{font-size:15px}
 .tradeEntryCard .flowHead .muted{font-size:11px}
@@ -150,7 +157,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
   .posgrid{grid-template-columns:1fr 1fr}
   #tvChart{height:620px}
 }
-@media(max-width:760px){.chartPositionBox{position:absolute;left:6px;bottom:6px;right:auto;top:auto;max-width:190px;min-width:0;margin:0;padding:6px 8px;pointer-events:none}.chartPositionBox .compactPnl{font-size:12px}.chartPositionBox .compactMeta{font-size:8px}}
+@media(max-width:760px){.chartUtilityRow{min-height:40px}.chartPositionBox{max-width:190px;min-width:0;margin:0;padding:6px 8px;pointer-events:auto}.chartPositionBox.free{position:absolute}.chartPositionBox .compactPnl{font-size:12px}.chartPositionBox .compactMeta{font-size:8px}.quickHudButtons{width:176px}.quickHudBtn{min-height:31px}.gestureBadge{font-size:9px;padding:4px 6px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -160,7 +167,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V10.3 PRO GESTURES</div>
+      <div class="brand">Boti Kraken Paper Trader V10.4 QUICK HUD</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
@@ -293,10 +300,11 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               <div id="slDragHandle" class="dragHandle sl hidden">SL · HÚZD</div>
               <div id="beDragHandle" class="dragHandle be hidden">BE NET 0</div>
               <div id="confluenceStrip" class="confluenceStrip"></div>
-              <div id="chartPositionBox" class="chartPositionBox hidden"></div>
               <div id="mainChart"></div>
-              <div class="gestureHint"><span id="gestureState" class="gestureBadge on"><b>PRO TOUCH</b> aktív</span><span>1 ujj: chart mozgatás</span><span>2 ujj: pinch zoom</span><span>lendület: inerciális scroll</span><span>dupla kopp: fit / reset</span><span>hosszú érintés: crosshair</span></div>
-              <div class="dragHelp">Nyitott pozíciónál a TP és SL vonal közvetlenül húzható a grafikonon. Zöld = reward, piros = risk, BE NET 0 = díjakkal/fundinggal számolt nullszaldó.</div>
+              <div class="chartUtilityRow">
+                <div class="gestureHint"><span id="gestureState" class="gestureBadge on"><b>PRO TOUCH</b></span></div>
+                <div id="hudDock" class="hudDock"><div id="chartPositionBox" class="chartPositionBox"></div></div>
+              </div>
               <div id="srZoneBar" class="srZoneBar"></div>
             </div>
             <div id="replayBar" class="replayBar">
@@ -410,7 +418,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         </div>
 
         <div id="orderEntryCard" class="panel tradeEntryCard">
-          <div class="flowHead"><div><b>LONG / SHORT POZÍCIÓNYITÁS · BTC/USD</b><div class="muted">Gyors belépés risk sizing + fee / funding számítással</div></div></div>
+          <div class="flowHead"><div><b>LONG / SHORT POZÍCIÓNYITÁS · BTC/USD</b></div></div>
           <form id="order">
             <div class="row">
               <div><label>Risk / trade %</label><input id="riskPct" type="number" min=".01" step=".01" value=".20"></div>
@@ -624,6 +632,9 @@ let recentTape=[],cvd=0,tradesPerSecond=[],flowUiTimer=null;
 let lastStructure={state:'NEUTRAL',label:'—',markers:[]};
 let replayMode=false,replaySource=[],replayIndex=0,replayTimer=null,replaySavedState=null;
 let pushSubscriptionId='',pushStatusTimer=null;
+const HUD_POS_KEY='botiHudPositionV10_4';
+let hudPinnedPos=null,hudDraftPos=null,hudAwaitingConfirm=false,hudDragActive=false,hudLongPressTimer=null,hudPointerId=null,hudDragOffset={x:0,y:0},hudSuppressClickUntil=0;
+try{hudPinnedPos=JSON.parse(localStorage.getItem(HUD_POS_KEY)||'null')}catch(e){hudPinnedPos=null}
 
 let wsWatchdog=null,lastWsMessageAt=0,lastMarketTickAt=0,reconnectAttempts=0,hiddenAt=0;
 let indicatorTimer=null,uiTimer=null,pendingLivePrice=null,liveFramePending=false;
@@ -817,10 +828,107 @@ function buildTradeMarkers(){
   if(lastClosedTradeMarker)arr.push(lastClosedTradeMarker);
   return arr;
 }
+function hudWrap(){return $('mainChartWrap')}
+function hudBox(){return $('chartPositionBox')}
+function hudDock(){return $('hudDock')}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function hudCurrentPx(){
+  const box=hudBox(),wrap=hudWrap();if(!box||!wrap)return {x:0,y:0};
+  const br=box.getBoundingClientRect(),wr=wrap.getBoundingClientRect();
+  return {x:br.left-wr.left,y:br.top-wr.top};
+}
+function setHudFreePosition(x,y){
+  const box=hudBox(),wrap=hudWrap();if(!box||!wrap)return;
+  if(box.parentElement!==wrap)wrap.appendChild(box);
+  box.classList.add('free');
+  box.style.right='auto';box.style.bottom='auto';
+  const maxX=Math.max(0,wrap.clientWidth-box.offsetWidth),maxY=Math.max(0,wrap.clientHeight-box.offsetHeight);
+  box.style.left=clamp(Number(x)||0,0,maxX)+'px';
+  box.style.top=clamp(Number(y)||0,0,maxY)+'px';
+}
+function hudNormalizePosition(){
+  const box=hudBox(),wrap=hudWrap();if(!box||!wrap)return null;
+  const p=hudCurrentPx();
+  const maxX=Math.max(1,wrap.clientWidth-box.offsetWidth),maxY=Math.max(1,wrap.clientHeight-box.offsetHeight);
+  return {x:clamp(p.x/maxX,0,1),y:clamp(p.y/maxY,0,1)};
+}
+function applyHudPinnedPosition(){
+  const box=hudBox(),wrap=hudWrap(),dock=hudDock();if(!box||!wrap||!dock)return;
+  if(hudPinnedPos&&Number.isFinite(Number(hudPinnedPos.x))&&Number.isFinite(Number(hudPinnedPos.y))){
+    if(box.parentElement!==wrap)wrap.appendChild(box);
+    box.classList.add('free','pinned');box.classList.remove('awaitingPin');
+    const maxX=Math.max(0,wrap.clientWidth-box.offsetWidth),maxY=Math.max(0,wrap.clientHeight-box.offsetHeight);
+    box.style.left=clamp(Number(hudPinnedPos.x),0,1)*maxX+'px';
+    box.style.top=clamp(Number(hudPinnedPos.y),0,1)*maxY+'px';
+    box.style.right='auto';box.style.bottom='auto';
+  }else if(!hudDragActive&&!hudAwaitingConfirm){
+    if(box.parentElement!==dock)dock.appendChild(box);
+    box.classList.remove('free','pinned','awaitingPin','dragging');
+    box.style.left='';box.style.top='';box.style.right='';box.style.bottom='';
+  }
+}
+function pinHudPosition(){
+  const pos=hudNormalizePosition();if(!pos)return;
+  hudPinnedPos=pos;hudDraftPos=null;hudAwaitingConfirm=false;
+  localStorage.setItem(HUD_POS_KEY,JSON.stringify(pos));
+  const box=hudBox();if(box){box.classList.add('pinned');box.classList.remove('awaitingPin')}
+  updateChartPositionBox();
+}
+function resetHudPosition(){
+  localStorage.removeItem(HUD_POS_KEY);hudPinnedPos=null;hudDraftPos=null;hudAwaitingConfirm=false;hudDragActive=false;
+  const box=hudBox(),dock=hudDock();
+  if(box&&dock){dock.appendChild(box);box.classList.remove('free','pinned','awaitingPin','dragging');box.style.left='';box.style.top='';box.style.right='';box.style.bottom=''}
+  updateChartPositionBox();
+}
+function beginHudDrag(ev){
+  const box=hudBox(),wrap=hudWrap();if(!box||!wrap)return;
+  const p=hudCurrentPx();setHudFreePosition(p.x,p.y);
+  const br=box.getBoundingClientRect();
+  hudDragOffset={x:ev.clientX-br.left,y:ev.clientY-br.top};
+  hudDragActive=true;hudAwaitingConfirm=false;box.classList.add('dragging');box.classList.remove('pinned','awaitingPin');
+  try{box.setPointerCapture(ev.pointerId)}catch(e){}
+}
+function setupHudInteraction(){
+  const box=hudBox();if(!box||box.dataset.hudBound==='1')return;box.dataset.hudBound='1';
+  box.addEventListener('pointerdown',ev=>{
+    if(ev.button!==undefined&&ev.button!==0)return;
+    if(ev.target.closest('.quickHudBtn,.hudAction,.hudResetMini'))return;
+    hudPointerId=ev.pointerId;
+    const startX=ev.clientX,startY=ev.clientY;
+    clearTimeout(hudLongPressTimer);
+    hudLongPressTimer=setTimeout(()=>beginHudDrag(ev),430);
+    const cancelIfMove=e=>{if(e.pointerId!==hudPointerId||hudDragActive)return;if(Math.hypot(e.clientX-startX,e.clientY-startY)>8){clearTimeout(hudLongPressTimer)}};
+    const onceUp=e=>{if(e.pointerId!==hudPointerId)return;clearTimeout(hudLongPressTimer);box.removeEventListener('pointermove',cancelIfMove);box.removeEventListener('pointerup',onceUp);box.removeEventListener('pointercancel',onceUp)};
+    box.addEventListener('pointermove',cancelIfMove);box.addEventListener('pointerup',onceUp);box.addEventListener('pointercancel',onceUp);
+  });
+  box.addEventListener('pointermove',ev=>{
+    if(!hudDragActive||ev.pointerId!==hudPointerId)return;ev.preventDefault();
+    const wrap=hudWrap();if(!wrap)return;const wr=wrap.getBoundingClientRect();
+    setHudFreePosition(ev.clientX-wr.left-hudDragOffset.x,ev.clientY-wr.top-hudDragOffset.y);
+  });
+  const finish=ev=>{
+    if(ev.pointerId!==hudPointerId)return;clearTimeout(hudLongPressTimer);
+    if(hudDragActive){hudDragActive=false;hudAwaitingConfirm=true;hudDraftPos=hudCurrentPx();hudSuppressClickUntil=Date.now()+350;box.classList.remove('dragging');box.classList.add('awaitingPin');updateChartPositionBox()}
+    hudPointerId=null;
+  };
+  box.addEventListener('pointerup',finish);box.addEventListener('pointercancel',finish);
+  box.addEventListener('click',ev=>{
+    if(Date.now()<hudSuppressClickUntil){ev.preventDefault();ev.stopPropagation();return}
+    const act=ev.target.closest('[data-hud-action]');
+    if(act){ev.preventDefault();const a=act.dataset.hudAction;if(a==='pin')pinHudPosition();if(a==='reset')resetHudPosition();return}
+    const q=ev.target.closest('[data-quick-side]');
+    if(q){ev.preventDefault();openPositionFromCurrentSettings(q.dataset.quickSide);return}
+  });
+}
 function updateChartPositionBox(){
-  const box=$('chartPositionBox'); if(!box)return;
+  const box=hudBox(); if(!box)return;
   const p=state.position;
-  if(!p||lastPrice===null){box.classList.add('hidden');box.innerHTML='';return;}
+  const controls=hudAwaitingConfirm?'<div class="hudActions"><button class="hudAction pin" data-hud-action="pin" title="Rögzítés">✓</button><button class="hudAction reset" data-hud-action="reset" title="Alaphelyzet">↺</button></div>':(hudPinnedPos?'<button class="hudResetMini" data-hud-action="reset" title="HUD alaphelyzet">↺</button>':'');
+  if(!p||lastPrice===null){
+    box.classList.remove('hidden');
+    box.innerHTML=controls+'<div class="quickHudButtons"><button class="quickHudBtn long" data-quick-side="long" type="button">LONG</button><button class="quickHudBtn short" data-quick-side="short" type="button">SHORT</button></div>';
+    applyHudPinnedPosition();setupHudInteraction();return;
+  }
   const gross=unreal();
   const estCloseFee=feeFor(lastPrice,p.qty,p.exitExec,p.feeTier);
   const funding=fundingLive();
@@ -828,12 +936,13 @@ function updateChartPositionBox(){
   const liveR=Number(p.plannedRiskUsd)>0?netEst/Number(p.plannedRiskUsd):0;
   const sideCls=p.side==='long'?'long':'short';
   box.classList.remove('hidden');
-  box.innerHTML=''+
+  box.innerHTML=controls+
     '<div class="compactRow">'+
       '<span class="sidebadge '+sideCls+'">'+p.side.toUpperCase()+'</span>'+
       '<span class="compactPnl '+(netEst>=0?'rrgood':'rrbad')+'">'+(netEst>=0?'+':'')+'$'+fmt(netEst)+' · '+(liveR>=0?'+':'')+liveR.toFixed(2)+'R</span>'+
     '</div>'+
     '<div class="compactMeta">Entry $'+fmt(p.entry)+' · TP $'+fmt(p.tp)+' · SL $'+fmt(p.sl)+'</div>';
+  applyHudPinnedPosition();setupHudInteraction();
 }
 
 function renderVolumeProfile(){const vp=volumeProfileApprox(candles.slice(-Math.min(candles.length,240)),18);if(!vp)return;$('volumeProfile').innerHTML='<div class="muted" style="margin-bottom:5px">POC $'+fmt(vp.poc)+' · VAH $'+fmt(vp.vah)+' · VAL $'+fmt(vp.val)+'</div>'+[...vp.bins].reverse().map(b=>'<div class="vpRow"><span>$'+((b.low+b.high)/2).toFixed(0)+'</span><div class="vpTrack"><div class="vpFill" style="width:'+(vp.maxVol?b.vol/vp.maxVol*100:0).toFixed(0)+'%"></div></div><span>'+b.vol.toFixed(1)+'</span></div>').join('')}
@@ -997,7 +1106,7 @@ function bindAlertSetting(id,key){
     saveAlertSettings();
     const label=$(id).parentElement.innerText.trim();
     pushAppAlert((alertSettings[key]?'Bekapcsolva: ':'Kikapcsolva: ')+label,'warn');
-    // V10.3: minden kapcsoló azonnal szinkronizál a Cloudflare háttérmonitorral.
+    // V10.4: minden kapcsoló azonnal szinkronizál a Cloudflare háttérmonitorral.
     schedulePushBackendSync(true);
     if(alertSettings[key] && pushConfigured()){
       setTimeout(()=>testAlertPush(key,true),700);
@@ -1152,7 +1261,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.3.0',
+        appVersion:'10.4.0',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -2477,9 +2586,12 @@ $('longBtn').addEventListener('click',()=>setSide('long'));$('shortBtn').addEven
 $('qty').addEventListener('input',()=>{if($('qtyMode').value==='manual')updateTradeUI()});
 ['lev','feeTier','entryExec','exitExec','qtyMode'].forEach(id=>$(id).addEventListener('change',updateTradeUI));
 $('profileSelect').addEventListener('change',()=>switchProfile(Number($('profileSelect').value)));
-$('order').addEventListener('submit',e=>{
-  e.preventDefault();if(state.position){$('msg').textContent='Már van nyitott pozíció.';return}if(lastPrice===null){$('msg').textContent='Nincs élő Kraken ár.';return}
+function openPositionFromCurrentSettings(sideOverride=null){
+  if(state.position){$('msg').textContent='Már van nyitott pozíció.';return false}
+  if(lastPrice===null){$('msg').textContent='Nincs élő Kraken ár.';return false}
+  if(sideOverride==='long'||sideOverride==='short')setSide(sideOverride);
   const l=calcLevels();
+  if(!l){$('msg').textContent='TP/SL szintek nem számolhatók.';return false}
   syncQuantity(l);
   const r=riskSizing(l);
   const qty=Math.max(.001,Number($('qty').value)||.001),tier=selectedFeeTier();
@@ -2499,7 +2611,10 @@ $('order').addEventListener('submit',e=>{
     lowest:lastPrice,highest:lastPrice,maeUsd:0,mfeUsd:0,maePct:0,mfePct:0
   };
   save();syncPositionLines();loadFunding();updateTradeUI();
-});
+  $('msg').textContent=side.toUpperCase()+' pozíció nyitva · '+qty.toFixed(3)+' BTC';
+  return true;
+}
+$('order').addEventListener('submit',e=>{e.preventDefault();openPositionFromCurrentSettings()});
 $('closePos').addEventListener('click',()=>closePosition('MANUAL'));
 $('applyLevels').addEventListener('click',()=>{const p=state.position;if(!p)return;const tp=Number($('editTp').value),sl=Number($('editSl').value);if(!Number.isFinite(tp)||!Number.isFinite(sl)){pushAppAlert('Érvénytelen TP/SL ár.','bad');return}if(p.side==='long'&&!(tp>p.entry&&sl<p.entry)){pushAppAlert('LONG-nál TP > entry és SL < entry szükséges.','warn');return}if(p.side==='short'&&!(tp<p.entry&&sl>p.entry)){pushAppAlert('SHORT-nál TP < entry és SL > entry szükséges.','warn');return}p.tp=tp;p.sl=sl;save();syncPositionLines();updateTradeUI();schedulePushBackendSync(true);pushAppAlert('TP/SL frissítve a charton és a háttér monitorban.','good')});
 function showMainView(which='trade'){
@@ -2510,7 +2625,8 @@ function showMainView(which='trade'){
 }
 function showPushPage(){
   $('mainTop').classList.add('hidden');$('mainTabs').classList.add('hidden');$('tradeView').classList.add('hidden');$('historyView').classList.add('hidden');$('pushView').classList.remove('hidden');
-  syncAlertSettingsUI();loadPushConfigUI();refreshPushServerStatus();
+  window.addEventListener('resize',()=>setTimeout(applyHudPinnedPosition,60));
+syncAlertSettingsUI();loadPushConfigUI();refreshPushServerStatus();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 $('tabTrade').addEventListener('click',()=>showMainView('trade'));
