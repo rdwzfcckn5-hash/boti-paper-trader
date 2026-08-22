@@ -136,30 +136,33 @@ function touchedPosition(p,price,oneMin){
   if(sl)return "SL";
   return null;
 }
-async function sendPush(env,externalId,title,body,data={}){
-  if(!env.ONESIGNAL_APP_ID||!env.ONESIGNAL_API_KEY)return {ok:false,skipped:"OneSignal env missing"};
-  const payload={
-    app_id:env.ONESIGNAL_APP_ID,
-    target_channel:"push",
-    include_aliases:{external_id:[externalId]},
-    headings:{en:title},
-    contents:{en:body},
-    custom_data:data
-  };
-  const r=await fetch("https://api.onesignal.com/notifications?c=push",{
-    method:"POST",
-    headers:{
-      "Authorization":"Key "+env.ONESIGNAL_API_KEY,
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify(payload)
-  });
-  const text=await r.text();
-  if(!r.ok)throw new Error("OneSignal "+r.status+" "+text);
-  return {ok:true,response:text};
+function validSubscriptionId(v){return typeof v==="string" && /^[A-Za-z0-9_-]{8,200}$/.test(v)}
+async function sendPush(env,client,title,body,data={},sendAfter=null){
+  if(!env.ONESIGNAL_APP_ID||!env.ONESIGNAL_API_KEY)throw new Error("OneSignal env missing");
+  const base={app_id:env.ONESIGNAL_APP_ID,headings:{en:title},contents:{en:body},custom_data:data};if(sendAfter)base.send_after=sendAfter;
+  async function attempt(payload,target){
+    const r=await fetch("https://api.onesignal.com/notifications?c=push",{method:"POST",headers:{"Authorization":"Key "+env.ONESIGNAL_API_KEY,"Content-Type":"application/json"},body:JSON.stringify(payload)});
+    const text=await r.text();let parsed=null;try{parsed=JSON.parse(text)}catch(e){}
+    if(!r.ok)throw new Error("OneSignal "+r.status+" "+text);
+    if(!parsed?.id)throw new Error("OneSignal 200 but no message id: "+text);
+    return {ok:true,id:parsed.id,raw:parsed,target};
+  }
+  let directError=null;
+  if(validSubscriptionId(client?.subscriptionId)){
+    try{return await attempt({...base,include_subscription_ids:[client.subscriptionId]},"subscription_id")}catch(err){directError=err}
+  }
+  try{return await attempt({...base,target_channel:"push",include_aliases:{external_id:[client.clientId]}},"external_id")}catch(aliasErr){
+    throw new Error((directError?"Direct subscription failed: "+directError.message+" | ":"")+"Alias fallback failed: "+aliasErr.message);
+  }
 }
 async function maybePush(env,client,title,body,type,meta={}){
-  await sendPush(env,client.clientId,title,body,{type,...meta});
+  try{
+    const result=await sendPush(env,client,title,body,{type,...meta});
+    client.monitor=client.monitor||{};client.monitor.lastPushAt=Date.now();client.monitor.lastPushType=type;client.monitor.lastPushId=result.id;client.monitor.lastPushError=null;
+    return result;
+  }catch(err){
+    client.monitor=client.monitor||{};client.monitor.lastPushError=String(err&&err.message||err);client.monitor.lastPushErrorAt=Date.now();throw err;
+  }
 }
 
 async function loadClients(env){
@@ -308,6 +311,18 @@ async function monitor(env){
   return {clients:clients.length,pushes,price,tfs};
 }
 
+const TEST_ALERTS={
+  supertrend:{title:"SUPERTREND FIGYELÉS AKTÍV",body:"Supertrend master háttérfigyelés bekapcsolva. ✅"},
+  st1:{title:"SUPERTREND 1m TESZT",body:"BTC/USD · ST 1m háttérriasztás működik. ✅"},
+  st5:{title:"SUPERTREND 5m TESZT",body:"BTC/USD · ST 5m háttérriasztás működik. ✅"},
+  st15:{title:"SUPERTREND 15m TESZT",body:"BTC/USD · ST 15m háttérriasztás működik. ✅"},
+  st60:{title:"SUPERTREND 1h TESZT",body:"BTC/USD · ST 1h háttérriasztás működik. ✅"},
+  tp:{title:"TP ÉRTESÍTÉS TESZT",body:"Take Profit elérés PUSH csatorna működik. ✅"},
+  sl:{title:"SL ÉRTESÍTÉS TESZT",body:"Stop Loss elérés PUSH csatorna működik. ✅"},
+  equity:{title:"EQUITY ±1% TESZT",body:"Total Equity küszöbriasztás PUSH működik. ✅"},
+  daily:{title:"DAILY ±1% TESZT",body:"Daily PnL küszöbriasztás PUSH működik. ✅"}
+};
+
 async function handleFetch(req,env){
   const url=new URL(req.url);
   const headers=cors(env,req);
@@ -315,7 +330,13 @@ async function handleFetch(req,env){
 
   if(url.pathname==="/health"){
     const market=await env.BOTI_STATE.get(GLOBAL_MARKET_KEY,"json");
-    return json({ok:true,service:"boti-trader-push",market,now:Date.now()},200,headers);
+    return json({ok:true,service:"boti-trader-push",version:"10.0.2",market,now:Date.now()},200,headers);
+  }
+  if(url.pathname==="/status" && req.method==="GET"){
+    const clientId=url.searchParams.get("clientId")||"";if(!validClientId(clientId))return json({ok:false,error:"invalid clientId"},400,headers);
+    const client=await env.BOTI_STATE.get(CLIENT_PREFIX+clientId,"json");if(!client)return json({ok:false,error:"client not synced"},404,headers);
+    const m=client.monitor||{};
+    return json({ok:true,appVersion:client.appVersion||"",subscriptionPresent:validSubscriptionId(client.subscriptionId),lastRun:n(m.lastRun)||null,lastPrice:n(m.lastPrice)||null,lastPushAt:n(m.lastPushAt)||null,lastPushType:m.lastPushType||null,lastPushId:m.lastPushId||null,lastPushError:m.lastPushError||null,updatedAt:n(client.updatedAt)||null},200,headers);
   }
 
   if(url.pathname==="/sync" && req.method==="POST"){
@@ -327,8 +348,10 @@ async function handleFetch(req,env){
     }
     const key=CLIENT_PREFIX+body.clientId;
     const old=await env.BOTI_STATE.get(key,"json");
+    const incomingSub=validSubscriptionId(body.subscriptionId)?body.subscriptionId:"";
     const client={
       clientId:body.clientId,
+      subscriptionId:incomingSub||(validSubscriptionId(old?.subscriptionId)?old.subscriptionId:""),
       appVersion:String(body.appVersion||""),
       state,
       alerts:{
@@ -349,7 +372,26 @@ async function handleFetch(req,env){
     if(!state.position)client.monitor.positionAlertSent=null;
 
     await env.BOTI_STATE.put(key,JSON.stringify(client));
-    return json({ok:true,serverTime:Date.now(),clientId:body.clientId},200,headers);
+    return json({ok:true,serverTime:Date.now(),clientId:body.clientId,subscriptionPresent:validSubscriptionId(client.subscriptionId)},200,headers);
+  }
+
+  if(url.pathname==="/test-alert" && req.method==="POST"){
+    const body=await req.json();
+    if(!validClientId(body.clientId))return json({ok:false,error:"invalid clientId"},400,headers);
+    const type=String(body.type||"");
+    const spec=TEST_ALERTS[type];
+    if(!spec)return json({ok:false,error:"invalid alert type"},400,headers);
+    const key=CLIENT_PREFIX+body.clientId;
+    const client=await env.BOTI_STATE.get(key,"json");
+    if(!client)return json({ok:false,error:"client not synced"},404,headers);
+    const result=await sendPush(env,client,spec.title,spec.body,{type:"alert_test",alertType:type});
+    client.monitor=client.monitor||{};
+    client.monitor.lastPushAt=Date.now();
+    client.monitor.lastPushType="alert_test:"+type;
+    client.monitor.lastPushId=result.id;
+    client.monitor.lastPushError=null;
+    await env.BOTI_STATE.put(key,JSON.stringify(client));
+    return json({ok:true,messageId:result.id,target:result.target,type},200,headers);
   }
 
   if(url.pathname==="/test-push" && req.method==="POST"){
@@ -363,8 +405,11 @@ async function handleFetch(req,env){
     client.monitor=client.monitor||{};
     client.monitor.lastTestPush=now;
     await env.BOTI_STATE.put(key,JSON.stringify(client));
-    await sendPush(env,body.clientId,"Boti Trader PUSH teszt","A háttér PUSH kapcsolat működik. ✅",{type:"test"});
-    return json({ok:true,serverTime:now},200,headers);
+    const delay=Math.max(0,Math.min(600,n(body.delaySeconds)));const sendAfter=delay?new Date(now+delay*1000).toISOString():null;
+    const result=await sendPush(env,client,"Boti Trader PUSH teszt",delay?`Háttér teszt: az app bezárt állapotában is működik. ✅`:`A háttér PUSH kapcsolat működik. ✅`,{type:"test",delaySeconds:delay},sendAfter);
+    client.monitor.lastPushAt=now;client.monitor.lastPushType=delay?"test_delayed":"test";client.monitor.lastPushId=result.id;client.monitor.lastPushError=null;
+    await env.BOTI_STATE.put(key,JSON.stringify(client));
+    return json({ok:true,serverTime:now,messageId:result.id,target:result.target,sendAfter},200,headers);
   }
 
   if(url.pathname==="/run-now" && req.method==="POST"){

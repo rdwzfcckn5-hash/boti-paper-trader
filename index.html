@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Boti Kraken Paper Trader V10 PRO TERMINAL</title>
+<title>Boti Kraken Paper Trader V10.0.2 PRO TERMINAL</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -28,7 +28,7 @@ body{min-height:100vh}
 .btn.green{background:#139b68;border-color:#139b68}
 .btn.red{background:#c94454;border-color:#c94454}
 .tabs,.modebar,.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.tabs{margin-bottom:10px}.modebar{margin-bottom:10px}.profilePick{display:flex;align-items:center;gap:7px;margin-left:auto}.profilePick span{font-size:11px;color:var(--muted);font-weight:800}.profilePick select{width:auto;min-width:130px;min-height:42px}.alerts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}.alert{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 11px;border:1px solid #29404f;border-radius:10px;background:#0b151d;font-size:12px}.alert.good{border-color:#1e6b51}.alert.bad{border-color:#7c3540}.alert.warn{border-color:#725c2c}.alert button{min-height:36px;padding:6px 10px}.alertFeed{display:flex;flex-direction:column;gap:6px}.alertSettings{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:6px}.alertOpt{display:flex;align-items:center;gap:7px;padding:8px 9px;border:1px solid #29404f;border-radius:9px;background:#09141c;font-size:11px;min-width:0}.alertOpt input{width:18px;height:18px;min-height:18px;margin:0;flex:0 0 auto}.alertOpt span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media(max-width:760px){.alertSettings{grid-template-columns:repeat(2,minmax(0,1fr))}}.pushSetup{border:1px solid #29404f;border-radius:10px;background:#09141c;padding:9px 10px}.pushSetup summary{cursor:pointer;font-weight:900;font-size:12px}.pushGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.pushStatus{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.45}.pushActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.pushActions .btn{min-height:38px}@media(max-width:700px){.pushGrid{grid-template-columns:1fr}}
+.tabs{margin-bottom:10px}.modebar{margin-bottom:10px}.profilePick{display:flex;align-items:center;gap:7px;margin-left:auto}.profilePick span{font-size:11px;color:var(--muted);font-weight:800}.profilePick select{width:auto;min-width:130px;min-height:42px}.alerts{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}.alert{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 11px;border:1px solid #29404f;border-radius:10px;background:#0b151d;font-size:12px}.alert.good{border-color:#1e6b51}.alert.bad{border-color:#7c3540}.alert.warn{border-color:#725c2c}.alert button{min-height:36px;padding:6px 10px}.alertFeed{display:flex;flex-direction:column;gap:6px}.alertSettings{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:6px}.alertOpt{display:flex;align-items:center;gap:7px;padding:8px 9px;border:1px solid #29404f;border-radius:9px;background:#09141c;font-size:11px;min-width:0}.alertOpt input{width:18px;height:18px;min-height:18px;margin:0;flex:0 0 auto}.alertOpt span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.alertTestPanel{border:1px solid #29404f;border-radius:10px;background:#09141c;padding:9px 10px}.alertTestPanel summary{cursor:pointer;font-weight:900;font-size:12px}.alertTestGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:8px}.alertTestGrid .btn{min-height:38px;padding:7px 8px;font-size:11px}@media(max-width:760px){.alertSettings{grid-template-columns:repeat(2,minmax(0,1fr))}.alertTestGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}.pushSetup{border:1px solid #29404f;border-radius:10px;background:#09141c;padding:9px 10px}.pushSetup summary{cursor:pointer;font-weight:900;font-size:12px}.pushGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.pushStatus{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.45}.pushActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.pushActions .btn{min-height:38px}@media(max-width:700px){.pushGrid{grid-template-columns:1fr}}
 .modehint{font-size:11px;color:var(--muted);margin-left:auto}
 .layout{display:grid;grid-template-columns:minmax(0,2.45fr) minmax(345px,.55fr);gap:12px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
@@ -141,7 +141,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V10 PRO TERMINAL</div>
+      <div class="brand">Boti Kraken Paper Trader V10.0.2 PRO TERMINAL</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
@@ -183,6 +183,20 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
       <label class="alertOpt"><input id="alertEquity" type="checkbox" checked><span>Equity ±1%</span></label>
       <label class="alertOpt"><input id="alertDaily" type="checkbox" checked><span>Daily ±1%</span></label>
     </div>
+    <details class="alertTestPanel">
+      <summary>🔔 Riasztások tesztelése</summary>
+      <div class="muted" style="margin-top:6px">Minden gomb valódi OneSignal PUSH-t küld. Így külön ellenőrizhető minden riasztástípus.</div>
+      <div class="alertTestGrid">
+        <button class="btn alertTestBtn" data-alert-test="st1" type="button">Teszt ST 1m</button>
+        <button class="btn alertTestBtn" data-alert-test="st5" type="button">Teszt ST 5m</button>
+        <button class="btn alertTestBtn" data-alert-test="st15" type="button">Teszt ST 15m</button>
+        <button class="btn alertTestBtn" data-alert-test="st60" type="button">Teszt ST 1h</button>
+        <button class="btn alertTestBtn" data-alert-test="tp" type="button">Teszt TP</button>
+        <button class="btn alertTestBtn" data-alert-test="sl" type="button">Teszt SL</button>
+        <button class="btn alertTestBtn" data-alert-test="equity" type="button">Teszt Equity ±1%</button>
+        <button class="btn alertTestBtn" data-alert-test="daily" type="button">Teszt Daily ±1%</button>
+      </div>
+    </details>
     <details class="pushSetup">
       <summary>Háttér PUSH beállítás</summary>
       <div class="pushGrid">
@@ -728,10 +742,16 @@ function syncAlertSettingsUI(){
   $('alertDaily').checked=!!alertSettings.daily;
 }
 function bindAlertSetting(id,key){
-  $(id).addEventListener('change',()=>{
+  $(id).addEventListener('change',async()=>{
     alertSettings[key]=!!$(id).checked;
     saveAlertSettings();
-    pushAppAlert((alertSettings[key]?'Bekapcsolva: ':'Kikapcsolva: ')+$(id).parentElement.innerText.trim(),'warn');
+    const label=$(id).parentElement.innerText.trim();
+    pushAppAlert((alertSettings[key]?'Bekapcsolva: ':'Kikapcsolva: ')+label,'warn');
+    // V10.0.2: minden kapcsoló azonnal szinkronizál a Cloudflare háttérmonitorral.
+    schedulePushBackendSync(true);
+    if(alertSettings[key] && pushConfigured()){
+      setTimeout(()=>testAlertPush(key,true),700);
+    }
   });
 }
 function tfAlertLabel(){
@@ -745,6 +765,9 @@ function bindSTTimeframe(id,tf){
     alertSettings.supertrendTFs=[...set].sort((a,b)=>a-b);
     saveAlertSettings();
     schedulePushBackendSync(true);
+    if($(id).checked && pushConfigured()){
+      setTimeout(()=>testAlertPush(tf===60?'st60':'st'+tf,true),700);
+    }
   });
 }
 function pushBaseUrl(){
@@ -879,7 +902,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.0.0',
+        appVersion:'10.0.2',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -924,6 +947,31 @@ async function testBackgroundPushDelayed(){
     setPushStatus('Háttér teszt ütemezve +60 mp-re · message '+(j.messageId||'OK')+'. MOST zárd be teljesen az appot.','good');
     pushAppAlert('Háttér PUSH teszt: 60 mp múlva érkeznie kell bezárt appnál.','warn');
   }catch(err){setPushStatus('Háttér teszt hiba: '+String(err&&err.message||err),'bad')}
+}
+
+
+async function testAlertPush(type,silent=false){
+  if(!pushConfigured()){
+    if(!silent){document.querySelector('.pushSetup').open=true;setPushStatus('Előbb konfiguráld a push hátteret.','warn')}
+    return false;
+  }
+  await syncPushBackend();
+  try{
+    const r=await fetch(pushBaseUrl()+'/test-alert',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({clientId:pushClientId,type})
+    });
+    const txt=await r.text();
+    if(!r.ok)throw new Error('HTTP '+r.status+' '+txt);
+    let j={};try{j=JSON.parse(txt)}catch(e){}
+    if(!silent)setPushStatus('Riasztás teszt elküldve · '+type+' · message '+(j.messageId||'OK'),'good');
+    refreshPushServerStatus();
+    return true;
+  }catch(err){
+    if(!silent)setPushStatus('Riasztás teszt hiba: '+String(err&&err.message||err),'bad');
+    else pushAppAlert('Bekapcsolási teszt PUSH hiba · '+type+' · '+String(err&&err.message||err),'bad');
+    return false;
+  }
 }
 
 
@@ -2220,6 +2268,7 @@ $('pushConfigSave').addEventListener('click',()=>{
 });
 $('pushSyncNow').addEventListener('click',()=>syncPushBackend());
 $('pushTest').addEventListener('click',testBackgroundPush);$('pushTestDelayed').addEventListener('click',testBackgroundPushDelayed);
+document.querySelectorAll('.alertTestBtn').forEach(btn=>btn.addEventListener('click',()=>testAlertPush(btn.dataset.alertTest,false)));
 
 $('exportExcel').addEventListener('click',()=>{
   const stamp=new Date().toISOString().slice(0,10);
