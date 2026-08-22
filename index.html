@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Boti Kraken Paper Trader V10.2 PUSH PAGE + DRAG LEVELS</title>
+<title>Boti Kraken Paper Trader V10.3 PRO GESTURES</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -40,6 +40,9 @@ body{min-height:100vh}
 .good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}
 .ohlcbar{min-height:31px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:6px 4px;color:#b3c2cd;font-size:11px;border-top:1px solid #172631}
 #mainChart{height:560px;width:100%;border-top:1px solid #172631}
+#mainChart.proTouch{touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:contain}
+.gestureHint{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 4px 0;font-size:10px;color:var(--muted)}.gestureHint b{color:#dbe8f2}.gestureBadge{display:inline-flex;align-items:center;gap:4px;padding:4px 7px;border:1px solid #29404f;border-radius:999px;background:#09141c}.gestureBadge.on{border-color:#1e6b51;color:#9cf0cf}
+.advancedOrder{margin-top:9px;border:1px solid #29404f;border-radius:10px;background:#09141c;padding:0 10px}.advancedOrder summary{cursor:pointer;padding:10px 0;font-size:12px;font-weight:900;color:#dce8f1}.advancedOrder .advancedBody{padding:0 0 10px}.advancedOrder[open] summary{border-bottom:1px solid #1b2c37;margin-bottom:8px}
 #mainChartWrap{position:relative;border-radius:12px;overflow:hidden}
 .trendTint{position:absolute;inset:0;pointer-events:none;opacity:.12;border-radius:12px;z-index:0;transition:background .2s ease}
 .chartPositionBox{position:absolute;left:10px;bottom:10px;right:auto;top:auto;z-index:5;min-width:0;max-width:215px;background:rgba(7,16,24,.84);border:1px solid #213544;border-radius:11px;padding:7px 9px;box-shadow:0 8px 20px rgba(0,0,0,.22);backdrop-filter:blur(4px);pointer-events:none}
@@ -157,7 +160,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V10.2 PUSH PAGE + DRAG LEVELS</div>
+      <div class="brand">Boti Kraken Paper Trader V10.3 PRO GESTURES</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
@@ -278,6 +281,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               <button id="toggleBB" class="btn active" type="button">BB 20/2</button>
               <button id="toggleStructure" class="btn active" type="button">Structure</button>
               <button id="toggleSession" class="btn active" type="button">Session levels</button>
+              <button id="toggleGestures" class="btn active" type="button">📱 PRO gesztus</button>
               <span class="muted">ATR · ADX/DMI · Volume spike · BOS/CHOCH · Order flow · Auto S/R vizualizáció</span>
             </div>
             <div id="mainChartWrap">
@@ -291,6 +295,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               <div id="confluenceStrip" class="confluenceStrip"></div>
               <div id="chartPositionBox" class="chartPositionBox hidden"></div>
               <div id="mainChart"></div>
+              <div class="gestureHint"><span id="gestureState" class="gestureBadge on"><b>PRO TOUCH</b> aktív</span><span>1 ujj: chart mozgatás</span><span>2 ujj: pinch zoom</span><span>lendület: inerciális scroll</span><span>dupla kopp: fit / reset</span><span>hosszú érintés: crosshair</span></div>
               <div class="dragHelp">Nyitott pozíciónál a TP és SL vonal közvetlenül húzható a grafikonon. Zöld = reward, piros = risk, BE NET 0 = díjakkal/fundinggal számolt nullszaldó.</div>
               <div id="srZoneBar" class="srZoneBar"></div>
             </div>
@@ -404,28 +409,6 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
           </div>
         </div>
 
-        <div id="orderFlowCard" class="panel flowCard">
-          <div class="flowHead"><div><b>KRAKEN ORDER FLOW · BTC/USD</b><div class="muted">L2 book + live taker tape · Kraken WebSocket v2</div></div><span id="flowLive" class="flowLive warn">CONNECTING</span></div>
-          <div class="flowMetrics">
-            <div class="flowMetric"><span class="lab">Spread</span><b id="flowSpread">—</b></div>
-            <div class="flowMetric"><span class="lab">Bid imbalance</span><b id="flowImbalance">—</b></div>
-            <div class="flowMetric"><span class="lab">CVD session</span><b id="flowCvd">—</b></div>
-            <div class="flowMetric"><span class="lab">Trades / sec</span><b id="flowTps">—</b></div>
-            <div class="flowMetric"><span class="lab">ATR 14</span><b id="atrMetric">—</b></div>
-            <div class="flowMetric"><span class="lab">ADX 14</span><b id="adxMetric">—</b></div>
-            <div class="flowMetric"><span class="lab">Volume x20</span><b id="volMetric">—</b></div>
-            <div class="flowMetric"><span class="lab">Structure</span><b id="structureMetric">—</b></div>
-          </div>
-          <div class="flowGrid">
-            <div class="bookBox"><div class="flowBoxHead">ORDER BOOK · TOP 8</div><div id="askBook" class="bookSide"></div><div style="padding:5px 8px;text-align:center;border-top:1px solid #1b2c37;border-bottom:1px solid #1b2c37;font-size:11px"><b id="midBook">—</b></div><div id="bidBook" class="bookSide"></div></div>
-            <div class="tapeBox"><div class="flowBoxHead">LIVE TRADES TAPE</div><div id="tapeList" class="tapeList"></div></div>
-          </div>
-          <div class="flowGrid">
-            <div class="profileBox"><div class="flowBoxHead">CANDLE VOLUME PROFILE · APPROX.</div><div id="volumeProfile" class="profileBars"></div></div>
-            <div class="profileBox"><div class="flowBoxHead">SESSION / KEY LEVELS</div><div id="sessionLevels" class="sessionGrid"></div></div>
-          </div>
-        </div>
-
         <div id="orderEntryCard" class="panel tradeEntryCard">
           <div class="flowHead"><div><b>LONG / SHORT POZÍCIÓNYITÁS · BTC/USD</b><div class="muted">Gyors belépés risk sizing + fee / funding számítással</div></div></div>
           <form id="order">
@@ -449,6 +432,13 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
                 <div class="riskitem"><div class="lab">Risk / BTC</div><b id="riskPerBtc">—</b></div>
               </div>
             </div>
+            <div class="row">
+              <div><label>TP distance %</label><input id="tpPct" type="number" min=".01" step=".01" value=".50"></div>
+              <div><label>SL distance %</label><input id="slPct" type="number" min=".01" step=".01" value=".30"></div>
+            </div>
+            <details class="advancedOrder">
+              <summary>⚙️ Haladó beállítások · leverage / fee / execution / funding</summary>
+              <div class="advancedBody">
             <div class="row">
               <div><label>Leverage</label><select id="lev"><option>1</option><option>2</option><option>5</option><option selected>10</option></select></div>
               <div><label>Kraken EEA 30d fee tier</label>
@@ -482,16 +472,15 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
                 </select>
               </div>
             </div>
-            <div class="row">
-              <div><label>TP distance %</label><input id="tpPct" type="number" min=".01" step=".01" value=".50"></div>
-              <div><label>SL distance %</label><input id="slPct" type="number" min=".01" step=".01" value=".30"></div>
-            </div>
             <label>Kraken AUTO funding</label>
             <div class="calc" style="margin-top:0">
               <b id="fundingRate">Kraken funding betöltése…</b><br>
               <span id="funding4h" class="muted">4h ekvivalens: —</span><br>
               <span id="fundingPred" class="muted">Pozíció funding / óra: —</span>
             </div>
+
+              </div>
+            </details>
 
             <label>Setup</label>
             <input id="setupName" type="text" placeholder="pl. VWAP pullback">
@@ -507,6 +496,28 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
             <div id="msg" class="note"></div>
           </form>
         </div>
+        <div id="orderFlowCard" class="panel flowCard">
+          <div class="flowHead"><div><b>KRAKEN ORDER FLOW · BTC/USD</b><div class="muted">L2 book + live taker tape · Kraken WebSocket v2</div></div><span id="flowLive" class="flowLive warn">CONNECTING</span></div>
+          <div class="flowMetrics">
+            <div class="flowMetric"><span class="lab">Spread</span><b id="flowSpread">—</b></div>
+            <div class="flowMetric"><span class="lab">Bid imbalance</span><b id="flowImbalance">—</b></div>
+            <div class="flowMetric"><span class="lab">CVD session</span><b id="flowCvd">—</b></div>
+            <div class="flowMetric"><span class="lab">Trades / sec</span><b id="flowTps">—</b></div>
+            <div class="flowMetric"><span class="lab">ATR 14</span><b id="atrMetric">—</b></div>
+            <div class="flowMetric"><span class="lab">ADX 14</span><b id="adxMetric">—</b></div>
+            <div class="flowMetric"><span class="lab">Volume x20</span><b id="volMetric">—</b></div>
+            <div class="flowMetric"><span class="lab">Structure</span><b id="structureMetric">—</b></div>
+          </div>
+          <div class="flowGrid">
+            <div class="bookBox"><div class="flowBoxHead">ORDER BOOK · TOP 8</div><div id="askBook" class="bookSide"></div><div style="padding:5px 8px;text-align:center;border-top:1px solid #1b2c37;border-bottom:1px solid #1b2c37;font-size:11px"><b id="midBook">—</b></div><div id="bidBook" class="bookSide"></div></div>
+            <div class="tapeBox"><div class="flowBoxHead">LIVE TRADES TAPE</div><div id="tapeList" class="tapeList"></div></div>
+          </div>
+          <div class="flowGrid">
+            <div class="profileBox"><div class="flowBoxHead">CANDLE VOLUME PROFILE · APPROX.</div><div id="volumeProfile" class="profileBars"></div></div>
+            <div class="profileBox"><div class="flowBoxHead">SESSION / KEY LEVELS</div><div id="sessionLevels" class="sessionGrid"></div></div>
+          </div>
+        </div>
+
       </aside>
     </div>
   </section>
@@ -606,6 +617,8 @@ let swingLines=[];
 let lastClosedTradeMarker=null;
 let currentVisualState={trend:'NEUTRAL',confidence:0,structure:'—',rsi:null,macd:null,adx:null,atr:null,volX:null,rr:null};
 let showBB=true,showStructure=true,showSession=true;
+let proGestureMode=localStorage.getItem('botiProGestureMode')!=='0';
+let lastChartTapAt=0;
 const bookBids=new Map(),bookAsks=new Map();
 let recentTape=[],cvd=0,tradesPerSecond=[],flowUiTimer=null;
 let lastStructure={state:'NEUTRAL',label:'—',markers:[]};
@@ -659,8 +672,9 @@ const chartCommon={
 const mainChart=LightweightCharts.createChart($('mainChart'),{
   ...chartCommon,
   rightPriceScale:{borderColor:'#29404f',scaleMargins:{top:.05,bottom:.20}},
-  handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},
-  handleScale:{axisPressedMouseMove:true,mouseWheel:true,pinch:true}
+  handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true},
+  handleScale:{axisPressedMouseMove:{time:true,price:true},mouseWheel:true,pinch:true},
+  kineticScroll:{mouse:true,touch:true}
 });
 const rsiChart=LightweightCharts.createChart($('rsiChart'),{
   ...chartCommon,
@@ -903,9 +917,10 @@ function initLevelDragging(){
   const host=$('mainChart');if(!host)return;
   host.addEventListener('pointerdown',ev=>{
     const p=state.position;if(!p||mode!=='simple')return;
+    if(ev.pointerType==='touch' && ev.isPrimary===false)return;
     const r=host.getBoundingClientRect(),y=ev.clientY-r.top;
     const dTp=dragDistanceToLevel(y,p.tp),dSl=dragDistanceToLevel(y,p.sl);
-    if(Math.min(dTp,dSl)>24)return;
+    if(Math.min(dTp,dSl)>14)return;
     const kind=dTp<=dSl?'tp':'sl';
     levelDrag={kind,price:Number(kind==='tp'?p.tp:p.sl),pointerId:ev.pointerId};
     $('mainChartWrap').classList.add('dragging-level');
@@ -921,6 +936,43 @@ function initLevelDragging(){
   },{passive:false});
   host.addEventListener('pointerup',ev=>{if(levelDrag&&ev.pointerId===levelDrag.pointerId){ev.preventDefault();finishLevelDrag(true)}},{passive:false});
   host.addEventListener('pointercancel',ev=>{if(levelDrag&&ev.pointerId===levelDrag.pointerId)finishLevelDrag(false)});
+}
+
+
+function applyProGestureMode(){
+  const host=$('mainChart');if(!host)return;
+  host.classList.toggle('proTouch',proGestureMode);
+  try{
+    mainChart.applyOptions({
+      handleScroll:proGestureMode?{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true}:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},
+      handleScale:{axisPressedMouseMove:{time:true,price:true},mouseWheel:true,pinch:true},
+      kineticScroll:{mouse:true,touch:proGestureMode}
+    });
+  }catch(e){}
+  const btn=$('toggleGestures');if(btn)btn.classList.toggle('active',proGestureMode);
+  const stateEl=$('gestureState');if(stateEl){stateEl.classList.toggle('on',proGestureMode);stateEl.innerHTML=proGestureMode?'<b>PRO TOUCH</b> aktív':'<b>PAGE SCROLL</b> mód'}
+  localStorage.setItem('botiProGestureMode',proGestureMode?'1':'0');
+}
+function resetChartView(){
+  try{mainChart.timeScale().fitContent()}catch(e){}
+  try{mainChart.priceScale('right').applyOptions({autoScale:true})}catch(e){}
+  setTimeout(()=>{try{showRecent()}catch(e){}},20);
+  pushAppAlert('Chart nézet visszaállítva.','good');
+}
+function initProChartGestures(){
+  const host=$('mainChart');if(!host)return;
+  applyProGestureMode();
+  host.addEventListener('pointerup',ev=>{
+    if(levelDrag||ev.pointerType!=='touch')return;
+    const now=Date.now();
+    if(now-lastChartTapAt<330){
+      lastChartTapAt=0;
+      ev.preventDefault();
+      resetChartView();
+      return;
+    }
+    lastChartTapAt=now;
+  },{passive:false});
 }
 
 
@@ -945,7 +997,7 @@ function bindAlertSetting(id,key){
     saveAlertSettings();
     const label=$(id).parentElement.innerText.trim();
     pushAppAlert((alertSettings[key]?'Bekapcsolva: ':'Kikapcsolva: ')+label,'warn');
-    // V10.2: minden kapcsoló azonnal szinkronizál a Cloudflare háttérmonitorral.
+    // V10.3: minden kapcsoló azonnal szinkronizál a Cloudflare háttérmonitorral.
     schedulePushBackendSync(true);
     if(alertSettings[key] && pushConfigured()){
       setTimeout(()=>testAlertPush(key,true),700);
@@ -1100,7 +1152,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.2.0',
+        appVersion:'10.3.0',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -2418,6 +2470,7 @@ $('chartFullscreen').addEventListener('click',toggleChartFullscreen);document.ad
 $('toggleBB').addEventListener('click',()=>{showBB=!showBB;$('toggleBB').classList.toggle('active',showBB);scheduleIndicators(true)});
 $('toggleStructure').addEventListener('click',()=>{showStructure=!showStructure;$('toggleStructure').classList.toggle('active',showStructure);scheduleIndicators(true)});
 $('toggleSession').addEventListener('click',()=>{showSession=!showSession;$('toggleSession').classList.toggle('active',showSession);renderKeyLevels()});
+$('toggleGestures').addEventListener('click',()=>{proGestureMode=!proGestureMode;applyProGestureMode()});
 $('replayToggle').addEventListener('click',startReplay);$('replayBack').addEventListener('click',()=>replayStep(-1));$('replayNext').addEventListener('click',()=>replayStep(1));$('replayPlay').addEventListener('click',()=>{if(!replayMode)return;if(replayTimer){clearInterval(replayTimer);replayTimer=null;$('replayPlay').textContent='▶'}else{replayTimer=setInterval(()=>replayStep(1),700);$('replayPlay').textContent='⏸'}});$('replaySlider').addEventListener('input',()=>{if(replayMode){replayIndex=Number($('replaySlider').value);candles=replaySource.slice(0,replayIndex);replayRender()}});
 $('longBtn').addEventListener('click',()=>setSide('long'));$('shortBtn').addEventListener('click',()=>setSide('short'));
 ['tpPct','slPct','riskPct'].forEach(id=>$(id).addEventListener('input',updateTradeUI));
@@ -2468,6 +2521,7 @@ $('backFromPush').addEventListener('click',()=>showMainView('trade'));
 
 
 initLevelDragging();
+initProChartGestures();
 syncAlertSettingsUI();
 bindAlertSetting('alertSupertrend','supertrend');
 bindSTTimeframe('alertST1',1);

@@ -1,11 +1,11 @@
 {
   "id": "/boti-paper-trader/",
-  "name": "Boti Kraken Paper Trader V10.2 PUSH PAGE + DRAG LEVELS",
+  "name": "Boti Kraken Paper Trader V10.3 PRO GESTURES",
   "short_name": "Boti Trader",
-  "start_url": "./?v=10.2.0",
+  "start_url": "./?v=10.3.0",
   "scope": "./",
   "display": "standalone",
   "background_color": "#071018",
   "theme_color": "#071018",
-  "description": "Kraken BTC/USD paper trading PRO terminal with automatic Cloudflare alert sync and individually testable OneSignal push alerts."
+  "description": "Kraken BTC/USD paper trading PRO terminal with iPad professional touch gestures, drag TP/SL, automatic push sync and advanced trade controls."
 }
