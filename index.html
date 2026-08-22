@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Boti Kraken Paper Trader V9.9.1 PUSH FIX</title>
+<title>Boti Kraken Paper Trader V9.9.2 PUSH FIX</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -120,7 +120,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V9.9.1 PUSH FIX</div>
+      <div class="brand">Boti Kraken Paper Trader V9.9.2 PUSH FIX</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · FAST LIVE · 24/7 Cloudflare + OneSignal PUSH · Supertrend · TP/SL · Equity/Daily</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
@@ -667,7 +667,7 @@ async function initOneSignalPush(){
         const opts={
           appId:pushConfig.oneSignalAppId,
           serviceWorkerPath:'/boti-paper-trader/OneSignalSDKWorker.js',
-          serviceWorkerParam:{scope:'/boti-paper-trader/push/onesignal/'},
+          serviceWorkerParam:{scope:'/boti-paper-trader/'},
           autoResubscribe:true
         };
         if(pushConfig.safariWebId)opts.safari_web_id=pushConfig.safariWebId;
@@ -699,6 +699,12 @@ async function initOneSignalPush(){
   }
 }
 async function requestBackgroundPushPermission(){
+  const isiOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const standalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+  if(isiOS&&!standalone){
+    setPushStatus('iPaden a PUSH csak a Főképernyőhöz adott Boti Trader appból engedélyezhető. Safari → Megosztás → Hozzáadás a Főképernyőhöz, majd onnan nyisd meg.','warn');
+    return;
+  }
   if(!pushConfigured()){
     setPushStatus('Előbb add meg a OneSignal App ID-t és a Cloudflare Worker URL-t.','warn');
     document.querySelector('.pushSetup').open=true;
@@ -746,7 +752,7 @@ async function syncPushBackend(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         clientId:pushClientId,
-        appVersion:'9.9.1',
+        appVersion:'9.9.2',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -1957,9 +1963,6 @@ $('tabTrade').addEventListener('click',()=>{$('tradeView').classList.remove('hid
 $('tabHistory').addEventListener('click',()=>{$('tradeView').classList.add('hidden');$('historyView').classList.remove('hidden');$('tabTrade').classList.remove('active');$('tabHistory').classList.add('active');renderHistory()});
 
 
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js').catch(()=>{});
-}
 syncAlertSettingsUI();
 bindAlertSetting('alertSupertrend','supertrend');
 bindSTTimeframe('alertST1',1);

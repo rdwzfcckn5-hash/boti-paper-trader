@@ -1,8 +1,8 @@
 {
   "id": "/boti-paper-trader/",
-  "name": "Boti Kraken Paper Trader V9.9 PUSH",
+  "name": "Boti Kraken Paper Trader V9.9.2 PUSH FIX",
   "short_name": "Boti Trader",
-  "start_url": "./?v=9.9",
+  "start_url": "./?v=9.9.2",
   "scope": "./",
   "display": "standalone",
   "background_color": "#071018",
