@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<title>Boti Kraken Paper Trader V10.4 QUICK HUD</title>
+<link rel="manifest" href="manifest.webmanifest?v=1041">
+<link rel="apple-touch-icon" sizes="180x180" href="boti-icon-v1041-180.png?v=1041">
+<link rel="icon" type="image/png" sizes="192x192" href="boti-icon-v1041-192.png?v=1041">
+<link rel="icon" type="image/png" sizes="512x512" href="boti-icon-v1041-512.png?v=1041">
+<title>Boti Kraken Paper Trader V10.4.3 REVERSE ACTIONS</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -53,7 +53,7 @@ body{min-height:100vh}
 .chartPositionBox.free{position:absolute;margin:0;z-index:30}.chartPositionBox.dragging{cursor:grabbing;border-color:#6e7cff;box-shadow:0 12px 30px rgba(0,0,0,.38),0 0 0 2px rgba(110,124,255,.18);opacity:.96}.chartPositionBox.awaitingPin{border-color:#e5ac43}.chartPositionBox.pinned{border-color:#29404f}
 .chartPositionBox .hint{display:none}
 .chartPositionBox .compactRow{display:flex;align-items:center;gap:7px;white-space:nowrap}.chartPositionBox .compactPnl{font-size:14px;font-weight:950;letter-spacing:-.02em}.chartPositionBox .compactMeta{font-size:9px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chartPositionBox .confPill{display:none}.chartPositionBox .grid{display:none!important}
-.hudActions{position:absolute;right:0;top:-35px;display:flex;gap:5px;pointer-events:auto}.hudAction{width:31px;height:31px;border:1px solid #29404f;border-radius:9px;background:#09141c;color:#eef5fb;font-weight:950;font-size:15px;display:grid;place-items:center;padding:0}.hudAction.pin{border-color:#1e6b51;color:#8ef0c8}.hudAction.reset{border-color:#725c2c;color:#ffd58e}.hudResetMini{margin-left:1px;width:22px;height:22px;border:0;border-radius:7px;background:#172631;color:#9fb1bf;font-size:12px;font-weight:900;padding:0;display:grid;place-items:center}.quickHudButtons{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:190px}.quickHudBtn{min-height:32px;border:1px solid #29404f;border-radius:9px;background:#0b151d;color:#eef5fb;font-size:11px;font-weight:950;letter-spacing:.03em}.quickHudBtn.long{background:#139b68;border-color:#139b68}.quickHudBtn.short{background:#c94454;border-color:#c94454}
+.hudActions{position:absolute;right:0;top:-35px;display:flex;gap:5px;pointer-events:auto}.hudAction{width:31px;height:31px;border:1px solid #29404f;border-radius:9px;background:#09141c;color:#eef5fb;font-weight:950;font-size:15px;display:grid;place-items:center;padding:0}.hudAction.pin{border-color:#1e6b51;color:#8ef0c8}.hudAction.reset{border-color:#725c2c;color:#ffd58e}.hudResetMini{margin-left:1px;width:22px;height:22px;border:0;border-radius:7px;background:#172631;color:#9fb1bf;font-size:12px;font-weight:900;padding:0;display:grid;place-items:center}.quickHudButtons{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:190px}.quickHudBtn{min-height:32px;border:1px solid #29404f;border-radius:9px;background:#0b151d;color:#eef5fb;font-size:11px;font-weight:950;letter-spacing:.03em}.quickHudBtn.long{background:#139b68;border-color:#139b68}.quickHudBtn.short{background:#c94454;border-color:#c94454}.activeHudActions{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px}.activeHudBtn{min-height:25px;border:1px solid #29404f;border-radius:7px;background:#0b151d;color:#eef5fb;font-size:9px;font-weight:950;padding:3px 6px}.activeHudBtn.close{border-color:#7c3540;color:#ff9aa6}.activeHudBtn.reverse{border-color:#725c2c;color:#ffd58e}.activeHudBtn:active,.quickHudBtn:active{transform:scale(.97)}
 #orderEntryCard{order:0}
 .sidecol>.trendCard{order:1}
 #orderFlowCard{order:2}
@@ -167,7 +167,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V10.4 QUICK HUD</div>
+      <div class="brand">Boti Kraken Paper Trader V10.4.3 REVERSE ACTIONS</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
@@ -892,7 +892,7 @@ function setupHudInteraction(){
   const box=hudBox();if(!box||box.dataset.hudBound==='1')return;box.dataset.hudBound='1';
   box.addEventListener('pointerdown',ev=>{
     if(ev.button!==undefined&&ev.button!==0)return;
-    if(ev.target.closest('.quickHudBtn,.hudAction,.hudResetMini'))return;
+    if(ev.target.closest('.quickHudBtn,.activeHudBtn,.hudAction,.hudResetMini'))return;
     hudPointerId=ev.pointerId;
     const startX=ev.clientX,startY=ev.clientY;
     clearTimeout(hudLongPressTimer);
@@ -916,8 +916,16 @@ function setupHudInteraction(){
     if(Date.now()<hudSuppressClickUntil){ev.preventDefault();ev.stopPropagation();return}
     const act=ev.target.closest('[data-hud-action]');
     if(act){ev.preventDefault();const a=act.dataset.hudAction;if(a==='pin')pinHudPosition();if(a==='reset')resetHudPosition();return}
+    const tradeAct=ev.target.closest('[data-hud-trade]');
+    if(tradeAct){
+      ev.preventDefault();
+      const a=tradeAct.dataset.hudTrade;
+      if(a==='close'&&state.position)requestCloseCurrentPosition();
+      if(a==='reverse'&&state.position)requestReversePosition();
+      return;
+    }
     const q=ev.target.closest('[data-quick-side]');
-    if(q){ev.preventDefault();openPositionFromCurrentSettings(q.dataset.quickSide);return}
+    if(q){ev.preventDefault();requestTradeAction(q.dataset.quickSide,{openIfFlat:true,source:'hud'});return}
   });
 }
 function updateChartPositionBox(){
@@ -941,7 +949,11 @@ function updateChartPositionBox(){
       '<span class="sidebadge '+sideCls+'">'+p.side.toUpperCase()+'</span>'+
       '<span class="compactPnl '+(netEst>=0?'rrgood':'rrbad')+'">'+(netEst>=0?'+':'')+'$'+fmt(netEst)+' · '+(liveR>=0?'+':'')+liveR.toFixed(2)+'R</span>'+
     '</div>'+
-    '<div class="compactMeta">Entry $'+fmt(p.entry)+' · TP $'+fmt(p.tp)+' · SL $'+fmt(p.sl)+'</div>';
+    '<div class="compactMeta">Entry $'+fmt(p.entry)+' · TP $'+fmt(p.tp)+' · SL $'+fmt(p.sl)+'</div>'+
+    '<div class="activeHudActions">'+
+      '<button class="activeHudBtn close" data-hud-trade="close" type="button">ZÁR '+p.side.toUpperCase()+'</button>'+
+      '<button class="activeHudBtn reverse" data-hud-trade="reverse" type="button">↔ '+(p.side==='long'?'SHORT':'LONG')+'</button>'+
+    '</div>';
   applyHudPinnedPosition();setupHudInteraction();
 }
 
@@ -1261,7 +1273,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.4.0',
+        appVersion:'10.4.3',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -2453,13 +2465,76 @@ function updateTradeUI(){
     $('noPos').classList.remove('hidden');$('posDetails').classList.add('hidden');$('closePos').classList.add('hidden');$('levelEdit').classList.add('hidden');$('livePnl').textContent='—';$('livePnl').className='pnl';
   }
   updateChartPositionBox();
+  updateEntryActionUI();
   updateLevelDragVisuals(levelDrag?.kind,levelDrag?.price);
   checkThresholdAlerts();
   if(!$('historyView').classList.contains('hidden'))renderHistory();
 }
+function tradeFeedback(kind='tap'){
+  try{if(navigator.vibrate)navigator.vibrate(kind==='reverse'?[28,20,28]:kind==='close'?[32]:[18])}catch(e){}
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+    const ctx=new AC(),osc=ctx.createOscillator(),gain=ctx.createGain();
+    osc.type='sine';osc.frequency.value=kind==='open'?720:kind==='close'?410:kind==='reverse'?560:620;
+    gain.gain.setValueAtTime(.0001,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.035,ctx.currentTime+.006);gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.055);
+    osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.06);osc.onended=()=>ctx.close().catch(()=>{});
+  }catch(e){}
+}
+function liveNetEstimateForConfirm(){
+  const p=state.position;if(!p||lastPrice===null)return null;
+  const gross=unreal(),estCloseFee=feeFor(lastPrice,p.qty,p.exitExec,p.feeTier),funding=fundingLive();
+  return gross-p.openFee-estCloseFee+funding;
+}
+function confirmTradeAction(message){
+  try{return window.confirm(message)}catch(e){return true}
+}
+function updateEntryActionUI(){
+  const p=state.position;
+  if(!p){
+    $('longBtn').textContent='LONG';$('shortBtn').textContent='SHORT';
+  }else if(p.side==='long'){
+    $('longBtn').textContent='LONG · ZÁR';$('shortBtn').textContent='SHORT · REVERSE';
+  }else{
+    $('longBtn').textContent='LONG · REVERSE';$('shortBtn').textContent='SHORT · ZÁR';
+  }
+  $('longBtn').className='btn'+(side==='long'?' green':'');
+  $('shortBtn').className='btn'+(side==='short'?' red':'');
+  if(p){
+    if(side===p.side)$('open').textContent=side.toUpperCase()+' pozíció zárása';
+    else $('open').textContent=p.side.toUpperCase()+' → '+side.toUpperCase()+' REVERSE';
+  }else $('open').textContent=(side==='long'?'LONG':'SHORT')+' pozíciónyitás';
+  $('open').className='primary'+(side==='short'?' short':'');
+}
 function setSide(s){
-  side=s;$('longBtn').className='btn'+(s==='long'?' green':'');$('shortBtn').className='btn'+(s==='short'?' red':'');
-  $('open').textContent=(s==='long'?'LONG':'SHORT')+' pozíciónyitás';$('open').className='primary'+(s==='short'?' short':'');updateTradeUI();
+  side=s;updateEntryActionUI();updateTradeUI();
+}
+function requestCloseCurrentPosition(){
+  const p=state.position;if(!p)return false;
+  const net=liveNetEstimateForConfirm();
+  const pnl=net===null?'':('\nBecsült nettó PnL: '+(net>=0?'+':'')+'$'+fmt(net));
+  if(!confirmTradeAction(p.side.toUpperCase()+' pozíció zárása most?'+pnl))return false;
+  closePosition('MANUAL');tradeFeedback('close');return true;
+}
+function requestReversePosition(targetSide=null){
+  const p=state.position;if(!p)return false;
+  const next=targetSide||(p.side==='long'?'short':'long');
+  if(next===p.side)return requestCloseCurrentPosition();
+  const net=liveNetEstimateForConfirm();
+  const pnl=net===null?'':('\nJelenlegi becsült nettó PnL: '+(net>=0?'+':'')+'$'+fmt(net));
+  if(!confirmTradeAction(p.side.toUpperCase()+' zárása és azonnali '+next.toUpperCase()+' nyitás ugyanazokkal a beállításokkal?'+pnl))return false;
+  closePosition('REVERSE');
+  setSide(next);
+  return openPositionFromCurrentSettings(next,'reverse');
+}
+function requestTradeAction(targetSide,{openIfFlat=false,source='main'}={}){
+  const p=state.position;
+  if(!p){
+    setSide(targetSide);
+    if(openIfFlat)return openPositionFromCurrentSettings(targetSide);
+    tradeFeedback('tap');return true;
+  }
+  if(p.side===targetSide)return requestCloseCurrentPosition();
+  return requestReversePosition(targetSide);
 }
 function closePosition(reason='MANUAL'){
   const p=state.position;if(!p||lastPrice===null)return;trackExcursions(lastPrice);
@@ -2581,15 +2656,15 @@ $('toggleStructure').addEventListener('click',()=>{showStructure=!showStructure;
 $('toggleSession').addEventListener('click',()=>{showSession=!showSession;$('toggleSession').classList.toggle('active',showSession);renderKeyLevels()});
 $('toggleGestures').addEventListener('click',()=>{proGestureMode=!proGestureMode;applyProGestureMode()});
 $('replayToggle').addEventListener('click',startReplay);$('replayBack').addEventListener('click',()=>replayStep(-1));$('replayNext').addEventListener('click',()=>replayStep(1));$('replayPlay').addEventListener('click',()=>{if(!replayMode)return;if(replayTimer){clearInterval(replayTimer);replayTimer=null;$('replayPlay').textContent='▶'}else{replayTimer=setInterval(()=>replayStep(1),700);$('replayPlay').textContent='⏸'}});$('replaySlider').addEventListener('input',()=>{if(replayMode){replayIndex=Number($('replaySlider').value);candles=replaySource.slice(0,replayIndex);replayRender()}});
-$('longBtn').addEventListener('click',()=>setSide('long'));$('shortBtn').addEventListener('click',()=>setSide('short'));
+$('longBtn').addEventListener('click',()=>requestTradeAction('long'));$('shortBtn').addEventListener('click',()=>requestTradeAction('short'));
 ['tpPct','slPct','riskPct'].forEach(id=>$(id).addEventListener('input',updateTradeUI));
 $('qty').addEventListener('input',()=>{if($('qtyMode').value==='manual')updateTradeUI()});
 ['lev','feeTier','entryExec','exitExec','qtyMode'].forEach(id=>$(id).addEventListener('change',updateTradeUI));
 $('profileSelect').addEventListener('change',()=>switchProfile(Number($('profileSelect').value)));
-function openPositionFromCurrentSettings(sideOverride=null){
+function openPositionFromCurrentSettings(sideOverride=null,feedbackKind='open'){
+  if(sideOverride==='long'||sideOverride==='short')setSide(sideOverride);
   if(state.position){$('msg').textContent='Már van nyitott pozíció.';return false}
   if(lastPrice===null){$('msg').textContent='Nincs élő Kraken ár.';return false}
-  if(sideOverride==='long'||sideOverride==='short')setSide(sideOverride);
   const l=calcLevels();
   if(!l){$('msg').textContent='TP/SL szintek nem számolhatók.';return false}
   syncQuantity(l);
@@ -2612,9 +2687,10 @@ function openPositionFromCurrentSettings(sideOverride=null){
   };
   save();syncPositionLines();loadFunding();updateTradeUI();
   $('msg').textContent=side.toUpperCase()+' pozíció nyitva · '+qty.toFixed(3)+' BTC';
+  if(feedbackKind)tradeFeedback(feedbackKind);
   return true;
 }
-$('order').addEventListener('submit',e=>{e.preventDefault();openPositionFromCurrentSettings()});
+$('order').addEventListener('submit',e=>{e.preventDefault();requestTradeAction(side,{openIfFlat:true,source:'primary'})});
 $('closePos').addEventListener('click',()=>closePosition('MANUAL'));
 $('applyLevels').addEventListener('click',()=>{const p=state.position;if(!p)return;const tp=Number($('editTp').value),sl=Number($('editSl').value);if(!Number.isFinite(tp)||!Number.isFinite(sl)){pushAppAlert('Érvénytelen TP/SL ár.','bad');return}if(p.side==='long'&&!(tp>p.entry&&sl<p.entry)){pushAppAlert('LONG-nál TP > entry és SL < entry szükséges.','warn');return}if(p.side==='short'&&!(tp<p.entry&&sl>p.entry)){pushAppAlert('SHORT-nál TP < entry és SL > entry szükséges.','warn');return}p.tp=tp;p.sl=sl;save();syncPositionLines();updateTradeUI();schedulePushBackendSync(true);pushAppAlert('TP/SL frissítve a charton és a háttér monitorban.','good')});
 function showMainView(which='trade'){
