@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "boti-trader-push",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-08-22",
+  "observability": { "enabled": true },
+  "triggers": { "crons": ["* * * * *"] },
+  "vars": {
+    "APP_ORIGIN": "https://rdwzfcckn5-hash.github.io",
+    "APP_URL": "https://rdwzfcckn5-hash.github.io/boti-paper-trader/"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "BOTI_STATE",
+      "id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+    }
+  ]
+}
