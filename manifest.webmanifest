@@ -1,13 +1,13 @@
 {
   "id": "/boti-paper-trader/",
-  "name": "Botond Trading Platform V11.4",
+  "name": "Botond Trading Platform V11.5",
   "short_name": "Botond Trading",
-  "start_url": "./?v=11.4.0",
+  "start_url": "./?v=11.5.0",
   "scope": "./",
   "display": "standalone",
   "background_color": "#071018",
   "theme_color": "#071018",
-  "description": "Multi-crypto trading platform with simplified Smart Trend engine: Supertrend 10/3, EMA20/50 cross alerts, Smart Entry/Profit Line and technical Projection Assist.",
+  "description": "Smart Trend multi-crypto paper platform with market/limit orders, separate prop profiles, and Hungarian technical entry explanations.",
   "icons": [
     {
       "src": "boti-icon-v1041-192.png?v=1041",

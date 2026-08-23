@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
-<link rel="manifest" href="manifest.webmanifest?v=1140">
+<link rel="manifest" href="manifest.webmanifest?v=1150">
 <link rel="apple-touch-icon" sizes="180x180" href="boti-icon-v1041-180.png?v=1041">
 <link rel="icon" type="image/png" sizes="192x192" href="boti-icon-v1041-192.png?v=1041">
 <link rel="icon" type="image/png" sizes="512x512" href="boti-icon-v1041-512.png?v=1041">
-<title>Botond Trading Platform V11.4 · SMART TREND</title>
+<title>Botond Trading Platform V11.5 · LIMIT + MULTI PROFILE</title>
 
 <script>
 (function(){
@@ -662,6 +662,31 @@ html[data-theme="light"] .cryptoCard.active small{color:#e8edff!important}
 .projectionBadge.good{border-color:#17685f;color:#78f4e5}.projectionBadge.bad{border-color:#7c3540;color:#ffadb6}
 #macdPane{display:none!important}
 
+
+/* ============================================================
+   V11.5 LIMIT ORDERS + FULLY SEPARATE PROFILES + ENTRY EXPLAIN
+   ============================================================ */
+.executionBox{border:1px solid var(--line);border-radius:13px;background:var(--panel2);padding:10px;margin-bottom:10px}
+.executionHead{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:900;letter-spacing:.04em}
+.executionHead b{color:var(--text)}
+.executionToggle{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.executionToggle button{min-height:42px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font-weight:950}
+.executionToggle button.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.limitPriceWrap{margin-top:9px}.limitPriceRow{display:grid;grid-template-columns:1fr auto;gap:7px}.limitPriceRow .btn{white-space:nowrap}
+.pendingLimitCard{margin-top:10px;border:1px solid #795d25;border-radius:11px;background:rgba(229,172,67,.08);padding:10px}
+.pendingLimitCard b{display:block;margin-top:2px;color:#f0c56b}.pendingLimitCard .btn{width:100%;margin-top:8px}
+.entryExplain{margin-top:9px;border:1px solid var(--line);border-radius:11px;background:var(--panel2);padding:9px}
+.entryExplainTitle{font-size:10px;font-weight:950;letter-spacing:.06em;color:var(--muted);margin-bottom:7px}
+.entryExplainRows{display:flex;flex-direction:column;gap:6px}.entryExplainRow{display:grid;grid-template-columns:88px 1fr;gap:8px;align-items:start;border-top:1px solid rgba(128,150,165,.12);padding-top:6px}
+.entryExplainRow:first-child{border-top:0;padding-top:0}.entryExplainKey{font-size:9px;font-weight:950;color:var(--muted)}.entryExplainVal{font-size:10px;line-height:1.42;color:var(--text)}
+.entryExplainVal.good{color:var(--green)}.entryExplainVal.bad{color:var(--red)}.entryExplainVal.warn{color:var(--amber)}
+.entryExplainLegend{margin-top:8px;padding-top:7px;border-top:1px solid rgba(128,150,165,.14);font-size:9px;line-height:1.5;color:var(--muted)}
+.entryExplainEmpty{font-size:10px;color:var(--muted)}
+.profileTiles button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.profileTiles button small{font-size:8px;color:var(--muted);font-weight:850}.profileTiles button.active small{color:#e9edff}
+.profileTiles button .profileLive{font-size:8px;font-weight:950}.profileLive.long{color:var(--green)}.profileLive.short{color:var(--red)}.profileLive.limit{color:var(--amber)}
+@media(max-width:700px){.limitPriceRow{grid-template-columns:1fr}.entryExplainRow{grid-template-columns:74px 1fr}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -699,7 +724,7 @@ html[data-theme="light"] .cryptoCard.active small{color:#e8edff!important}
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Botond Trading Platform V11.4</div>
+      <div class="brand">Botond Trading Platform V11.5</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="topRight">
@@ -889,6 +914,7 @@ html[data-theme="light"] .cryptoCard.active small{color:#e8edff!important}
             <button data-profile="200000" type="button">200K</button>
           </div>
           <div id="settingsProfileInfo" class="settingsInfo">—</div>
+          <div class="settingsInfo"><b>Profilok külön futnak:</b> egy 10K SHORT nem blokkolja a 200K LONG-ot. A nyitott pozíció és a függő limit mindig az adott profilhoz tartozik.</div>
         </div>
       </div>
 
@@ -1187,6 +1213,11 @@ html[data-theme="light"] .cryptoCard.active small{color:#e8edff!important}
               <div class="entryAssistItem"><span class="lab">RR</span><b id="entryAssistRR">—</b></div>
             </div>
             <div id="entryAssistWhy" class="entryAssistWhy">A rendszer a 1m / 5m / 15m / 1h irányt és az 5 perces volatilitást figyeli.</div>
+            <div id="entryAssistExplain" class="entryExplain">
+              <div class="entryExplainTitle">MIÉRT LONG / SHORT?</div>
+              <div id="entryExplainRows" class="entryExplainRows"><div class="entryExplainEmpty">A technikai magyarázat betöltése…</div></div>
+              <div class="entryExplainLegend"><b>HH</b> = Higher High · <b>HL</b> = Higher Low · <b>LH</b> = Lower High · <b>LL</b> = Lower Low</div>
+            </div>
             <div class="entryAssistActions">
               <button id="applyEntryAssist" class="btn" type="button" disabled>TP / SL alkalmazása</button>
               <button id="selectEntryAssistSide" class="btn" type="button" disabled>Irány kiválasztása</button>
@@ -1233,6 +1264,26 @@ html[data-theme="light"] .cryptoCard.active small{color:#e8edff!important}
         <div id="orderEntryCard" class="panel tradeEntryCard">
           <div class="flowHead"><div><b id="orderMarketLabel">LONG / SHORT POZÍCIÓNYITÁS · BTC/USD</b></div></div>
           <form id="order">
+            <div class="executionBox">
+              <div class="executionHead"><span>MEGBÍZÁS TÍPUSA</span><b id="executionState">MARKET</b></div>
+              <div class="executionToggle">
+                <button id="marketOrderBtn" class="active" type="button">MARKET</button>
+                <button id="limitOrderBtn" type="button">LIMIT</button>
+              </div>
+              <div id="limitPriceWrap" class="limitPriceWrap hidden">
+                <label>Limit belépési ár</label>
+                <div class="limitPriceRow">
+                  <input id="limitPrice" type="number" step="0.1" placeholder="Limit ár">
+                  <button id="limitFromAssist" class="btn" type="button">Entry Assist ára</button>
+                </div>
+                <div id="limitHint" class="muted">LONG limit: a jelenlegi ár alatt · SHORT limit: a jelenlegi ár felett.</div>
+              </div>
+              <div id="pendingLimitCard" class="pendingLimitCard hidden">
+                <div><span class="lab">FÜGGŐ LIMIT</span><b id="pendingLimitTitle">—</b></div>
+                <div id="pendingLimitInfo" class="muted">—</div>
+                <button id="cancelLimit" class="btn" type="button">Limit megbízás törlése</button>
+              </div>
+            </div>
             <div class="row">
               <div><label>Risk / trade %</label><input id="riskPct" type="number" min=".01" step=".01" value=".20"></div>
               <div><label>Quantity mód</label>
@@ -1465,13 +1516,15 @@ function dailyLimit(){return Number(state.startEquity)*0.03}
 function maxDD(){return Number(state.startEquity)*0.06}
 function freshState(startEquity=200000){
   startEquity=PROFILE_VALUES.includes(Number(startEquity))?Number(startEquity):200000;
-  return {equity:startEquity,startEquity,peakEquity:startEquity,daily:0,day:1,trades:[],days:[],position:null};
+  return {equity:startEquity,startEquity,peakEquity:startEquity,daily:0,day:1,trades:[],days:[],position:null,pendingOrder:null,marketAsset:'BTC'};
 }
 function normalizeState(st,startEquity){
   if(!st||Number(st.startEquity)!==Number(startEquity))st=freshState(startEquity);
   if(!Number.isFinite(Number(st.peakEquity)))st.peakEquity=Math.max(Number(startEquity),Number(st.equity)||Number(startEquity));
   if(!Array.isArray(st.trades))st.trades=[];
   if(!Array.isArray(st.days))st.days=[];
+  if(st.pendingOrder===undefined)st.pendingOrder=null;
+  if(!MARKET_ASSETS[String(st.marketAsset||'').toUpperCase()])st.marketAsset=String(st.position?.asset||st.pendingOrder?.asset||'BTC').toUpperCase();
   return st;
 }
 function loadProfile(eq){
@@ -1486,15 +1539,13 @@ function loadProfile(eq){
 let activeProfile=Number(localStorage.getItem(ACTIVE_PROFILE_KEY))||200000;
 if(!PROFILE_VALUES.includes(activeProfile))activeProfile=200000;
 let state=loadProfile(activeProfile);
-if(state.position){
-  const posAsset=String(state.position.asset||'BTC').toUpperCase();
-  if(MARKET_ASSETS[posAsset]){
-    marketAsset=posAsset;
-    localStorage.setItem(MARKET_ASSET_KEY,marketAsset);
-  }
+{
+  const preferred=String(state.position?.asset||state.pendingOrder?.asset||state.marketAsset||marketAsset||'BTC').toUpperCase();
+  if(MARKET_ASSETS[preferred]){marketAsset=preferred;localStorage.setItem(MARKET_ASSET_KEY,marketAsset)}
 }
 const save=()=>{
   if(replayMode)return;
+  state.marketAsset=marketAsset;
   localStorage.setItem(profileStore(state.startEquity),JSON.stringify(state));
   localStorage.setItem(ACTIVE_PROFILE_KEY,String(state.startEquity));
   schedulePushBackendSync();
@@ -1513,6 +1564,7 @@ let mtfLiveTimer=null;
 let mtfLiveBusy=false;
 let entryAssistSuggestion=null;
 let smartTriggerPriceLine=null;
+let orderType='market';
 let lastSmartSetup=null;
 let projectionVisible=true;
 let entryPriceLine=null,tpPriceLine=null,slPriceLine=null,bePriceLine=null;
@@ -2238,51 +2290,43 @@ async function requestBackgroundPushPermission(){
 async function refreshPushServerStatus(){
   if(!pushConfigured()||!pushClientId)return;
   try{
-    const r=await fetch(pushBaseUrl()+'/status?clientId='+encodeURIComponent(pushClientId),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();
+    const r=await fetch(pushBaseUrl()+'/status?clientId='+encodeURIComponent(profilePushClientId(state.startEquity)),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();
     const age=j.lastRun?Math.max(0,Math.round((Date.now()-j.lastRun)/1000)):null;const pushAge=j.lastPushAt?Math.max(0,Math.round((Date.now()-j.lastPushAt)/1000)):null;
     $('pushServerStatus').textContent='Server monitor: '+(age===null?'még nincs cron futás':age+' mp-e futott')+' · subscription '+(j.subscriptionPresent?'OK':'HIÁNYZIK')+(pushAge!==null?' · last push '+pushAge+' mp':'');
     $('pushServerStatus').className='pushStatus '+(age!==null&&age<900&&j.subscriptionPresent?'good':'warn');
   }catch(err){$('pushServerStatus').textContent='Server monitor hiba: '+String(err&&err.message||err);$('pushServerStatus').className='pushStatus bad'}
 }
-function compactPushState(){
-  const p=state.position;
+function profilePushClientId(eq){return pushClientId+':'+Number(eq)}
+function compactPushStateFor(st,eq){
+  const p=st.position,o=st.pendingOrder;
+  const asset=String(p?.asset||o?.asset||st.marketAsset||marketAsset||'BTC').toUpperCase();
+  const cfg=MARKET_ASSETS[asset]||MARKET_ASSETS.BTC;
   return {
-    asset:marketAsset,
-    symbol:marketLabel(),
-    startEquity:Number(state.startEquity),
-    equity:Number(state.equity),
-    daily:Number(state.daily),
-    day:Number(state.day),
-    position:p?{
-      side:p.side,asset:String(p.asset||marketAsset),symbol:String(p.symbol||marketLabel()),entry:Number(p.entry),entryTime:Number(p.entryTime),qty:Number(p.qty),
-      tp:Number(p.tp),sl:Number(p.sl),openFee:Number(p.openFee||0),
-      fundingAccrued:Number(p.fundingAccrued||0),tf:p.tf||'',setup:p.setup||''
-    }:null
+    asset,symbol:cfg.pair,startEquity:Number(eq),equity:Number(st.equity),daily:Number(st.daily),day:Number(st.day),
+    position:p?{side:p.side,asset:String(p.asset||asset),symbol:String(p.symbol||cfg.pair),entry:Number(p.entry),entryTime:Number(p.entryTime),qty:Number(p.qty),tp:Number(p.tp),sl:Number(p.sl),openFee:Number(p.openFee||0),fundingAccrued:Number(p.fundingAccrued||0),tf:p.tf||'',setup:p.setup||''}:null,
+    pendingOrder:o?{id:o.id||'',side:o.side,asset:String(o.asset||asset),symbol:String(o.symbol||cfg.pair),limitPrice:Number(o.limitPrice),createdAt:Number(o.createdAt),qty:Number(o.qty),tp:Number(o.tp),sl:Number(o.sl)}:null
   };
+}
+function watchedProfiles(){
+  const set=new Set([Number(state.startEquity)]);
+  for(const eq of PROFILE_VALUES){const st=eq===Number(state.startEquity)?state:loadProfile(eq);if(st.position||st.pendingOrder)set.add(eq)}
+  return [...set];
 }
 async function syncPushBackend(){
   if(!pushConfigured())return false;
   try{
-    const r=await fetch(pushBaseUrl()+'/sync',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        clientId:pushClientId,
-        subscriptionId:pushSubscriptionId||'',
-        appVersion:'11.4.0',
-        state:compactPushState(),
-        alerts:alertSettings
-      })
-    });
-    if(!r.ok)throw new Error('HTTP '+r.status+' '+await r.text());
-    const j=await r.json();
-    setPushStatus('Cloudflare szinkron OK · '+new Date(j.serverTime||Date.now()).toLocaleTimeString('hu-HU')+(j.subscriptionPresent?' · direct subscription OK':''),'good');
-    refreshPushServerStatus();
-    return true;
-  }catch(err){
-    setPushStatus('Cloudflare sync hiba: '+String(err&&err.message||err),'bad');
-    return false;
-  }
+    const profiles=watchedProfiles();let activeResult=null;
+    for(const eq of profiles){
+      const st=eq===Number(state.startEquity)?state:loadProfile(eq);
+      const snap=compactPushStateFor(st,eq);
+      const r=await fetch(pushBaseUrl()+'/sync',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+        clientId:profilePushClientId(eq),externalId:pushClientId,subscriptionId:pushSubscriptionId||'',appVersion:'11.5.0',asset:snap.asset,state:snap,alerts:alertSettings
+      })});
+      if(!r.ok)throw new Error('HTTP '+r.status+' '+await r.text());const j=await r.json();if(eq===Number(state.startEquity))activeResult=j;
+    }
+    const j=activeResult||{};setPushStatus('Cloudflare szinkron OK · '+profiles.length+' profil figyelve · '+new Date(j.serverTime||Date.now()).toLocaleTimeString('hu-HU')+(j.subscriptionPresent?' · direct subscription OK':''),'good');
+    refreshPushServerStatus();return true;
+  }catch(err){setPushStatus('Cloudflare sync hiba: '+String(err&&err.message||err),'bad');return false}
 }
 function schedulePushBackendSync(immediate=false){
   if(!pushConfigured())return;
@@ -2295,7 +2339,7 @@ async function testBackgroundPush(){
   try{
     const r=await fetch(pushBaseUrl()+'/test-push',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({clientId:pushClientId})
+      body:JSON.stringify({clientId:profilePushClientId(state.startEquity)})
     });
     const txt=await r.text();if(!r.ok)throw new Error('HTTP '+r.status+' '+txt);let j={};try{j=JSON.parse(txt)}catch(e){}
     setPushStatus('Teszt PUSH elküldve · OneSignal message '+(j.messageId||'OK')+' · zárd be az appot és ellenőrizd a kézbesítést.','good');
@@ -2309,7 +2353,7 @@ async function testBackgroundPushDelayed(){
   if(!pushConfigured()){document.querySelector('.pushSetup').open=true;setPushStatus('Előbb konfiguráld a push hátteret.','warn');return}
   await syncPushBackend();
   try{
-    const r=await fetch(pushBaseUrl()+'/test-push',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clientId:pushClientId,delaySeconds:60})});
+    const r=await fetch(pushBaseUrl()+'/test-push',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clientId:profilePushClientId(state.startEquity),delaySeconds:60})});
     const txt=await r.text();if(!r.ok)throw new Error('HTTP '+r.status+' '+txt);let j={};try{j=JSON.parse(txt)}catch(e){}
     setPushStatus('Háttér teszt ütemezve +60 mp-re · message '+(j.messageId||'OK')+'. MOST zárd be teljesen az appot.','good');
     pushAppAlert('Háttér PUSH teszt: 60 mp múlva érkeznie kell bezárt appnál.','warn');
@@ -2326,7 +2370,7 @@ async function testAlertPush(type,silent=false){
   try{
     const r=await fetch(pushBaseUrl()+'/test-alert',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({clientId:pushClientId,type})
+      body:JSON.stringify({clientId:profilePushClientId(state.startEquity),type})
     });
     const txt=await r.text();
     if(!r.ok)throw new Error('HTTP '+r.status+' '+txt);
@@ -2947,6 +2991,7 @@ function queueLivePrice(px,nowMs=Date.now()){
     trackExcursions(q.px);
     $('price').textContent='$'+fmtPrice(q.px);
     applyLivePriceToCandle(q.px,q.nowMs);
+    checkPendingLimit(q.px);
     updateFundingLiveCard();
     scheduleLiveUI();
   });
@@ -3317,6 +3362,7 @@ function updateAssetUi(){
   }
   if($('editTp'))$('editTp').step=String(Math.pow(10,-a.priceDecimals));
   if($('editSl'))$('editSl').step=String(Math.pow(10,-a.priceDecimals));
+  if($('limitPrice'))$('limitPrice').step=String(Math.pow(10,-a.priceDecimals));
 
   document.querySelectorAll('#cryptoChoice [data-asset]').forEach(btn=>btn.classList.toggle('active',btn.dataset.asset===marketAsset));
   if($('cryptoStatus'))$('cryptoStatus').textContent=a.pair+' · Kraken spot + '+a.funding[0]+' perpetual funding · qty lépcső '+a.qtyStep+' '+a.symbol+'.';
@@ -3354,12 +3400,16 @@ async function setMarketAsset(next,{force=false}={}){
   clearTimeout(reconnectTimer);clearInterval(wsWatchdog);
 
   marketAsset=next;
+  state.marketAsset=marketAsset;
   localStorage.setItem(MARKET_ASSET_KEY,marketAsset);
+  if(!replayMode)localStorage.setItem(profileStore(state.startEquity),JSON.stringify(state));
   clearMarketVisuals();
   updateAssetUi();
   setStatus(false,'MARKET SWITCH…');
 
   await loadHistory();
+  reconcilePendingLimitFromCandles();
+  reconcilePositionFromCandles();
   await refreshMTF();
   connect();
   loadFunding();
@@ -3381,7 +3431,7 @@ function setFullChartMode(force){
 function replayRender(){setHistoryData();lastPrice=candles[candles.length-1]?.close||null;$('price').textContent=lastPrice?'$'+fmtPrice(lastPrice):'—';$('replaySlider').value=String(replayIndex);$('replayStatus').textContent='REPLAY '+replayIndex+'/'+replaySource.length;updateTradeUI();checkStops()}
 function replayStep(delta=1){if(!replayMode)return;replayIndex=Math.max(210,Math.min(replaySource.length,replayIndex+delta));candles=replaySource.slice(0,replayIndex);replayRender();if(replayIndex>=replaySource.length&&replayTimer){clearInterval(replayTimer);replayTimer=null;$('replayPlay').textContent='▶'}}
 function startReplay(){
-  if(replayMode){stopReplay();return}if(state.position){pushAppAlert('Replay előtt zárd a live pozíciót.','warn');return}if(candles.length<220){pushAppAlert('Replayhez legalább 220 gyertya kell.','warn');return}
+  if(replayMode){stopReplay();return}if(state.position||state.pendingOrder){pushAppAlert('Replay előtt zárd a live pozíciót és töröld a függő limitet.','warn');return}if(candles.length<220){pushAppAlert('Replayhez legalább 220 gyertya kell.','warn');return}
   replaySavedState=JSON.parse(JSON.stringify(state));replaySource=candles.map(c=>({...c}));replayIndex=Math.max(210,replaySource.length-120);replayMode=true;state=freshState(replaySavedState.startEquity);clearTimeout(reconnectTimer);if(ws){try{ws.onclose=null;ws.close()}catch(e){}}candles=replaySource.slice(0,replayIndex);$('replaySlider').min='210';$('replaySlider').max=String(replaySource.length);$('replaySlider').disabled=false;['replayBack','replayPlay','replayNext'].forEach(id=>$(id).disabled=false);$('replayToggle').classList.add('active');$('replayToggle').textContent='Replay kilépés';setStatus(false,'REPLAY LAB');replayRender();
 }
 function stopReplay(){if(!replayMode)return;if(replayTimer)clearInterval(replayTimer);replayTimer=null;replayMode=false;state=replaySavedState||loadProfile(activeProfile);replaySavedState=null;['replayBack','replayPlay','replayNext'].forEach(id=>$(id).disabled=true);$('replaySlider').disabled=true;$('replayToggle').classList.remove('active');$('replayToggle').textContent='Replay LAB';$('replayStatus').textContent='LIVE';loadHistory().finally(connect);updateTradeUI()}
@@ -3455,6 +3505,43 @@ function buildEntryAssist(){
   const center=refs.length?refs.reduce((a,b)=>a+b,0)/refs.length:px,half=px*.0006;
   return {...dir,valid:true,side,slPct,tpPct,tp,sl,rr,entryLow:center-half,entryHigh:center+half,atrPct};
 }
+
+function structureExplanation(structure,side){
+  const label=String(structure?.label||'MIXED');
+  if(label.includes('HH')&&label.includes('HL'))return {cls:'good',text:'HH + HL: magasabb csúcs + magasabb mélypont → emelkedő struktúra, LONG-nak kedvez.'};
+  if(label.includes('LH')&&label.includes('LL'))return {cls:'bad',text:'LH + LL: alacsonyabb csúcs + alacsonyabb mélypont → eső struktúra, SHORT-nak kedvez.'};
+  if(label.includes('CHOCH'))return {cls:'warn',text:'CHOCH látszik: a korábbi struktúra karaktere változhat, ezért fordulóveszély van.'};
+  if(label.includes('BOS'))return {cls:structure?.state==='BULLISH'?'good':structure?.state==='BEARISH'?'bad':'warn',text:'BOS: egy korábbi swing szint tört. Ez trendfolytatási megerősítés lehet.'};
+  return {cls:'warn',text:'MIXED struktúra: még nincs tiszta HH+HL vagy LH+LL sorrend.'};
+}
+function recentSmartTouch(a,cs,i){
+  for(let k=Math.max(0,i-3);k<=i;k++){
+    const line=Number(a.smart[k]);if(!Number.isFinite(line))continue;
+    const c=cs[k];if(Number(c.low)<=line&&Number(c.high)>=line)return true;
+  }
+  const atr=Number(a.adx.atr[i])||0,line=Number(a.smart[i]),px=Number(cs[i]?.close);
+  return Number.isFinite(line)&&Number.isFinite(px)&&atr>0&&Math.abs(px-line)<=atr*.18;
+}
+function renderTechnicalExplanation(s){
+  const host=$('entryExplainRows');if(!host)return;
+  const cs=(mtfCandles[5]?.length>=55?mtfCandles[5]:candles);const a=compute(cs);
+  if(!a){host.innerHTML='<div class="entryExplainEmpty">Még nincs elég gyertya a részletes technikai magyarázathoz.</div>';return}
+  const i=cs.length-1,v=voteAt(a,cs,i),side=s?.side||((v.state==='BULLISH')?'long':(v.state==='BEARISH')?'short':null);
+  const rows=[];
+  const add=(k,t,c='')=>rows.push('<div class="entryExplainRow"><div class="entryExplainKey">'+k+'</div><div class="entryExplainVal '+c+'">'+t+'</div></div>');
+  add('MTF',s?.reason||'1m / 5m / 15m / 1h egyezés vizsgálata.',s?.mode==='LONG'?'good':s?.mode==='SHORT'?'bad':'warn');
+  const se=structureExplanation(a.structure,side);add('HH/HL/LH/LL',se.text,se.cls);
+  const smart=Number(a.smart[i]),px=Number(cs[i].close),touch=recentSmartTouch(a,cs,i),above=px>smart;
+  let smartText='Smart Line: $'+fmtPrice(smart)+'. ';
+  smartText+=touch?'Az ár az utóbbi gyertyákban ÉRINTETTE / RETESTELTE a Smart Line-t. ':'Nem volt friss Smart Line érintés. ';
+  smartText+=above?'Az ár jelenleg fölötte van → bullish oldal.':'Az ár jelenleg alatta van → bearish oldal.';
+  add('SMART LINE',smartText,(side==='long'&&above)||(side==='short'&&!above)?'good':'warn');
+  const e20=Number(a.e20[i]),e50=Number(a.e50[i]);add('EMA20/50',e20>e50?'EMA20 az EMA50 fölött → bullish trendalap.':'EMA20 az EMA50 alatt → bearish trendalap.',e20>e50?'good':'bad');
+  const st=Number(a.st.dir[i]||0);add('SUPERTREND',st>0?'Supertrend 10/3 BULL → LONG megerősítés.':'Supertrend 10/3 BEAR → SHORT megerősítés.',st>0?'good':'bad');
+  const proj=v.items.projection||0;add('PROJECTION',proj>0?'↑ technikai irányprojekció felfelé.':proj<0?'↓ technikai irányprojekció lefelé.':'Nincs tiszta projekció.',proj>0?'good':proj<0?'bad':'warn');
+  add('BELÉPŐ',side==='long'?'LONG-nál a jobb setup: Smart Line retest megtart + HH/HL vagy bullish BOS + Supertrend/EMA megerősítés.':'SHORT-nál a jobb setup: Smart Line alulról visszatesztelve elutasít + LH/LL vagy bearish BOS + Supertrend/EMA megerősítés.',side==='long'?'good':side==='short'?'bad':'warn');
+  host.innerHTML=rows.join('');
+}
 function updateEntryAssist(){
   const s=buildEntryAssist();entryAssistSuggestion=s;
   const sig=$('entryAssistSignal'),str=$('entryAssistStrength'),entry=$('entryAssistEntry'),tp=$('entryAssistTp'),sl=$('entryAssistSl'),rr=$('entryAssistRR'),why=$('entryAssistWhy'),apply=$('applyEntryAssist'),sideBtn=$('selectEntryAssistSide');
@@ -3467,6 +3554,7 @@ function updateEntryAssist(){
     why.textContent=s.reason+' LIVE MTF: 1 mp-enként újraszámolva. A Smart Line retest / profit határként szolgál; TP/SL az 5 perces ATR-hez igazodik, kb. '+s.rr.toFixed(1)+'R cél/stop aránnyal.';
     apply.disabled=false;sideBtn.disabled=false;sideBtn.textContent=s.side==='long'?'▲ LONG kiválasztása':'▼ SHORT kiválasztása';
   }else{entry.textContent=tp.textContent=sl.textContent=rr.textContent='—';why.textContent=s.reason||'Nincs tiszta belépő.';apply.disabled=true;sideBtn.disabled=true;sideBtn.textContent='Irány kiválasztása'}
+  renderTechnicalExplanation(s);
 }
 
 function cloneMtfCandles(cs){
@@ -3512,8 +3600,8 @@ function recomputeOneMtf(tf){
   };
   const el=$('mtf'+tf);
   if(el){
-    if(st==='BULLISH'){el.textContent='BULL '+Math.max(v.bull,v.bear)+'/4';el.className='good'}
-    else if(st==='BEARISH'){el.textContent='BEAR '+Math.max(v.bull,v.bear)+'/4';el.className='bad'}
+    if(st==='BULLISH'){el.textContent='BULL '+Math.max(v.bull,v.bear)+'/3';el.className='good'}
+    else if(st==='BEARISH'){el.textContent='BEAR '+Math.max(v.bull,v.bear)+'/3';el.className='bad'}
     else{el.textContent='WAIT';el.className='warn'}
   }
   return true;
@@ -3682,22 +3770,19 @@ function syncProfileUI(){
   $('accountSummary').textContent=fmt(eq)+' $ paper account · '+(Number($('riskPct')?.value)||.20).toFixed(2)+'% auto risk · '+($('lev')?.value||'10')+'x leverage · FAST LIVE · 24/7 PUSH · '+uiMode.toUpperCase();
   if($('liteProfile'))$('liteProfile').textContent=profileShort(eq);
   if($('menuProfileLabel'))syncShellUi();
+  if($('settingsProfiles'))syncProfileTiles();
 }
-function switchProfile(eq){
-  eq=Number(eq);
-  if(!PROFILE_VALUES.includes(eq))return;
-  save();
-  activeProfile=eq;
-  state=loadProfile(eq);
-  localStorage.setItem(ACTIVE_PROFILE_KEY,String(eq));
-  removePositionLines();
-  resetAlertBands();
-  
-syncProfileUI();
-  updateTradeUI();
-  $('msg').textContent='Profil betöltve: $'+fmt(eq)+' · Daily limit $'+fmt(dailyLimit())+' · Max DD $'+fmt(maxDD());
+async function switchProfile(eq){
+  eq=Number(eq);if(!PROFILE_VALUES.includes(eq))return;
+  save();activeProfile=eq;state=loadProfile(eq);localStorage.setItem(ACTIVE_PROFILE_KEY,String(eq));
+  removePositionLines();resetAlertBands();
+  const targetAsset=String(state.position?.asset||state.pendingOrder?.asset||state.marketAsset||'BTC').toUpperCase();
+  if(MARKET_ASSETS[targetAsset]&&targetAsset!==marketAsset){await setMarketAsset(targetAsset,{force:true})}
+  else{marketAsset=MARKET_ASSETS[targetAsset]?targetAsset:marketAsset;updateAssetUi();reconcilePendingLimitFromCandles();reconcilePositionFromCandles()}
+  syncProfileUI();syncProfileTiles();updateTradeUI();
+  $('msg').textContent='Profil betöltve: $'+fmt(eq)+' · '+profileStatusFor(state).text+' · Daily limit $'+fmt(dailyLimit())+' · Max DD $'+fmt(maxDD());
+  schedulePushBackendSync(true);
 }
-
 function setupFlowCollapsibles(){
   document.querySelectorAll('.flowCollapse').forEach(box=>{
     const btn=box.querySelector('.flowBoxToggle');
@@ -3806,6 +3891,7 @@ async function setUiMode(next,{navigate=true}={}){
   $('app').classList.toggle('ui-lite',uiMode==='lite');
   $('liteDashboard').classList.toggle('hidden',uiMode!=='lite');
   if(uiMode==='lite'){
+    if(orderType!=='market')setOrderType('market');
     if(mode!=='simple')setMode('simple');
     if(interval!==1)await changeInterval(1);
   }
@@ -3940,40 +4026,44 @@ function startLiteSync(){
   liteSyncTimer=setInterval(()=>syncLiteUi(false),1000);
 }
 
-function riskSizing(levels){
-  if(!levels||lastPrice===null)return null;
+function riskSizing(levels,entryPrice=lastPrice){
+  if(!levels||!Number.isFinite(Number(entryPrice)))return null;
+  entryPrice=Number(entryPrice);
   const riskPct=Math.max(.01,Number($('riskPct').value)||.20);
   const budget=Math.max(0,Number(state.equity))*riskPct/100;
-  const tier=selectedFeeTier(),entryType=$('entryExec').value,exitType=$('exitExec').value;
+  const tier=selectedFeeTier(),entryType=orderType==='limit'?'maker':$('entryExec').value,exitType=$('exitExec').value;
   const entryRate=feeRate(entryType,tier),exitRate=feeRate(exitType,tier);
-  const priceRiskPerBtc=Math.abs(lastPrice-levels.sl);
-  const feeRiskPerBtc=(lastPrice*entryRate)+(levels.sl*exitRate);
+  const priceRiskPerBtc=Math.abs(entryPrice-levels.sl);
+  const feeRiskPerBtc=(entryPrice*entryRate)+(levels.sl*exitRate);
   const riskPerBtc=priceRiskPerBtc+feeRiskPerBtc;
   let qty=riskPerBtc>0?budget/riskPerBtc:0;
   qty=roundQtyDown(qty);
-  // Funding market-driven, so planned risk sizing excludes future unknown funding.
   const plannedRiskUsd=qty*riskPerBtc;
-
-  const rewardMovePerBtc=Math.abs(levels.tp-lastPrice);
-  const rewardAfterFeesPerBtc=rewardMovePerBtc-(lastPrice*entryRate)-(levels.tp*exitRate);
+  const rewardMovePerBtc=Math.abs(levels.tp-entryPrice);
+  const rewardAfterFeesPerBtc=rewardMovePerBtc-(entryPrice*entryRate)-(levels.tp*exitRate);
   const plannedRewardUsd=qty*rewardAfterFeesPerBtc;
   const plannedRR=plannedRiskUsd>0?plannedRewardUsd/plannedRiskUsd:0;
-  return {riskPct,budget,qty,riskPerBtc,plannedRiskUsd,plannedRewardUsd,plannedRR};
+  return {riskPct,budget,qty,riskPerBtc,plannedRiskUsd,plannedRewardUsd,plannedRR,entryPrice};
 }
 function syncQuantity(levels){
   const auto=$('qtyMode').value==='auto';
   $('qty').readOnly=auto;
   if(auto){
-    const r=riskSizing(levels);
+    const r=riskSizing(levels,Number(levels?.entryPrice)||plannedEntryPrice());
     if(r&&r.qty>0)$('qty').value=r.qty.toFixed(qtyDecimals());
   }
 }
 
-function calcLevels(){
-  if(lastPrice===null)return null;
+function calcLevelsAt(entryPrice,forSide=side){
+  entryPrice=Number(entryPrice);if(!Number.isFinite(entryPrice)||entryPrice<=0)return null;
   const tp=Math.max(.01,Number($('tpPct').value)||.5)/100,sl=Math.max(.01,Number($('slPct').value)||.3)/100;
-  return {tp:side==='long'?lastPrice*(1+tp):lastPrice*(1-tp),sl:side==='long'?lastPrice*(1-sl):lastPrice*(1+sl),tpPct:tp*100,slPct:sl*100};
+  return {tp:forSide==='long'?entryPrice*(1+tp):entryPrice*(1-tp),sl:forSide==='long'?entryPrice*(1-sl):entryPrice*(1+sl),tpPct:tp*100,slPct:sl*100,entryPrice};
 }
+function plannedEntryPrice(){
+  if(orderType==='limit'){const p=Number($('limitPrice')?.value);if(Number.isFinite(p)&&p>0)return p}
+  return lastPrice;
+}
+function calcLevels(){return calcLevelsAt(plannedEntryPrice(),side)}
 function unreal(){
   const p=state.position;if(!p||lastPrice===null)return 0;
   return (p.side==='long'?lastPrice-p.entry:p.entry-lastPrice)*p.qty;
@@ -4001,12 +4091,13 @@ function updateTradeUI(){
   const l=calcLevels();
   if(l){
     syncQuantity(l);
-    const r=riskSizing(l);
-    const q=Math.max(.001,Number($('qty').value)||.001),lev=Number($('lev').value)||1,tier=selectedFeeTier();
-    const entryType=$('entryExec').value,exitType=$('exitExec').value;
-    const notional=lastPrice*q,margin=notional/lev;
-    const openFee=feeFor(lastPrice,q,entryType,tier);
-    const estCloseFee=feeFor(lastPrice,q,exitType,tier);
+    const entryPx=Number(l.entryPrice)||plannedEntryPrice();
+    const r=riskSizing(l,entryPx);
+    const q=Math.max(assetCfg().minQty,Number($('qty').value)||assetCfg().minQty),lev=Number($('lev').value)||1,tier=selectedFeeTier();
+    const entryType=orderType==='limit'?'maker':$('entryExec').value,exitType=$('exitExec').value;
+    const notional=entryPx*q,margin=notional/lev;
+    const openFee=feeFor(entryPx,q,entryType,tier);
+    const estCloseFee=feeFor(entryPx,q,exitType,tier);
     if(r){
       $('riskBudget').textContent=r.riskPct.toFixed(2)+'% = $'+fmt(r.budget);
       $('plannedRisk').textContent='$'+fmt(r.plannedRiskUsd);
@@ -4048,6 +4139,9 @@ function updateTradeUI(){
     removePositionLines();
     $('noPos').classList.remove('hidden');$('posDetails').classList.add('hidden');$('closePos').classList.add('hidden');$('levelEdit').classList.add('hidden');$('livePnl').textContent='—';$('livePnl').className='pnl';
   }
+  renderPendingLimit();
+  syncOrderTypeUI();
+  syncProfileTiles();
   updateFundingLiveCard();
   renderMiniNetChart();
   updateChartPositionBox();
@@ -4056,6 +4150,121 @@ function updateTradeUI(){
   checkThresholdAlerts();
   if(!$('historyView').classList.contains('hidden'))renderHistory();
 }
+
+function setOrderType(next){
+  orderType=next==='limit'?'limit':'market';
+  if(orderType==='limit'){
+    $('entryExec').value='maker';
+    if(!$('limitPrice').value&&Number.isFinite(lastPrice))$('limitPrice').value=Number(lastPrice).toFixed(assetCfg().priceDecimals);
+  }else $('entryExec').value='taker';
+  syncOrderTypeUI();updateTradeUI();
+}
+function syncOrderTypeUI(){
+  if(!$('marketOrderBtn'))return;
+  $('marketOrderBtn').classList.toggle('active',orderType==='market');
+  $('limitOrderBtn').classList.toggle('active',orderType==='limit');
+  $('limitPriceWrap').classList.toggle('hidden',orderType!=='limit');
+  $('executionState').textContent=orderType==='limit'?'LIMIT / MAKER':'MARKET / TAKER';
+  if($('entryExec'))$('entryExec').value=orderType==='limit'?'maker':'taker';
+}
+function renderPendingLimit(){
+  const o=state.pendingOrder,card=$('pendingLimitCard');if(!card)return;
+  if(!o){card.classList.add('hidden');return}
+  card.classList.remove('hidden');
+  $('pendingLimitTitle').textContent=(o.side==='long'?'▲ LONG':'▼ SHORT')+' LIMIT · $'+fmtPrice(o.limitPrice)+' · '+profileShort(state.startEquity);
+  $('pendingLimitInfo').textContent=String(o.symbol||marketLabel())+' · '+fmtQty(o.qty)+' '+String(o.asset||assetSymbol())+' · TP $'+fmtPrice(o.tp)+' · SL $'+fmtPrice(o.sl)+' · várakozik az ár érintésére.';
+}
+function profileStatusFor(st){
+  if(st.position)return {text:(st.position.side==='long'?'▲ LONG':'▼ SHORT')+' '+String(st.position.asset||''),cls:st.position.side};
+  if(st.pendingOrder)return {text:'LIMIT '+(st.pendingOrder.side==='long'?'LONG':'SHORT')+' '+String(st.pendingOrder.asset||''),cls:'limit'};
+  return {text:'FLAT',cls:''};
+}
+function syncProfileTiles(){
+  document.querySelectorAll('#settingsProfiles [data-profile]').forEach(btn=>{
+    const eq=Number(btn.dataset.profile),st=eq===Number(state.startEquity)?state:loadProfile(eq),ps=profileStatusFor(st);
+    btn.innerHTML='<b>'+profileShort(eq)+'</b><small class="profileLive '+ps.cls+'">'+ps.text+'</small>';
+    btn.classList.toggle('active',eq===Number(state.startEquity));
+  });
+}
+function pendingLimitTouched(o,px){
+  if(!o||!Number.isFinite(Number(px)))return false;
+  return o.side==='long'?Number(px)<=Number(o.limitPrice):Number(px)>=Number(o.limitPrice);
+}
+function createPositionFromOrder(o,fillPrice){
+  fillPrice=Number(fillPrice);if(!o||!Number.isFinite(fillPrice))return false;
+  const tier=o.feeTier||selectedFeeTier(),entryExec='maker',openFee=feeFor(fillPrice,Number(o.qty),entryExec,tier);
+  state.equity-=openFee;state.daily-=openFee;
+  state.position={
+    side:o.side,asset:o.asset,symbol:o.symbol,entry:fillPrice,entryTime:Date.now(),qty:Number(o.qty),
+    tp:Number(o.tp),sl:Number(o.sl),tpPct:Number(o.tpPct),slPct:Number(o.slPct),leverage:Number(o.leverage),
+    feeTier:{...tier},entryExec,exitExec:o.exitExec||'taker',openFee,
+    riskPct:Number(o.riskPct),riskBudgetUsd:Number(o.riskBudgetUsd),plannedRiskUsd:Number(o.plannedRiskUsd),plannedRR:Number(o.plannedRR),
+    setup:o.setup||'LIMIT',tf:o.tf||tfLabel(),fundingAccrued:0,lastFundingRate:null,lastRelativeFundingRate:null,note:o.note||'',
+    lowest:fillPrice,highest:fillPrice,maeUsd:0,mfeUsd:0,maePct:0,mfePct:0,limitOrderId:o.id||null
+  };
+  state.pendingOrder=null;save();syncPositionLines();loadFunding();updateTradeUI();schedulePushBackendSync(true);
+  $('msg').textContent='LIMIT TELJESÜLT · '+o.side.toUpperCase()+' '+String(o.symbol||marketLabel())+' @ $'+fmtPrice(fillPrice);
+  tradeFeedback('open');return true;
+}
+function checkPendingLimit(px){
+  const o=state.pendingOrder;if(!o||state.position||String(o.asset)!==marketAsset)return false;
+  if(!pendingLimitTouched(o,px))return false;
+  return createPositionFromOrder(o,Number(o.limitPrice));
+}
+function reconcilePendingLimitFromCandles(){
+  const o=state.pendingOrder;if(!o||state.position||String(o.asset)!==marketAsset||!candles.length)return false;
+  const after=candles.filter(c=>Number(c.time)*1000>=Number(o.createdAt||0));
+  const hit=after.find(c=>o.side==='long'?Number(c.low)<=Number(o.limitPrice):Number(c.high)>=Number(o.limitPrice));
+  if(hit)return createPositionFromOrder(o,Number(o.limitPrice));
+  return false;
+}
+function reconcilePositionFromCandles(){
+  const p=state.position;if(!p||String(p.asset)!==marketAsset||!candles.length)return false;
+  const entryMs=Number(p.entryTime||0),after=candles.filter(c=>Number(c.time)*1000>=entryMs);
+  if(!after.length)return false;
+  for(const c of after){
+    const tp=p.side==='long'?Number(c.high)>=Number(p.tp):Number(c.low)<=Number(p.tp);
+    const sl=p.side==='long'?Number(c.low)<=Number(p.sl):Number(c.high)>=Number(p.sl);
+    if(tp&&sl){
+      if(!p.historyAmbiguousWarned){p.historyAmbiguousWarned=true;save();pushAppAlert('A '+profileShort(state.startEquity)+' profilnál ugyanabban az 1m gyertyában TP és SL is érintett lehetett. Nem zárom automatikusan; ellenőrizd a trade-et.','warn')}
+      return false;
+    }
+    if(tp||sl){
+      const current=lastPrice,exit=tp?Number(p.tp):Number(p.sl),reason=tp?'TP':'SL';
+      lastPrice=exit;closePosition(reason);lastPrice=current;
+      if(Number.isFinite(current))$('price').textContent='$'+fmtPrice(current);
+      updateTradeUI();return true;
+    }
+  }
+  return false;
+}
+function placeLimitOrder(sideOverride=null){
+  if(sideOverride==='long'||sideOverride==='short')setSide(sideOverride);
+  if(state.position){pushAppAlert('Ezen a profilon már van nyitott pozíció.','warn');return false}
+  if(state.pendingOrder){pushAppAlert('Ezen a profilon már van függő limit megbízás. Előbb töröld.','warn');return false}
+  const limit=Number($('limitPrice').value);if(!Number.isFinite(limit)||limit<=0){pushAppAlert('Adj meg érvényes limit árat.','warn');return false}
+  if(lastPrice!==null){
+    if(side==='long'&&limit>lastPrice){pushAppAlert('Normál LONG limitet a jelenlegi ár alá vagy közelébe tegyél.','warn');return false}
+    if(side==='short'&&limit<lastPrice){pushAppAlert('Normál SHORT limitet a jelenlegi ár fölé vagy közelébe tegyél.','warn');return false}
+  }
+  const levels=calcLevelsAt(limit,side);if(!levels)return false;
+  syncQuantity(levels);const r=riskSizing(levels,limit),tier=selectedFeeTier();
+  const qty=Math.max(assetCfg().minQty,roundQtyDown(Number($('qty').value)||assetCfg().minQty));
+  state.pendingOrder={
+    id:'LIM-'+Date.now(),side,asset:marketAsset,symbol:marketLabel(),limitPrice:limit,createdAt:Date.now(),qty,
+    tp:levels.tp,sl:levels.sl,tpPct:levels.tpPct,slPct:levels.slPct,leverage:Number($('lev').value),feeTier:{...tier},entryExec:'maker',exitExec:$('exitExec').value,
+    riskPct:r?Number(r.riskPct):Number($('riskPct').value)||.20,riskBudgetUsd:r?Number(r.budget):0,plannedRiskUsd:r?Number(r.plannedRiskUsd):0,plannedRR:r?Number(r.plannedRR):0,
+    setup:$('setupName').value.trim()||'LIMIT',tf:tfLabel(),note:$('tradeNote').value.trim()
+  };
+  save();renderPendingLimit();syncProfileTiles();schedulePushBackendSync(true);
+  $('msg').textContent=side.toUpperCase()+' LIMIT megbízás létrehozva @ $'+fmtPrice(limit)+' · '+profileShort(state.startEquity)+' profil';
+  return true;
+}
+function cancelPendingLimit(){
+  if(!state.pendingOrder)return;const old=state.pendingOrder;state.pendingOrder=null;save();renderPendingLimit();syncProfileTiles();schedulePushBackendSync(true);
+  $('msg').textContent='Limit megbízás törölve · '+String(old.symbol||'')+' @ $'+fmtPrice(old.limitPrice);
+}
+
 function tradeFeedback(kind='tap'){
   try{if(navigator.vibrate)navigator.vibrate(kind==='reverse'?[28,20,28]:kind==='close'?[32]:[18])}catch(e){}
   try{
@@ -4088,7 +4297,7 @@ function updateEntryActionUI(){
   if(p){
     if(side===p.side)$('open').textContent=side.toUpperCase()+' pozíció zárása';
     else $('open').textContent=p.side.toUpperCase()+' → '+side.toUpperCase()+' REVERSE';
-  }else $('open').textContent=(side==='long'?'LONG':'SHORT')+' pozíciónyitás';
+  }else $('open').textContent=(side==='long'?'LONG':'SHORT')+(orderType==='limit'?' LIMIT megbízás':' pozíciónyitás');
   $('open').className='primary'+(side==='short'?' short':'');
 }
 function setSide(s){
@@ -4116,7 +4325,7 @@ function requestTradeAction(targetSide,{openIfFlat=false,source='main'}={}){
   const p=state.position;
   if(!p){
     setSide(targetSide);
-    if(openIfFlat)return openPositionFromCurrentSettings(targetSide);
+    if(openIfFlat)return orderType==='limit'?placeLimitOrder(targetSide):openPositionFromCurrentSettings(targetSide);
     tradeFeedback('tap');return true;
   }
   if(p.side===targetSide)return requestCloseCurrentPosition();
@@ -4244,20 +4453,22 @@ $('toggleEMA').addEventListener('click',()=>{fixedIndicatorVisible.ema=!fixedInd
 $('toggleGestures').addEventListener('click',()=>{proGestureMode=!proGestureMode;applyProGestureMode()});
 $('replayToggle').addEventListener('click',startReplay);$('replayBack').addEventListener('click',()=>replayStep(-1));$('replayNext').addEventListener('click',()=>replayStep(1));$('replayPlay').addEventListener('click',()=>{if(!replayMode)return;if(replayTimer){clearInterval(replayTimer);replayTimer=null;$('replayPlay').textContent='▶'}else{replayTimer=setInterval(()=>replayStep(1),700);$('replayPlay').textContent='⏸'}});$('replaySlider').addEventListener('input',()=>{if(replayMode){replayIndex=Number($('replaySlider').value);candles=replaySource.slice(0,replayIndex);replayRender()}});
 $('longBtn').addEventListener('click',()=>requestTradeAction('long'));$('shortBtn').addEventListener('click',()=>requestTradeAction('short'));
+$('marketOrderBtn').addEventListener('click',()=>setOrderType('market'));$('limitOrderBtn').addEventListener('click',()=>setOrderType('limit'));$('limitPrice').addEventListener('input',updateTradeUI);$('limitFromAssist').addEventListener('click',()=>{const s=entryAssistSuggestion;if(!s||!s.valid)return;const p=(Number(s.entryLow)+Number(s.entryHigh))/2;$('limitPrice').value=Number(p).toFixed(assetCfg().priceDecimals);setOrderType('limit');updateTradeUI()});$('cancelLimit').addEventListener('click',cancelPendingLimit);
 ['tpPct','slPct','riskPct'].forEach(id=>$(id).addEventListener('input',()=>{updateTradeUI();syncShellUi()}));
 $('qty').addEventListener('input',()=>{if($('qtyMode').value==='manual')updateTradeUI()});
-['lev','feeTier','entryExec','exitExec','qtyMode'].forEach(id=>$(id).addEventListener('change',()=>{updateTradeUI();syncShellUi()}));
+['lev','feeTier','exitExec','qtyMode'].forEach(id=>$(id).addEventListener('change',()=>{updateTradeUI();syncShellUi()}));$('entryExec').addEventListener('change',()=>setOrderType($('entryExec').value==='maker'?'limit':'market'));
 $('profileSelect').addEventListener('change',()=>switchProfile(Number($('profileSelect').value)));
 function openPositionFromCurrentSettings(sideOverride=null,feedbackKind='open'){
   if(sideOverride==='long'||sideOverride==='short')setSide(sideOverride);
   if(state.position){$('msg').textContent='Már van nyitott pozíció.';return false}
+  if(state.pendingOrder){$('msg').textContent='Van függő LIMIT ezen a profilon. Előbb töröld vagy várd meg a teljesülést.';return false}
   if(lastPrice===null){$('msg').textContent='Nincs élő Kraken ár.';return false}
-  const l=calcLevels();
+  const l=calcLevelsAt(lastPrice,side);
   if(!l){$('msg').textContent='TP/SL szintek nem számolhatók.';return false}
   syncQuantity(l);
-  const r=riskSizing(l);
+  const r=riskSizing(l,lastPrice);
   const qty=Math.max(assetCfg().minQty,roundQtyDown(Number($('qty').value)||assetCfg().minQty)),tier=selectedFeeTier();
-  const entryExec=$('entryExec').value,exitExec=$('exitExec').value;
+  const entryExec='taker',exitExec=$('exitExec').value;
   const openFee=feeFor(lastPrice,qty,entryExec,tier);
   state.equity-=openFee;
   state.daily-=openFee;
@@ -4279,8 +4490,8 @@ function openPositionFromCurrentSettings(sideOverride=null,feedbackKind='open'){
 }
 $('applyEntryAssist').addEventListener('click',()=>{
   const s=entryAssistSuggestion;if(!s||!s.valid)return;
-  $('tpPct').value=s.tpPct.toFixed(2);$('slPct').value=s.slPct.toFixed(2);updateTradeUI();
-  $('msg').textContent='Entry Assist TP/SL alkalmazva · TP '+s.tpPct.toFixed(2)+'% · SL '+s.slPct.toFixed(2)+'%';
+  $('tpPct').value=s.tpPct.toFixed(2);$('slPct').value=s.slPct.toFixed(2);if(orderType==='limit')$('limitPrice').value=((Number(s.entryLow)+Number(s.entryHigh))/2).toFixed(assetCfg().priceDecimals);updateTradeUI();
+  $('msg').textContent='Entry Assist TP/SL alkalmazva'+(orderType==='limit'?' · Limit ár is beállítva':'')+' · TP '+s.tpPct.toFixed(2)+'% · SL '+s.slPct.toFixed(2)+'%';
 });
 $('selectEntryAssistSide').addEventListener('click',()=>{
   const s=entryAssistSuggestion;if(!s||!s.valid||!s.side)return;
@@ -4403,7 +4614,7 @@ $('resetAll').addEventListener('click',()=>{
 });
 
 $('closeDay').addEventListener('click',()=>{
-  if(state.position){$('dayMsg').textContent='Napzárás előtt zárd a nyitott pozíciót.';return}
+  if(state.position||state.pendingOrder){$('dayMsg').textContent=state.position?'Napzárás előtt zárd a nyitott pozíciót.':'Napzárás előtt töröld a függő limit megbízást.';return}
   const closedDay=state.day;
   const dayTrades=state.trades.filter(t=>t.day===closedDay);
   if(!dayTrades.length){$('dayMsg').textContent='A mai napon még nincs lezárt trade.';return}
@@ -4434,6 +4645,8 @@ $('app').classList.toggle('ui-lite',uiMode==='lite');
 $('liteDashboard').classList.toggle('hidden',uiMode!=='lite');
 applyTheme(themeMode,{save:false,reloadTv:false});
 updateAssetUi();
+syncOrderTypeUI();
+syncProfileTiles();
 syncShellUi();
 startLiteSync();
 if(state.position)syncPositionLines();
@@ -4467,7 +4680,7 @@ window.addEventListener('offline',()=>{
   if(ws){try{ws.close()}catch(e){}}
 });
 
-Promise.all([loadHistory()]).finally(async()=>{if(uiMode==='lite'&&interval!==1)await changeInterval(1);connect();refreshMTF().finally(startMtfLiveEngine);mtfTimer=setInterval(refreshMTF,60000);syncLiteUi(true)});
+Promise.all([loadHistory()]).finally(async()=>{if(uiMode==='lite'&&interval!==1)await changeInterval(1);reconcilePendingLimitFromCandles();reconcilePositionFromCandles();connect();refreshMTF().finally(startMtfLiveEngine);mtfTimer=setInterval(refreshMTF,60000);syncLiteUi(true)});
 renderFlowUI();updateTradeUI();
 })();
 </script>
