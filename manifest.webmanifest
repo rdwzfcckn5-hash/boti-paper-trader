@@ -1,8 +1,8 @@
 {
   "id": "/boti-paper-trader/",
-  "name": "Boti Kraken Paper Trader V10.6 ENTRY ASSIST",
+  "name": "Boti Kraken Paper Trader V10.7 TV STYLE SIGNALS",
   "short_name": "Boti Trader",
-  "start_url": "./?v=10.6.0",
+  "start_url": "./?v=10.7.0",
   "scope": "./",
   "display": "standalone",
   "background_color": "#071018",

@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="boti-icon-v1041-180.png?v=1041">
 <link rel="icon" type="image/png" sizes="192x192" href="boti-icon-v1041-192.png?v=1041">
 <link rel="icon" type="image/png" sizes="512x512" href="boti-icon-v1041-512.png?v=1041">
-<title>Boti Kraken Paper Trader V10.6 ENTRY ASSIST</title>
+<title>Boti Kraken Paper Trader V10.7 TV STYLE SIGNALS</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -89,7 +89,7 @@ body{min-height:100vh}
 .mtf{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
 .mtfbox{text-align:center;border:1px solid #223541;border-radius:9px;background:#0a141c;padding:7px 4px}
 .mtfbox b{display:block;font-size:11px;margin-top:3px}
-.entryAssist{margin-top:12px;border:1px solid #2a4050;border-radius:12px;background:#09141c;padding:10px}
+.entryAssist{margin:0 0 12px;border:1px solid #2a4050;border-radius:12px;background:#09141c;padding:10px;position:sticky;top:10px;z-index:12;box-shadow:0 10px 24px rgba(0,0,0,.28)}
 .entryAssistHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
 .entryAssistSignal{font-size:21px;font-weight:950;letter-spacing:-.02em}
 .entryAssistSignal.good{color:var(--green)}.entryAssistSignal.bad{color:var(--red)}.entryAssistSignal.warn{color:var(--amber)}
@@ -167,6 +167,23 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
   #tvChart{height:620px}
 }
 @media(max-width:760px){.chartUtilityRow{min-height:40px}.chartPositionBox{max-width:190px;min-width:0;margin:0;padding:6px 8px;pointer-events:auto}.chartPositionBox.free{position:absolute}.chartPositionBox .compactPnl{font-size:12px}.chartPositionBox .compactMeta{font-size:8px}.quickHudButtons{width:176px}.quickHudBtn{min-height:31px}.gestureBadge{font-size:9px;padding:4px 6px}}
+
+/* V10.7 TradingView-style SIMPLE chart */
+.chartPanel{background:#131722!important;border-color:#2a2e39!important}
+#mainChartWrap{background:#131722;border:1px solid #2a2e39;border-radius:4px}
+#mainChart{border-top:0!important}
+.marketHead{border-bottom:1px solid #2a2e39}
+.terminalTools{background:#131722;border:1px solid #2a2e39;border-radius:4px;padding:6px;margin-bottom:6px}
+.terminalTools .btn{border-color:#363a45;background:#1e222d;color:#b2b5be}
+.terminalTools .btn.active{background:#2962ff22;border-color:#2962ff;color:#d8e6ff}
+.confluenceStrip{position:absolute!important;top:9px;left:10px;right:68px;z-index:10;margin:0!important;pointer-events:none;gap:5px!important}
+.confPill{background:rgba(19,23,34,.88)!important;border-color:#363a45!important;border-radius:4px!important;padding:4px 6px!important;font-size:10px!important;backdrop-filter:blur(5px)}
+.confPill.good{color:#26a69a!important;border-color:#26a69a88!important}.confPill.bad{color:#ef5350!important;border-color:#ef535088!important}.confPill.warn{color:#f0b90b!important;border-color:#f0b90b66!important}
+#macdPane{margin-top:6px;border:1px solid #2a2e39;border-radius:4px;overflow:hidden;background:#131722}
+#macdPane .miniHead{padding:5px 8px;background:#131722;border-bottom:1px solid #2a2e39;color:#b2b5be}
+#macdChart{height:145px!important}
+.indicatorHelp{font-size:10px;color:#787b86;margin-left:auto;white-space:nowrap}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -176,7 +193,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V10.6 ENTRY ASSIST</div>
+      <div class="brand">Boti Kraken Paper Trader V10.7 TV STYLE SIGNALS</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
@@ -294,11 +311,12 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
           <div id="simplePane">
             <div id="ohlcBar" class="ohlcbar">Mozgasd a keresztet a gyertyákon az OHLC adatokhoz.</div>
             <div class="terminalTools">
-              <button id="toggleBB" class="btn active" type="button">BB 20/2</button>
-              <button id="toggleStructure" class="btn active" type="button">Structure</button>
-              <button id="toggleSession" class="btn active" type="button">Session levels</button>
+              <button id="toggleEMA" class="btn active" type="button">EMA 9/21</button>
+              <button id="toggleVWAPFixed" class="btn active" type="button">VWAP</button>
+              <button id="toggleSuperFixed" class="btn active" type="button">Supertrend</button>
+              <button id="toggleMACDFixed" class="btn active" type="button">MACD</button>
               <button id="toggleGestures" class="btn active" type="button">📱 PRO gesztus</button>
-              <span class="muted">ATR · ADX/DMI · Volume spike · BOS/CHOCH · Order flow · Simple bull/bear engine</span>
+              <span class="indicatorHelp">A chart tetején: BULL / BEAR státusz · a vonalak közvetlenül a gyertyákon</span>
             </div>
             <div id="mainChartWrap">
               <div id="trendTint" class="trendTint"></div>
@@ -324,10 +342,9 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               <input id="replaySlider" type="range" min="0" max="100" value="100" disabled>
               <span id="replayStatus" class="replayBadge">LIVE</span>
             </div>
-            <div class="indicatorPane">
-              <div class="miniHead"><b>RSI 14</b><span>30 / 70 zónák</span></div>
-              <div id="rsiChart"></div>
-              <div class="miniHead"><b>MACD 12/26/9</b><span>histogram + MACD + signal</span></div>
+            <div id="rsiChart" style="display:none;height:1px"></div>
+            <div id="macdPane">
+              <div class="miniHead"><b>MACD 12/26/9</b><span>kék = MACD · sárga = signal · oszlop = momentum</span></div>
               <div id="macdChart"></div>
             </div>
             <div class="legend">
@@ -390,10 +407,30 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 
       <aside class="sidecol">
         <div class="panel trendCard">
+          <div class="entryAssist">
+            <div class="entryAssistHead">
+              <div><div class="lab">ENTRY ASSIST · TECHNIKAI JAVASLAT</div><div id="entryAssistSignal" class="entryAssistSignal warn">VÁRAKOZÁS</div></div>
+              <div id="entryAssistStrength" class="confPill warn">—</div>
+            </div>
+            <div class="entryAssistGrid">
+              <div class="entryAssistItem"><span class="lab">Belépő zóna</span><b id="entryAssistEntry">—</b></div>
+              <div class="entryAssistItem"><span class="lab">TP</span><b id="entryAssistTp">—</b></div>
+              <div class="entryAssistItem"><span class="lab">SL</span><b id="entryAssistSl">—</b></div>
+              <div class="entryAssistItem"><span class="lab">RR</span><b id="entryAssistRR">—</b></div>
+            </div>
+            <div id="entryAssistWhy" class="entryAssistWhy">A rendszer a 1m / 5m / 15m / 1h irányt és az 5 perces volatilitást figyeli.</div>
+            <div class="entryAssistActions">
+              <button id="applyEntryAssist" class="btn" type="button" disabled>TP / SL alkalmazása</button>
+              <button id="selectEntryAssistSide" class="btn" type="button" disabled>Irány kiválasztása</button>
+            </div>
+          </div>
+
           <div class="trendTitle">SIMPLE TREND ENGINE · FIX 4 INDIKÁTOR</div>
           <div id="trendState" class="trendState warn">● VÁRAKOZÁS</div>
           <div id="trendText" class="muted">EMA 9/21 · VWAP · MACD · Supertrend · minden idősíkon ugyanaz.</div>
           <div class="confbar"><div id="confFill" class="conffill"></div></div>
+
+
 
           <div class="setup">
             <div class="lab">EGYSZERŰ JELZÉS</div>
@@ -423,23 +460,6 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
             <div class="mtfbox"><span class="lab">1h</span><b id="mtf60">—</b></div>
           </div>
 
-          <div class="entryAssist">
-            <div class="entryAssistHead">
-              <div><div class="lab">ENTRY ASSIST · TECHNIKAI JAVASLAT</div><div id="entryAssistSignal" class="entryAssistSignal warn">VÁRAKOZÁS</div></div>
-              <div id="entryAssistStrength" class="confPill warn">—</div>
-            </div>
-            <div class="entryAssistGrid">
-              <div class="entryAssistItem"><span class="lab">Belépő zóna</span><b id="entryAssistEntry">—</b></div>
-              <div class="entryAssistItem"><span class="lab">TP</span><b id="entryAssistTp">—</b></div>
-              <div class="entryAssistItem"><span class="lab">SL</span><b id="entryAssistSl">—</b></div>
-              <div class="entryAssistItem"><span class="lab">RR</span><b id="entryAssistRR">—</b></div>
-            </div>
-            <div id="entryAssistWhy" class="entryAssistWhy">A rendszer a 1m / 5m / 15m / 1h irányt és az 5 perces volatilitást figyeli.</div>
-            <div class="entryAssistActions">
-              <button id="applyEntryAssist" class="btn" type="button" disabled>TP / SL alkalmazása</button>
-              <button id="selectEntryAssistSide" class="btn" type="button" disabled>Irány kiválasztása</button>
-            </div>
-          </div>
         </div>
 
         <div id="orderEntryCard" class="panel tradeEntryCard">
@@ -524,7 +544,6 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
             </div>
 
             <textarea id="tradeNote" class="hidden"></textarea>
-            <div id="calc" class="calc">Várakozás élő Kraken árra…</div>
             <button id="open" class="primary" type="submit">LONG pozíciónyitás</button>
             <div id="msg" class="note"></div>
           </form>
@@ -651,7 +670,7 @@ let prevHighLine=null,prevLowLine=null,dayHighLine=null,dayLowLine=null;
 let swingLines=[];
 let lastClosedTradeMarker=null;
 let currentVisualState={trend:'NEUTRAL',confidence:0,structure:'—',rsi:null,macd:null,adx:null,atr:null,volX:null,rr:null};
-let showBB=true,showStructure=true,showSession=true;
+let showBB=false,showStructure=false,showSession=false;
 let proGestureMode=localStorage.getItem('botiProGestureMode')!=='0';
 let lastChartTapAt=0;
 const bookBids=new Map(),bookAsks=new Map();
@@ -700,16 +719,16 @@ const FUNDING_SYMBOLS=['PF_XBTUSD','PF_BTCUSD'];
 if(!window.LightweightCharts){$('status').textContent='CHART LIBRARY HIBA';return}
 
 const chartCommon={
-  layout:{background:{type:'solid',color:'#0d1720'},textColor:'#9fb1bf',fontSize:11},
-  grid:{vertLines:{color:'#162631'},horzLines:{color:'#162631'}},
-  rightPriceScale:{borderColor:'#29404f'},
-  timeScale:{borderColor:'#29404f',timeVisible:true,secondsVisible:false,rightOffset:8,barSpacing:6,minBarSpacing:1.3},
+  layout:{background:{type:'solid',color:'#131722'},textColor:'#b2b5be',fontSize:11},
+  grid:{vertLines:{color:'#2a2e3955'},horzLines:{color:'#2a2e3955'}},
+  rightPriceScale:{borderColor:'#2a2e39'},
+  timeScale:{borderColor:'#2a2e39',timeVisible:true,secondsVisible:false,rightOffset:8,barSpacing:6,minBarSpacing:1.3},
   crosshair:{mode:LightweightCharts.CrosshairMode.Normal}
 };
 
 const mainChart=LightweightCharts.createChart($('mainChart'),{
   ...chartCommon,
-  rightPriceScale:{borderColor:'#29404f',scaleMargins:{top:.05,bottom:.20}},
+  rightPriceScale:{borderColor:'#2a2e39',scaleMargins:{top:.07,bottom:.16}},
   handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:true},
   handleScale:{axisPressedMouseMove:{time:true,price:true},mouseWheel:true,pinch:true},
   kineticScroll:{mouse:true,touch:true}
@@ -728,16 +747,16 @@ const macdChart=LightweightCharts.createChart($('macdChart'),{
 });
 
 const candleSeries=mainChart.addCandlestickSeries({
-  upColor:'#22c786',downColor:'#ef5a6a',borderUpColor:'#22c786',borderDownColor:'#ef5a6a',
-  wickUpColor:'#22c786',wickDownColor:'#ef5a6a'
+  upColor:'#089981',downColor:'#f23645',borderUpColor:'#089981',borderDownColor:'#f23645',
+  wickUpColor:'#089981',wickDownColor:'#f23645'
 });
-const ema9Series=mainChart.addLineSeries({color:'#54d4ff',lineWidth:1,priceLineVisible:false,lastValueVisible:false});
-const ema21Series=mainChart.addLineSeries({color:'#ad7dff',lineWidth:1,priceLineVisible:false,lastValueVisible:false});
+const ema9Series=mainChart.addLineSeries({color:'#2962ff',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
+const ema21Series=mainChart.addLineSeries({color:'#ff9800',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
 const ema50Series=mainChart.addLineSeries({color:'#7d88ff',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
 const ema200Series=mainChart.addLineSeries({color:'#e4aa45',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
-const vwapSeries=mainChart.addLineSeries({color:'#f0f2f4',lineWidth:1,lineStyle:2,priceLineVisible:false,lastValueVisible:false});
-const stBullSeries=mainChart.addLineSeries({color:'#22c786',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
-const stBearSeries=mainChart.addLineSeries({color:'#ef5a6a',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
+const vwapSeries=mainChart.addLineSeries({color:'#e0e3eb',lineWidth:2,lineStyle:2,priceLineVisible:false,lastValueVisible:false});
+const stBullSeries=mainChart.addLineSeries({color:'#26a69a',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
+const stBearSeries=mainChart.addLineSeries({color:'#ef5350',lineWidth:2,priceLineVisible:false,lastValueVisible:false});
 bbUpperSeries=mainChart.addLineSeries({color:'#6e7cff99',lineWidth:1,lineStyle:1,priceLineVisible:false,lastValueVisible:false});
 bbMidSeries=mainChart.addLineSeries({color:'#6e7cff55',lineWidth:1,lineStyle:2,priceLineVisible:false,lastValueVisible:false});
 bbLowerSeries=mainChart.addLineSeries({color:'#6e7cff99',lineWidth:1,lineStyle:1,priceLineVisible:false,lastValueVisible:false});
@@ -825,14 +844,13 @@ function updateTrendTint(stateName){
 function updateConfluenceStrip(v,a,i,atr,adx,volX){
   const host=$('confluenceStrip'); if(!host)return;
   const pills=[
-    ['Trend',v.state==='BULLISH'?'BULL':v.state==='BEARISH'?'BEAR':'WAIT',v.state==='BULLISH'?'good':v.state==='BEARISH'?'bad':'warn'],
+    ['IRÁNY',v.state==='BULLISH'?'▲ BULL':v.state==='BEARISH'?'▼ BEAR':'WAIT',v.state==='BULLISH'?'good':v.state==='BEARISH'?'bad':'warn'],
     ['EMA 9/21',labelVote(v.items.fast),v.items.fast>0?'good':v.items.fast<0?'bad':'warn'],
     ['VWAP',labelVote(v.items.vwap),v.items.vwap>0?'good':v.items.vwap<0?'bad':'warn'],
     ['MACD',labelVote(v.items.macd),v.items.macd>0?'good':v.items.macd<0?'bad':'warn'],
-    ['Supertrend',labelVote(v.items.super),v.items.super>0?'good':v.items.super<0?'bad':'warn'],
-    ['Rule',v.tieBreakUsed?'2-2 → ST':'3/4 megerősítve',v.tieBreakUsed?'warn':'neutral']
+    ['ST 10/3',labelVote(v.items.super),v.items.super>0?'good':v.items.super<0?'bad':'warn']
   ];
-  host.innerHTML=pills.map(([lab,val,cls])=>'<span class="confPill ' + cls + '"><b>' + lab + '</b> ' + val + '</span>').join('');
+  host.innerHTML=pills.map(([lab,val,cls])=>'<span class="confPill '+cls+'"><b>'+lab+'</b>&nbsp;'+val+'</span>').join('');
 }
 function nearestCandleTimeFromMs(ms){
   if(!candles.length)return null;
@@ -1296,7 +1314,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.6.0',
+        appVersion:'10.7.0',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -1930,7 +1948,7 @@ function renderAllIndicators(){
   }).filter(Boolean));
 
   const markers=[];let prev='NEUTRAL';
-  for(let i=199;i<candles.length;i++){
+  for(let i=30;i<candles.length;i++){
     const v=voteAt(a,candles,i);
     if(v.state!==prev&&(v.state==='BULLISH'||v.state==='BEARISH')){
       markers.push({
@@ -2506,13 +2524,6 @@ function updateTradeUI(){
       $('plannedRR').textContent=(r.plannedRR>=0?'+':'')+r.plannedRR.toFixed(2)+'R';
       $('riskPerBtc').textContent='$'+fmt(r.riskPerBtc);
     }
-    $('calc').innerHTML='<b>'+side.toUpperCase()+'</b> · Entry $'+fmt(lastPrice)+
-      '<br>Notional $'+fmt(notional)+' · Margin @'+lev+'x ≈ $'+fmt(margin)+
-      '<br>Risk '+(r?r.riskPct.toFixed(2):'—')+'% · Qty '+q.toFixed(3)+' BTC · Planned RR '+(r?r.plannedRR.toFixed(2):'—')+'R'+
-      '<br>Nyitás: '+entryType.toUpperCase()+' '+feePctText(feeRate(entryType,tier))+' = $'+fmt(openFee)+
-      '<br>Zárás becslés: '+exitType.toUpperCase()+' '+feePctText(feeRate(exitType,tier))+' ≈ $'+fmt(estCloseFee)+
-      '<br><b>Becsült round-trip fee ≈ $'+fmt(openFee+estCloseFee)+'</b>'+
-      '<br>TP $'+fmt(l.tp)+' ('+l.tpPct.toFixed(2)+'%) · SL $'+fmt(l.sl)+' ('+l.slPct.toFixed(2)+'%)';
   }
 
   const p=state.position;
@@ -2731,9 +2742,24 @@ $('recent').addEventListener('click',showRecent);$('allHistory').addEventListene
 $('modeSimple').addEventListener('click',()=>setMode('simple'));$('modePro').addEventListener('click',()=>setMode('pro'));
 $('maxChart').addEventListener('click',()=>{$('app').classList.toggle('maxchart');$('maxChart').classList.toggle('active');setTimeout(resizeCharts,50)});
 $('chartFullscreen').addEventListener('click',toggleChartFullscreen);document.addEventListener('fullscreenchange',updateFullscreenButton);document.addEventListener('webkitfullscreenchange',updateFullscreenButton);
-$('toggleBB').addEventListener('click',()=>{showBB=!showBB;$('toggleBB').classList.toggle('active',showBB);scheduleIndicators(true)});
-$('toggleStructure').addEventListener('click',()=>{showStructure=!showStructure;$('toggleStructure').classList.toggle('active',showStructure);scheduleIndicators(true)});
-$('toggleSession').addEventListener('click',()=>{showSession=!showSession;$('toggleSession').classList.toggle('active',showSession);renderKeyLevels()});
+let fixedIndicatorVisible={ema:true,vwap:true,super:true,macd:true};
+function applyFixedIndicatorVisibility(){
+  ema9Series.applyOptions({visible:fixedIndicatorVisible.ema});
+  ema21Series.applyOptions({visible:fixedIndicatorVisible.ema});
+  vwapSeries.applyOptions({visible:fixedIndicatorVisible.vwap});
+  stBullSeries.applyOptions({visible:fixedIndicatorVisible.super});
+  stBearSeries.applyOptions({visible:fixedIndicatorVisible.super});
+  $('macdPane').style.display=fixedIndicatorVisible.macd?'block':'none';
+  $('toggleEMA').classList.toggle('active',fixedIndicatorVisible.ema);
+  $('toggleVWAPFixed').classList.toggle('active',fixedIndicatorVisible.vwap);
+  $('toggleSuperFixed').classList.toggle('active',fixedIndicatorVisible.super);
+  $('toggleMACDFixed').classList.toggle('active',fixedIndicatorVisible.macd);
+  setTimeout(resizeCharts,20);
+}
+$('toggleEMA').addEventListener('click',()=>{fixedIndicatorVisible.ema=!fixedIndicatorVisible.ema;applyFixedIndicatorVisibility()});
+$('toggleVWAPFixed').addEventListener('click',()=>{fixedIndicatorVisible.vwap=!fixedIndicatorVisible.vwap;applyFixedIndicatorVisibility()});
+$('toggleSuperFixed').addEventListener('click',()=>{fixedIndicatorVisible.super=!fixedIndicatorVisible.super;applyFixedIndicatorVisibility()});
+$('toggleMACDFixed').addEventListener('click',()=>{fixedIndicatorVisible.macd=!fixedIndicatorVisible.macd;applyFixedIndicatorVisibility()});
 $('toggleGestures').addEventListener('click',()=>{proGestureMode=!proGestureMode;applyProGestureMode()});
 $('replayToggle').addEventListener('click',startReplay);$('replayBack').addEventListener('click',()=>replayStep(-1));$('replayNext').addEventListener('click',()=>replayStep(1));$('replayPlay').addEventListener('click',()=>{if(!replayMode)return;if(replayTimer){clearInterval(replayTimer);replayTimer=null;$('replayPlay').textContent='▶'}else{replayTimer=setInterval(()=>replayStep(1),700);$('replayPlay').textContent='⏸'}});$('replaySlider').addEventListener('input',()=>{if(replayMode){replayIndex=Number($('replaySlider').value);candles=replaySource.slice(0,replayIndex);replayRender()}});
 $('longBtn').addEventListener('click',()=>requestTradeAction('long'));$('shortBtn').addEventListener('click',()=>requestTradeAction('short'));
