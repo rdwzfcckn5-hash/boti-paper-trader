@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
-<link rel="manifest" href="manifest.webmanifest?v=1101">
+<link rel="manifest" href="manifest.webmanifest?v=1110">
 <link rel="apple-touch-icon" sizes="180x180" href="boti-icon-v1041-180.png?v=1041">
 <link rel="icon" type="image/png" sizes="192x192" href="boti-icon-v1041-192.png?v=1041">
 <link rel="icon" type="image/png" sizes="512x512" href="boti-icon-v1041-512.png?v=1041">
-<title>Botond Trading Platform V11.0.1 · iPHONE SPLASH FIX</title>
+<title>Botond Trading Platform V11.1 · MENU + LITE / PRO</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -327,6 +327,152 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
   .analyticsGrid{grid-template-columns:1fr 1fr}
 }
 
+
+/* ============================================================
+   V11.1 SHELL + MENU + LITE / PRO
+   ============================================================ */
+#mainTabs{display:none!important}
+.topRight{display:flex;align-items:center;gap:10px}
+.hamburgerBtn{
+  width:46px;height:46px;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  gap:5px;border:1px solid #29404f;border-radius:13px;background:#09141c;padding:0;
+}
+.hamburgerBtn span{display:block;width:21px;height:2px;border-radius:2px;background:#eef5fb}
+.hamburgerBtn:active{transform:scale(.97);background:#101e28}
+
+.menuBackdrop{
+  position:fixed;inset:0;z-index:9990;background:rgba(0,0,0,.58);backdrop-filter:blur(3px);
+}
+.appMenu{
+  position:fixed;z-index:9991;top:0;right:0;height:100dvh;width:min(390px,91vw);
+  background:#071018;border-left:1px solid #20313d;box-shadow:-24px 0 60px rgba(0,0,0,.46);
+  padding:calc(14px + env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom));
+  transform:translateX(105%);transition:transform .25s ease;overflow:auto;
+}
+.appMenu.open{transform:translateX(0)}
+.menuHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:4px 2px 16px}
+.menuEyebrow{font-size:10px;color:#7f95a5;font-weight:900;letter-spacing:.08em}
+.menuTitle{font-size:28px;font-weight:950;margin-top:2px}
+.menuClose{width:40px;height:40px;border:1px solid #29404f;border-radius:12px;background:#0b151d;color:#eef5fb;font-size:25px}
+.menuSnapshot{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px}
+.menuSnapshot>div{border:1px solid #20313d;border-radius:12px;background:#0d1821;padding:10px;min-width:0}
+.menuSnapshot b{display:block;margin-top:3px;font-size:14px;overflow:hidden;text-overflow:ellipsis}
+.menuGroup{margin-top:16px}
+.menuGroupTitle{font-size:10px;color:#7f95a5;font-weight:900;letter-spacing:.08em;margin:0 0 7px 3px}
+.menuItem{
+  width:100%;min-height:54px;border:1px solid #20313d;background:#0b151d;color:#eef5fb;
+  border-radius:13px;margin:0 0 7px;padding:0 14px;display:grid;grid-template-columns:28px 1fr 18px;
+  align-items:center;text-align:left;font-size:15px;
+}
+.menuItem.active{border-color:#6e7cff;background:#111a35}
+.menuItem i{font-style:normal;font-size:23px;color:#8da2b2;text-align:right}
+.modeSwitch{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.modeSwitch button{
+  min-height:49px;border:1px solid #29404f;border-radius:12px;background:#0b151d;color:#eef5fb;font-weight:950
+}
+.modeSwitch button.active{background:#6e7cff;border-color:#6e7cff}
+.menuHint{font-size:11px;line-height:1.45;color:#8da2b2;margin-top:8px}
+.menuDanger{
+  width:100%;min-height:48px;margin-top:22px;border:1px solid #7c3540;border-radius:12px;
+  background:#2b1017;color:#ff9aa6;font-weight:900
+}
+
+/* SETTINGS */
+.settingsPage{padding:2px 0 18px}
+.settingsHead{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.settingsBadge{font-size:10px;font-weight:900;color:#6e7cff;letter-spacing:.08em}
+.settingsTitle{font-size:30px;font-weight:950}
+.settingsStack{display:flex;flex-direction:column;gap:9px}
+.settingsTab{border:1px solid #20313d;border-radius:14px;background:#0d1720;overflow:hidden}
+.settingsTabHead{
+  width:100%;min-height:58px;border:0;background:#09141c;color:#eef5fb;
+  display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:15px;font-weight:950
+}
+.settingsTabHead i{font-style:normal;font-size:20px;transition:transform .18s}
+.settingsTab:not(.open) .settingsTabHead i{transform:rotate(-90deg)}
+.settingsTabBody{padding:13px}
+.settingsTab:not(.open) .settingsTabBody{display:none}
+.settingsModeCards{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.settingsModeCard{
+  min-height:112px;border:1px solid #29404f;border-radius:14px;background:#0b151d;color:#eef5fb;padding:13px;text-align:left
+}
+.settingsModeCard b{font-size:20px}.settingsModeCard span{display:block;margin-top:6px;color:#8da2b2;font-size:11px;line-height:1.45}
+.settingsModeCard.active{border-color:#6e7cff;background:#111a35}
+.profileTiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.profileTiles button{
+  min-height:48px;border:1px solid #29404f;border-radius:11px;background:#0b151d;color:#eef5fb;font-weight:950
+}
+.profileTiles button.active{background:#6e7cff;border-color:#6e7cff}
+.settingsInfo{margin-top:9px;padding:10px;border-radius:10px;background:#101e28;color:#b9c8d3;font-size:12px}
+.settingsRowCard{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #20313d;border-radius:11px;background:#0b151d;padding:11px}
+.settingsRowCard b{display:block;margin-top:3px}
+.settingsGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.settingsWideBtn{width:100%;margin-top:10px}
+
+/* PRO ACCORDION */
+.proSectionHead{
+  width:100%;min-height:46px;border:0;border-bottom:1px solid #20313d;background:#09141c;color:#eef5fb;
+  display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-weight:950;text-align:left
+}
+.proSectionHead i{font-style:normal;color:#8da2b2;font-size:19px;transition:transform .18s}
+.proFold.collapsed>.proSectionBody{display:none}
+.proFold.collapsed>.proSectionHead i{transform:rotate(-90deg)}
+.proFold>.proSectionBody{display:block}
+
+/* LITE */
+.liteDashboard{display:flex;flex-direction:column;gap:9px}
+.liteHero{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #20313d;
+  border-radius:15px;background:linear-gradient(145deg,#101b29,#0a141c);padding:13px
+}
+.liteEyebrow{font-size:9px;color:#6e7cff;font-weight:950;letter-spacing:.09em}
+.liteHeadline{font-size:20px;font-weight:950;margin-top:2px}
+.liteProfilePill{min-width:80px;border:1px solid #29404f;border-radius:12px;background:#09141c;padding:8px 11px;text-align:center}
+.liteProfilePill span{display:block;font-size:8px;color:#8da2b2}.liteProfilePill b{font-size:18px}
+.liteAccordion{border:1px solid #20313d;border-radius:14px;background:#0d1720;overflow:hidden}
+.liteAccHead{
+  width:100%;min-height:52px;border:0;background:#09141c;color:#eef5fb;display:flex;align-items:center;
+  justify-content:space-between;padding:0 13px;font-size:13px;font-weight:950
+}
+.liteAccHead i{font-style:normal;font-size:18px;transition:transform .18s}
+.liteAccordion:not(.open) .liteAccHead i{transform:rotate(-90deg)}
+.liteAccordion:not(.open) .liteAccBody{display:none}
+.liteAccBody{padding:10px}
+.liteAssistTop{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.liteSignal{font-size:25px;font-weight:950;margin-top:2px}.liteSignal.good{color:#22c786}.liteSignal.bad{color:#ef5a6a}.liteSignal.warn{color:#e5ac43}
+.liteAssistGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.liteAssistGrid>div,.liteNetGrid>div{border:1px solid #20313d;border-radius:10px;background:#101e28;padding:9px}
+.liteAssistGrid span,.liteNetGrid span{display:block;color:#8da2b2;font-size:9px}.liteAssistGrid b,.liteNetGrid b{display:block;margin-top:3px;font-size:12px}
+.liteWhy{margin-top:8px;padding:9px;border:1px solid #20313d;border-radius:10px;background:#0b151d;color:#bdcbd5;font-size:11px;line-height:1.45}
+.liteWide{width:100%;margin-top:8px}
+.liteChartHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.liteChartHead span{font-weight:950}
+.liteMainChart{height:330px;width:100%}
+.liteNetGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.liteOneSecGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.liteMiniCard{border:1px solid #20313d;border-radius:10px;background:#0b151d;padding:7px}
+.liteOneSecChart{height:145px;width:100%}
+.liteTradeDock{
+  position:sticky;bottom:max(7px,env(safe-area-inset-bottom));z-index:45;display:grid;grid-template-columns:1fr 1fr;
+  gap:8px;padding:8px;border:1px solid #29404f;border-radius:15px;background:rgba(7,16,24,.93);backdrop-filter:blur(10px);
+  box-shadow:0 10px 34px rgba(0,0,0,.38)
+}
+.liteTradeBtn{min-height:60px;border:0;border-radius:12px;color:#fff;font-size:17px;font-weight:950}
+.liteTradeBtn.long{background:#139b68}.liteTradeBtn.short{background:#c94454}
+#app.ui-lite .modebar,#app.ui-lite .layout,#app.ui-lite #mobileBottomDock{display:none!important}
+#app:not(.ui-lite) #liteDashboard{display:none!important}
+
+@media(max-width:700px){
+  .top{align-items:flex-start}
+  .topRight{width:100%;justify-content:space-between}
+  .live{font-size:12px}
+  .settingsModeCards{grid-template-columns:1fr}
+  .settingsGrid{grid-template-columns:1fr 1fr}
+  .liteMainChart{height:300px}
+  .liteOneSecGrid{grid-template-columns:1fr}
+  .liteOneSecChart{height:155px}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -364,11 +510,53 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Botond Trading Platform V11.0.1</div>
+      <div class="brand">Botond Trading Platform V11.1</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
-    <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
+    <div class="topRight">
+      <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
+      <button id="hamburgerBtn" class="hamburgerBtn" type="button" aria-label="Menü" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
+
+
+  <div id="menuBackdrop" class="menuBackdrop hidden" aria-hidden="true"></div>
+  <aside id="appMenu" class="appMenu" aria-hidden="true">
+    <div class="menuHead">
+      <div>
+        <div class="menuEyebrow">BOTOND TRADING PLATFORM</div>
+        <div class="menuTitle">Főmenü</div>
+      </div>
+      <button id="menuClose" class="menuClose" type="button" aria-label="Menü bezárása">×</button>
+    </div>
+
+    <div class="menuSnapshot">
+      <div><span class="lab">Mód</span><b id="menuModeLabel">PRO</b></div>
+      <div><span class="lab">Profil</span><b id="menuProfileLabel">200K</b></div>
+      <div><span class="lab">PUSH</span><b id="menuPushLabel">—</b></div>
+    </div>
+
+    <div class="menuGroup">
+      <div class="menuGroupTitle">Navigáció</div>
+      <button id="menuTrading" class="menuItem active" type="button"><span>📈</span><b>Trading</b><i>›</i></button>
+      <button id="menuJournal" class="menuItem" type="button"><span>📒</span><b>Trade napló</b><i>›</i></button>
+      <button id="menuPush" class="menuItem" type="button"><span>🔔</span><b>PUSH</b><i>›</i></button>
+      <button id="menuSettings" class="menuItem" type="button"><span>⚙️</span><b>Beállítások</b><i>›</i></button>
+    </div>
+
+    <div class="menuGroup">
+      <div class="menuGroupTitle">Platform mód</div>
+      <div class="modeSwitch">
+        <button id="menuModeLite" type="button">LITE</button>
+        <button id="menuModePro" class="active" type="button">PRO</button>
+      </div>
+      <div class="menuHint">LITE = gyors mobil kereskedés · PRO = teljes terminál.</div>
+    </div>
+
+    <button id="menuResetProfile" class="menuDanger" type="button">Aktív profil reset</button>
+  </aside>
 
   <div id="mainTabs" class="tabs">
     <button id="tabTrade" class="btn active" type="button">Trading</button>
@@ -450,7 +638,162 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
     </div>
   </section>
 
+
+  <section id="settingsView" class="settingsPage hidden">
+    <div class="settingsHead">
+      <div>
+        <div class="settingsBadge">SYSTEM CONTROL</div>
+        <div class="settingsTitle">Beállítások</div>
+        <div class="muted">Platform mód, fiókprofil, PUSH és kereskedési alapértékek.</div>
+      </div>
+    </div>
+
+    <div class="settingsStack">
+      <div class="settingsTab open">
+        <button class="settingsTabHead" type="button"><span>Platform mód</span><i>⌄</i></button>
+        <div class="settingsTabBody">
+          <div class="settingsModeCards">
+            <button id="settingsModeLite" class="settingsModeCard" type="button">
+              <b>LITE</b><span>Entry Assist · live chart · nettó összesítő · 1s monitor · LONG/SHORT</span>
+            </button>
+            <button id="settingsModePro" class="settingsModeCard active" type="button">
+              <b>PRO</b><span>Teljes indikátor-, order flow-, napló- és terminálfelület</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settingsTab open">
+        <button class="settingsTabHead" type="button"><span>Fiókprofil</span><i>⌄</i></button>
+        <div class="settingsTabBody">
+          <div id="settingsProfiles" class="profileTiles">
+            <button data-profile="5000" type="button">5K</button>
+            <button data-profile="10000" type="button">10K</button>
+            <button data-profile="25000" type="button">25K</button>
+            <button data-profile="50000" type="button">50K</button>
+            <button data-profile="100000" type="button">100K</button>
+            <button data-profile="200000" type="button">200K</button>
+          </div>
+          <div id="settingsProfileInfo" class="settingsInfo">—</div>
+        </div>
+      </div>
+
+      <div class="settingsTab">
+        <button class="settingsTabHead" type="button"><span>PUSH</span><i>⌄</i></button>
+        <div class="settingsTabBody">
+          <div class="settingsRowCard">
+            <div><span class="lab">Háttér értesítések</span><b id="settingsPushStatus">—</b></div>
+            <button id="settingsPushOpen" class="btn" type="button">PUSH központ</button>
+          </div>
+          <button id="settingsPushEnable" class="btn green settingsWideBtn" type="button">PUSH engedélyezése / ellenőrzése</button>
+        </div>
+      </div>
+
+      <div class="settingsTab">
+        <button class="settingsTabHead" type="button"><span>Kereskedési alapértékek</span><i>⌄</i></button>
+        <div class="settingsTabBody">
+          <div class="settingsGrid">
+            <div>
+              <label>Risk / trade %</label>
+              <input id="settingsRiskPct" type="number" min=".01" step=".01" value=".20">
+            </div>
+            <div>
+              <label>Default leverage</label>
+              <select id="settingsLeverage">
+                <option>1</option><option>2</option><option>5</option><option selected>10</option>
+              </select>
+            </div>
+            <div>
+              <label>TP %</label>
+              <input id="settingsTpPct" type="number" min=".01" step=".01" value=".50">
+            </div>
+            <div>
+              <label>SL %</label>
+              <input id="settingsSlPct" type="number" min=".01" step=".01" value=".30">
+            </div>
+          </div>
+          <button id="settingsApplyTrading" class="btn settingsWideBtn" type="button">Alapértékek alkalmazása</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="tradeView">
+
+    <section id="liteDashboard" class="liteDashboard hidden">
+      <div class="liteHero">
+        <div>
+          <div class="liteEyebrow">BOTOND TRADING · LITE</div>
+          <div class="liteHeadline">Gyors kereskedési nézet</div>
+        </div>
+        <div class="liteProfilePill"><span>PROFIL</span><b id="liteProfile">200K</b></div>
+      </div>
+
+      <div class="liteAccordion open" data-lite-section>
+        <button class="liteAccHead" type="button"><span>ENTRY ASSIST</span><i>⌄</i></button>
+        <div class="liteAccBody">
+          <div class="liteAssistTop">
+            <div>
+              <span class="lab">TECHNIKAI JAVASLAT</span>
+              <div id="liteEntrySignal" class="liteSignal warn">VÁRAKOZÁS</div>
+            </div>
+            <span id="liteEntryStrength" class="confPill warn">—</span>
+          </div>
+          <div class="liteAssistGrid">
+            <div><span>Belépő</span><b id="liteEntryZone">—</b></div>
+            <div><span>TP</span><b id="liteEntryTp">—</b></div>
+            <div><span>SL</span><b id="liteEntrySl">—</b></div>
+            <div><span>RR</span><b id="liteEntryRr">—</b></div>
+          </div>
+          <div id="liteEntryWhy" class="liteWhy">MTF jelzés betöltése…</div>
+          <button id="liteApplyAssist" class="btn liteWide" type="button">TP / SL alkalmazása</button>
+        </div>
+      </div>
+
+      <div class="liteAccordion open" data-lite-section>
+        <button class="liteAccHead" type="button"><span>LIVE CHART · 1m</span><i>⌄</i></button>
+        <div class="liteAccBody">
+          <div class="liteChartHead"><b>BTC/USD</b><span id="litePrice">—</span></div>
+          <div id="liteChart" class="liteMainChart"></div>
+        </div>
+      </div>
+
+      <div class="liteAccordion open" data-lite-section>
+        <button class="liteAccHead" type="button"><span>NETTÓ ÖSSZESÍTŐ</span><i>⌄</i></button>
+        <div class="liteAccBody">
+          <div class="liteNetGrid">
+            <div><span>Total Equity</span><b id="liteEquity">—</b></div>
+            <div><span>Daily PnL</span><b id="liteDaily">—</b></div>
+            <div><span>Live nettó PnL</span><b id="liteLiveNet">—</b></div>
+            <div><span>Funding</span><b id="liteFunding">—</b></div>
+            <div><span>Est. fee</span><b id="liteFee">—</b></div>
+            <div><span>Pozíció</span><b id="litePosition">NINCS</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="liteAccordion open" data-lite-section>
+        <button class="liteAccHead" type="button"><span>LIVE 1s MONITOR</span><i>⌄</i></button>
+        <div class="liteAccBody">
+          <div class="liteOneSecGrid">
+            <div class="liteMiniCard">
+              <div class="liteChartHead"><b>BTC/USD · 1s</b><span id="liteBtc1sValue">—</span></div>
+              <div id="liteBtc1sChart" class="liteOneSecChart"></div>
+            </div>
+            <div class="liteMiniCard">
+              <div class="liteChartHead"><b>NET P&L · 1s</b><span id="liteNet1sValue">—</span></div>
+              <div id="liteNet1sChart" class="liteOneSecChart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="liteTradeDock">
+        <button id="liteLong" class="liteTradeBtn long" type="button">▲ LONG</button>
+        <button id="liteShort" class="liteTradeBtn short" type="button">▼ SHORT</button>
+      </div>
+    </section>
+
     <div class="modebar">
       <button id="modeSimple" class="btn active" type="button">Egyszerű jelző chart</button>
       <button id="modePro" class="btn" type="button">TradingView PRO</button>
@@ -879,6 +1222,9 @@ const save=()=>{
 };
 
 let side='long', interval=1, lastPrice=null, candles=[], ws=null, reconnectTimer=null, mode='simple', tvLoaded=false;
+const UI_MODE_KEY='botiUiModeV11_1';
+let uiMode=localStorage.getItem(UI_MODE_KEY)==='lite'?'lite':'pro';
+let liteSyncTimer=null;
 let lastTrendState='NEUTRAL', mtfTimer=null;
 let mtfSignals={};
 let mtfCandles={1:[],5:[],15:[],60:[]};
@@ -1013,8 +1359,36 @@ const miniBtcSeries=miniBtcChart.addLineSeries({color:'#2962ff',lineWidth:2,pric
 const miniNetSeries=miniNetChart.addLineSeries({color:'#22c786',lineWidth:2,priceLineVisible:true,lastValueVisible:true,priceFormat:{type:'price',precision:2,minMove:.01}});
 const miniNetZeroLine=miniNetSeries.createPriceLine({price:0,color:'#8da2b2',lineWidth:1,lineStyle:2,axisLabelVisible:true,title:'0'});
 
+const liteChart=LightweightCharts.createChart($('liteChart'),{
+  ...chartCommon,
+  rightPriceScale:{borderColor:'#2a2e39',scaleMargins:{top:.08,bottom:.12}},
+  timeScale:{...chartCommon.timeScale,visible:true,timeVisible:true,secondsVisible:false,rightOffset:5,barSpacing:6,minBarSpacing:2},
+  handleScroll:{mouseWheel:true,pressedMouseMove:true,horzTouchDrag:true,vertTouchDrag:false},
+  handleScale:{axisPressedMouseMove:{time:true,price:true},mouseWheel:true,pinch:true}
+});
+const liteCandleSeries=liteChart.addCandlestickSeries({
+  upColor:'#089981',downColor:'#f23645',borderUpColor:'#089981',borderDownColor:'#f23645',
+  wickUpColor:'#089981',wickDownColor:'#f23645'
+});
+const liteBtc1sChart=LightweightCharts.createChart($('liteBtc1sChart'),{
+  ...chartCommon,
+  rightPriceScale:{borderColor:'#2a2e39',scaleMargins:{top:.12,bottom:.12}},
+  timeScale:{...chartCommon.timeScale,visible:true,timeVisible:true,secondsVisible:true,rightOffset:3,barSpacing:3,minBarSpacing:1},
+  handleScroll:false,handleScale:false
+});
+const liteNet1sChart=LightweightCharts.createChart($('liteNet1sChart'),{
+  ...chartCommon,
+  rightPriceScale:{borderColor:'#2a2e39',scaleMargins:{top:.12,bottom:.12}},
+  timeScale:{...chartCommon.timeScale,visible:true,timeVisible:true,secondsVisible:true,rightOffset:3,barSpacing:3,minBarSpacing:1},
+  handleScroll:false,handleScale:false
+});
+const liteBtc1sSeries=liteBtc1sChart.addLineSeries({color:'#2962ff',lineWidth:2,priceLineVisible:true,lastValueVisible:true});
+const liteNet1sSeries=liteNet1sChart.addLineSeries({color:'#22c786',lineWidth:2,priceLineVisible:true,lastValueVisible:true,priceFormat:{type:'price',precision:2,minMove:.01}});
+liteNet1sSeries.createPriceLine({price:0,color:'#8da2b2',lineWidth:1,lineStyle:2,axisLabelVisible:true,title:'0'});
+
+
 function resizeCharts(){
-  for(const [id,ch] of [['mainChart',mainChart],['rsiChart',rsiChart],['macdChart',macdChart],['miniBtcChart',miniBtcChart],['miniNetChart',miniNetChart]]){
+  for(const [id,ch] of [['mainChart',mainChart],['rsiChart',rsiChart],['macdChart',macdChart],['miniBtcChart',miniBtcChart],['miniNetChart',miniNetChart],['liteChart',liteChart],['liteBtc1sChart',liteBtc1sChart],['liteNet1sChart',liteNet1sChart]]){
     const el=$(id);ch.applyOptions({width:el.clientWidth,height:el.clientHeight});
   }
 }
@@ -1576,7 +1950,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.8.0',
+        appVersion:'11.1.0',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -2929,7 +3303,9 @@ function syncProfileUI(){
   $('profileSelect').value=String(eq);
   $('resetAll').textContent='RESET '+profileShort(eq);
   $('historyTitle').textContent='Kraken Prop '+profileShort(eq)+' — Trade napló';
-  $('accountSummary').textContent=fmt(eq)+' $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal';
+  $('accountSummary').textContent=fmt(eq)+' $ paper account · '+(Number($('riskPct')?.value)||.20).toFixed(2)+'% auto risk · '+($('lev')?.value||'10')+'x leverage · FAST LIVE · 24/7 PUSH · '+uiMode.toUpperCase();
+  if($('liteProfile'))$('liteProfile').textContent=profileShort(eq);
+  if($('menuProfileLabel'))syncShellUi();
 }
 function switchProfile(eq){
   eq=Number(eq);
@@ -3000,6 +3376,191 @@ function setupIphoneBottomDock(){
 
 setupFlowCollapsibles();
 setupIphoneBottomDock();
+
+
+function pushActiveGuess(){
+  const t=String($('notifyToggle')?.textContent||'');
+  return t.includes('PUSH: BE')||!!pushSubscriptionId;
+}
+function syncShellUi(){
+  const eq=Number(state.startEquity);
+  const short=profileShort(eq);
+  $('menuModeLabel').textContent=uiMode.toUpperCase();
+  $('menuProfileLabel').textContent=short;
+  $('menuPushLabel').textContent=pushActiveGuess()?'BE':'—';
+  $('liteProfile').textContent=short;
+  $('settingsPushStatus').textContent=pushActiveGuess()?'PUSH AKTÍV':'PUSH nincs aktívként érzékelve';
+  $('settingsPushStatus').className=pushActiveGuess()?'good':'warn';
+
+  document.querySelectorAll('#settingsProfiles [data-profile]').forEach(b=>b.classList.toggle('active',Number(b.dataset.profile)===eq));
+  $('settingsProfileInfo').textContent='$'+fmt(eq)+' · 3% daily limit $'+fmt(dailyLimit())+' · 6% max DD $'+fmt(maxDD());
+
+  $('settingsModeLite').classList.toggle('active',uiMode==='lite');
+  $('settingsModePro').classList.toggle('active',uiMode==='pro');
+  $('menuModeLite').classList.toggle('active',uiMode==='lite');
+  $('menuModePro').classList.toggle('active',uiMode==='pro');
+
+  $('settingsRiskPct').value=$('riskPct').value;
+  $('settingsLeverage').value=$('lev').value;
+  $('settingsTpPct').value=$('tpPct').value;
+  $('settingsSlPct').value=$('slPct').value;
+
+  $('accountSummary').textContent=fmt(eq)+' $ paper account · '+(Number($('riskPct').value)||.20).toFixed(2)+'% auto risk · '+($('lev').value||'10')+'x leverage · FAST LIVE · 24/7 PUSH · '+uiMode.toUpperCase();
+}
+function openAppMenu(){
+  $('menuBackdrop').classList.remove('hidden');
+  $('appMenu').classList.add('open');
+  $('appMenu').setAttribute('aria-hidden','false');
+  $('menuBackdrop').setAttribute('aria-hidden','false');
+  $('hamburgerBtn').setAttribute('aria-expanded','true');
+  syncShellUi();
+}
+function closeAppMenu(){
+  $('appMenu').classList.remove('open');
+  $('menuBackdrop').classList.add('hidden');
+  $('appMenu').setAttribute('aria-hidden','true');
+  $('menuBackdrop').setAttribute('aria-hidden','true');
+  $('hamburgerBtn').setAttribute('aria-expanded','false');
+}
+async function setUiMode(next,{navigate=true}={}){
+  next=next==='lite'?'lite':'pro';
+  uiMode=next;
+  localStorage.setItem(UI_MODE_KEY,uiMode);
+  $('app').classList.toggle('ui-lite',uiMode==='lite');
+  $('liteDashboard').classList.toggle('hidden',uiMode!=='lite');
+  if(uiMode==='lite'){
+    if(mode!=='simple')setMode('simple');
+    if(interval!==1)await changeInterval(1);
+  }
+  syncShellUi();
+  syncLiteUi(true);
+  closeAppMenu();
+  if(navigate)showMainView('trade');
+  setTimeout(()=>{resizeCharts();try{liteChart.timeScale().fitContent()}catch(e){}},100);
+}
+function showSettingsPage(){
+  $('pushView').classList.add('hidden');
+  $('tradeView').classList.add('hidden');
+  $('historyView').classList.add('hidden');
+  $('settingsView').classList.remove('hidden');
+  $('mainTop').classList.remove('hidden');
+  closeAppMenu();
+  syncShellUi();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function setupSettingsTabs(){
+  document.querySelectorAll('.settingsTab').forEach(tab=>{
+    const h=tab.querySelector('.settingsTabHead');
+    if(h)h.addEventListener('click',()=>tab.classList.toggle('open'));
+  });
+}
+function setupLiteTabs(){
+  document.querySelectorAll('[data-lite-section]').forEach(tab=>{
+    const h=tab.querySelector('.liteAccHead');
+    if(h)h.addEventListener('click',()=>{tab.classList.toggle('open');setTimeout(resizeCharts,40)});
+  });
+}
+function makeProSection(el,label,startOpen=true){
+  if(!el||el.dataset.proFolded==='1')return;
+  el.dataset.proFolded='1';
+  el.classList.add('proFold');
+  if(!startOpen)el.classList.add('collapsed');
+
+  const head=document.createElement('button');
+  head.type='button';
+  head.className='proSectionHead';
+  head.innerHTML='<span>'+label+'</span><i>⌄</i>';
+
+  const body=document.createElement('div');
+  body.className='proSectionBody';
+  while(el.firstChild)body.appendChild(el.firstChild);
+  el.appendChild(head);
+  el.appendChild(body);
+
+  head.addEventListener('click',()=>{
+    el.classList.toggle('collapsed');
+    setTimeout(resizeCharts,50);
+  });
+}
+function setupProSections(){
+  const pos=document.querySelector('.panel.position');
+  if(pos&&!pos.id)pos.id='positionCard';
+  const trend=document.querySelector('.sidecol>.trendCard');
+  if(trend&&!trend.id)trend.id='trendAssistCard';
+
+  makeProSection($('chartHost'),'LIVE CHART + 1s MONITOR',true);
+  makeProSection(pos,'NETTÓ / NYITOTT POZÍCIÓ',true);
+  makeProSection(trend,'ENTRY ASSIST + TREND ENGINE',true);
+  makeProSection($('orderEntryCard'),'LONG / SHORT + RISK + FUNDING',true);
+  makeProSection($('orderFlowCard'),'ORDER FLOW',false);
+}
+function liteNetValue(){
+  const p=state.position;
+  if(!p||lastPrice===null)return null;
+  return netAtPrice(p,Number(lastPrice),Date.now());
+}
+function syncLiteUi(forceFit=false){
+  if(!$('liteDashboard'))return;
+
+  const origSignal=$('entryAssistSignal');
+  const origStrength=$('entryAssistStrength');
+  $('liteEntrySignal').textContent=origSignal?.textContent||'VÁRAKOZÁS';
+  $('liteEntrySignal').className='liteSignal '+(origSignal?.classList.contains('good')?'good':origSignal?.classList.contains('bad')?'bad':'warn');
+  $('liteEntryStrength').textContent=origStrength?.textContent||'—';
+  $('liteEntryStrength').className='confPill '+(origStrength?.classList.contains('good')?'good':origStrength?.classList.contains('bad')?'bad':'warn');
+  $('liteEntryZone').textContent=$('entryAssistEntry')?.textContent||'—';
+  $('liteEntryTp').textContent=$('entryAssistTp')?.textContent||'—';
+  $('liteEntrySl').textContent=$('entryAssistSl')?.textContent||'—';
+  $('liteEntryRr').textContent=$('entryAssistRR')?.textContent||'—';
+  $('liteEntryWhy').textContent=$('entryAssistWhy')?.textContent||'—';
+
+  $('litePrice').textContent=lastPrice===null?'—':'$'+fmt(lastPrice);
+  $('liteEquity').textContent=$('equity')?.textContent||'—';
+  $('liteDaily').textContent=$('daily')?.textContent||'—';
+
+  const p=state.position, net=liteNetValue();
+  $('liteLiveNet').textContent=net===null?'—':(net>=0?'+':'')+'$'+fmt(net);
+  $('liteLiveNet').className=net>0?'good':net<0?'bad':'';
+  $('litePosition').textContent=p?(String(p.side).toUpperCase()+' · '+Number(p.qty).toFixed(3)+' BTC'):'NINCS';
+  $('litePosition').className=p?(p.side==='long'?'good':'bad'):'';
+
+  const funding=p?calculateFundingAccrued(p,Date.now()):null;
+  $('liteFunding').textContent=funding===null?'—':fundingSignedText(funding);
+  $('liteFunding').className=funding>0?'good':funding<0?'bad':'';
+
+  if(p&&lastPrice!==null){
+    const closeFee=feeFor(Number(lastPrice),Number(p.qty),p.exitExec,p.feeTier);
+    const total=Number(p.openFee||0)+closeFee;
+    $('liteFee').textContent='$'+fmt(total);
+  }else $('liteFee').textContent='—';
+
+  const source=(mtfCandles[1]&&mtfCandles[1].length)?mtfCandles[1]:candles;
+  const liveCandles=(Array.isArray(source)?source:[]).slice(-240).map(c=>({
+    time:Number(c.time),open:Number(c.open),high:Number(c.high),low:Number(c.low),close:Number(c.close)
+  })).filter(c=>Number.isFinite(c.time)&&Number.isFinite(c.close));
+  liteCandleSeries.setData(liveCandles);
+
+  const btcPts=miniBtcSeconds.slice(-180);
+  const netPts=miniNetSeconds.slice(-180);
+  liteBtc1sSeries.setData(btcPts);
+  liteNet1sSeries.setData(netPts);
+  $('liteBtc1sValue').textContent=lastPrice===null?'—':'$'+fmt(lastPrice);
+  $('liteNet1sValue').textContent=net===null?'—':(net>=0?'+':'')+'$'+fmt(net);
+  $('liteNet1sValue').className=net>0?'good':net<0?'bad':'';
+
+  if(Number.isFinite(net))liteNet1sSeries.applyOptions({color:net>=0?'#22c786':'#ef5a6a'});
+
+  if(forceFit){
+    try{liteChart.timeScale().fitContent()}catch(e){}
+    try{liteBtc1sChart.timeScale().fitContent()}catch(e){}
+    try{liteNet1sChart.timeScale().fitContent()}catch(e){}
+  }
+}
+function startLiteSync(){
+  clearInterval(liteSyncTimer);
+  syncLiteUi(true);
+  liteSyncTimer=setInterval(()=>syncLiteUi(false),1000);
+}
 
 function riskSizing(levels){
   if(!levels||lastPrice===null)return null;
@@ -3318,9 +3879,9 @@ $('toggleMACDFixed').addEventListener('click',()=>{fixedIndicatorVisible.macd=!f
 $('toggleGestures').addEventListener('click',()=>{proGestureMode=!proGestureMode;applyProGestureMode()});
 $('replayToggle').addEventListener('click',startReplay);$('replayBack').addEventListener('click',()=>replayStep(-1));$('replayNext').addEventListener('click',()=>replayStep(1));$('replayPlay').addEventListener('click',()=>{if(!replayMode)return;if(replayTimer){clearInterval(replayTimer);replayTimer=null;$('replayPlay').textContent='▶'}else{replayTimer=setInterval(()=>replayStep(1),700);$('replayPlay').textContent='⏸'}});$('replaySlider').addEventListener('input',()=>{if(replayMode){replayIndex=Number($('replaySlider').value);candles=replaySource.slice(0,replayIndex);replayRender()}});
 $('longBtn').addEventListener('click',()=>requestTradeAction('long'));$('shortBtn').addEventListener('click',()=>requestTradeAction('short'));
-['tpPct','slPct','riskPct'].forEach(id=>$(id).addEventListener('input',updateTradeUI));
+['tpPct','slPct','riskPct'].forEach(id=>$(id).addEventListener('input',()=>{updateTradeUI();syncShellUi()}));
 $('qty').addEventListener('input',()=>{if($('qtyMode').value==='manual')updateTradeUI()});
-['lev','feeTier','entryExec','exitExec','qtyMode'].forEach(id=>$(id).addEventListener('change',updateTradeUI));
+['lev','feeTier','entryExec','exitExec','qtyMode'].forEach(id=>$(id).addEventListener('change',()=>{updateTradeUI();syncShellUi()}));
 $('profileSelect').addEventListener('change',()=>switchProfile(Number($('profileSelect').value)));
 function openPositionFromCurrentSettings(sideOverride=null,feedbackKind='open'){
   if(sideOverride==='long'||sideOverride==='short')setSide(sideOverride);
@@ -3364,15 +3925,18 @@ $('order').addEventListener('submit',e=>{e.preventDefault();requestTradeAction(s
 $('closePos').addEventListener('click',()=>closePosition('MANUAL'));
 $('applyLevels').addEventListener('click',()=>{const p=state.position;if(!p)return;const tp=Number($('editTp').value),sl=Number($('editSl').value);if(!Number.isFinite(tp)||!Number.isFinite(sl)){pushAppAlert('Érvénytelen TP/SL ár.','bad');return}if(p.side==='long'&&!(tp>p.entry&&sl<p.entry)){pushAppAlert('LONG-nál TP > entry és SL < entry szükséges.','warn');return}if(p.side==='short'&&!(tp<p.entry&&sl>p.entry)){pushAppAlert('SHORT-nál TP < entry és SL > entry szükséges.','warn');return}p.tp=tp;p.sl=sl;save();syncPositionLines();updateTradeUI();schedulePushBackendSync(true);pushAppAlert('TP/SL frissítve a charton és a háttér monitorban.','good')});
 function showMainView(which='trade'){
-  $('pushView').classList.add('hidden');$('mainTop').classList.remove('hidden');$('mainTabs').classList.remove('hidden');
+  $('pushView').classList.add('hidden');$('settingsView').classList.add('hidden');$('mainTop').classList.remove('hidden');
   const hist=which==='history';$('tradeView').classList.toggle('hidden',hist);$('historyView').classList.toggle('hidden',!hist);
   $('tabTrade').classList.toggle('active',!hist);$('tabHistory').classList.toggle('active',hist);
   if(hist)renderHistory();
+  closeAppMenu();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 function showPushPage(){
-  $('mainTop').classList.add('hidden');$('mainTabs').classList.add('hidden');$('tradeView').classList.add('hidden');$('historyView').classList.add('hidden');$('pushView').classList.remove('hidden');
+  $('mainTop').classList.remove('hidden');$('tradeView').classList.add('hidden');$('historyView').classList.add('hidden');$('settingsView').classList.add('hidden');$('pushView').classList.remove('hidden');
   window.addEventListener('resize',()=>setTimeout(applyHudPinnedPosition,60));
-syncAlertSettingsUI();loadPushConfigUI();refreshPushServerStatus();
+  syncAlertSettingsUI();loadPushConfigUI();refreshPushServerStatus();
+  closeAppMenu();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 $('tabTrade').addEventListener('click',()=>showMainView('trade'));
@@ -3381,6 +3945,44 @@ $('openPushPage').addEventListener('click',showPushPage);
 $('backFromPush').addEventListener('click',()=>showMainView('trade'));
 
 
+
+
+$('hamburgerBtn').addEventListener('click',()=>{if($('appMenu').classList.contains('open'))closeAppMenu();else openAppMenu()});
+$('menuClose').addEventListener('click',closeAppMenu);
+$('menuBackdrop').addEventListener('click',closeAppMenu);
+$('menuTrading').addEventListener('click',()=>showMainView('trade'));
+$('menuJournal').addEventListener('click',()=>showMainView('history'));
+$('menuPush').addEventListener('click',showPushPage);
+$('menuSettings').addEventListener('click',showSettingsPage);
+$('menuModeLite').addEventListener('click',()=>setUiMode('lite'));
+$('menuModePro').addEventListener('click',()=>setUiMode('pro'));
+$('settingsModeLite').addEventListener('click',()=>setUiMode('lite',{navigate:false}));
+$('settingsModePro').addEventListener('click',()=>setUiMode('pro',{navigate:false}));
+$('menuResetProfile').addEventListener('click',()=>{$('resetAll').click();closeAppMenu()});
+
+document.querySelectorAll('#settingsProfiles [data-profile]').forEach(btn=>btn.addEventListener('click',()=>{
+  switchProfile(Number(btn.dataset.profile));
+  syncShellUi();
+}));
+$('settingsPushOpen').addEventListener('click',showPushPage);
+$('settingsPushEnable').addEventListener('click',()=>{requestBackgroundPushPermission();setTimeout(syncShellUi,800)});
+$('settingsApplyTrading').addEventListener('click',()=>{
+  $('riskPct').value=String(Math.max(.01,Number($('settingsRiskPct').value)||.20));
+  $('lev').value=$('settingsLeverage').value;
+  $('tpPct').value=String(Math.max(.01,Number($('settingsTpPct').value)||.50));
+  $('slPct').value=String(Math.max(.01,Number($('settingsSlPct').value)||.30));
+  updateTradeUI();
+  syncShellUi();
+  pushAppAlert('Kereskedési alapértékek alkalmazva.','good');
+});
+
+$('liteApplyAssist').addEventListener('click',()=>$('applyEntryAssist').click());
+$('liteLong').addEventListener('click',()=>requestTradeAction('long',{openIfFlat:true,source:'lite'}));
+$('liteShort').addEventListener('click',()=>requestTradeAction('short',{openIfFlat:true,source:'lite'}));
+
+setupSettingsTabs();
+setupLiteTabs();
+setupProSections();
 
 initLevelDragging();
 initProChartGestures();
@@ -3461,6 +4063,10 @@ $('riskPct').value='.20';
 $('qtyMode').value='auto';
 $('qty').readOnly=true;
 setSide('long');
+$('app').classList.toggle('ui-lite',uiMode==='lite');
+$('liteDashboard').classList.toggle('hidden',uiMode!=='lite');
+syncShellUi();
+startLiteSync();
 if(state.position)syncPositionLines();
 loadFunding();
 fundingTimer=setInterval(loadFunding,300000);
@@ -3492,7 +4098,7 @@ window.addEventListener('offline',()=>{
   if(ws){try{ws.close()}catch(e){}}
 });
 
-Promise.all([loadHistory()]).finally(()=>{connect();refreshMTF().finally(startMtfLiveEngine);mtfTimer=setInterval(refreshMTF,60000)});
+Promise.all([loadHistory()]).finally(async()=>{if(uiMode==='lite'&&interval!==1)await changeInterval(1);connect();refreshMTF().finally(startMtfLiveEngine);mtfTimer=setInterval(refreshMTF,60000);syncLiteUi(true)});
 renderFlowUI();updateTradeUI();
 })();
 </script>
