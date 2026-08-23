@@ -1,13 +1,13 @@
 {
   "id": "/boti-paper-trader/",
-  "name": "Botond Trading Platform V11.1",
+  "name": "Botond Trading Platform V11.3",
   "short_name": "Botond Trading",
-  "start_url": "./?v=11.1.0",
+  "start_url": "./?v=11.3.0",
   "scope": "./",
   "display": "standalone",
   "background_color": "#071018",
   "theme_color": "#071018",
-  "description": "Responsive Botond Trading Platform with hamburger navigation, Lite/Pro modes, profile settings, live Entry Assist and 1-second monitoring.",
+  "description": "Botond Trading Platform with BTC, ETH, SOL, ADA and Ethereum Classic market selection, Lite/Pro modes, Entry Assist and live Kraken data.",
   "icons": [
     {
       "src": "boti-icon-v1041-192.png?v=1080",

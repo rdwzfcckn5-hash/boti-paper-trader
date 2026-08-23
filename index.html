@@ -4,11 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
-<link rel="manifest" href="manifest.webmanifest?v=1110">
+<link rel="manifest" href="manifest.webmanifest?v=1130">
 <link rel="apple-touch-icon" sizes="180x180" href="boti-icon-v1041-180.png?v=1041">
 <link rel="icon" type="image/png" sizes="192x192" href="boti-icon-v1041-192.png?v=1041">
 <link rel="icon" type="image/png" sizes="512x512" href="boti-icon-v1041-512.png?v=1041">
-<title>Botond Trading Platform V11.1 · MENU + LITE / PRO</title>
+<title>Botond Trading Platform V11.3 · MULTI CRYPTO</title>
+
+<script>
+(function(){
+  try{
+    var mode=localStorage.getItem('botiThemeV11_2')||'system';
+    var dark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var effective=mode==='system'?(dark?'dark':'light'):mode;
+    document.documentElement.setAttribute('data-theme',effective);
+    document.documentElement.setAttribute('data-theme-mode',mode);
+  }catch(e){
+    document.documentElement.setAttribute('data-theme','dark');
+    document.documentElement.setAttribute('data-theme-mode','system');
+  }
+})();
+</script>
+
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -473,6 +489,166 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
   .liteOneSecChart{height:155px}
 }
 
+
+/* ============================================================
+   V11.2 LITE TRADE POSITION + LIGHT/DARK/SYSTEM THEME
+   ============================================================ */
+.liteTradeDock.liteTradeInline{
+  position:static!important;
+  bottom:auto!important;
+  z-index:auto;
+  margin:0;
+  box-shadow:none;
+}
+.liteTradeInline .liteTradeBtn{min-height:64px}
+
+/* Theme selector */
+.themeChoice{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.themeCard{
+  min-height:112px;border:1px solid #29404f;border-radius:14px;background:#0b151d;color:#eef5fb;
+  padding:12px 9px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px
+}
+.themeCard .themeIcon{font-size:24px;line-height:1}
+.themeCard b{font-size:16px}
+.themeCard small{color:#8da2b2;font-size:9px;line-height:1.35}
+.themeCard.active{border-color:#6e7cff;background:#111a35;box-shadow:0 0 0 1px rgba(110,124,255,.24)}
+
+/* Base palette overrides */
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f2f5f8;
+  --panel:#ffffff;
+  --panel2:#f5f8fa;
+  --line:#d6e0e7;
+  --muted:#647685;
+  --text:#15222d;
+  --green:#0a9f6d;
+  --red:#d94758;
+  --amber:#b77a12;
+  --blue:#5269ee;
+}
+html[data-theme="light"] body,
+html[data-theme="light"] .app{background:#f2f5f8!important;color:#15222d!important}
+html[data-theme="light"] .panel,
+html[data-theme="light"] .settingsTab,
+html[data-theme="light"] .liteAccordion,
+html[data-theme="light"] .liteHero,
+html[data-theme="light"] .appMenu,
+html[data-theme="light"] .pushSetup,
+html[data-theme="light"] .alertTestPanel,
+html[data-theme="light"] .entryAssist,
+html[data-theme="light"] .setup,
+html[data-theme="light"] .sig,
+html[data-theme="light"] .metric,
+html[data-theme="light"] .riskbox,
+html[data-theme="light"] .fundingLive,
+html[data-theme="light"] .fundingLiveItem,
+html[data-theme="light"] .bookBox,
+html[data-theme="light"] .tapeBox,
+html[data-theme="light"] .profileBox,
+html[data-theme="light"] .liteMiniCard,
+html[data-theme="light"] .liteAssistGrid>div,
+html[data-theme="light"] .liteNetGrid>div{
+  background:#fff!important;border-color:#d6e0e7!important;color:#15222d!important
+}
+html[data-theme="light"] .settingsTabHead,
+html[data-theme="light"] .liteAccHead,
+html[data-theme="light"] .proSectionHead,
+html[data-theme="light"] .flowCollapse .flowBoxToggle,
+html[data-theme="light"] .flowBoxHead,
+html[data-theme="light"] .miniHead{
+  background:#f6f8fa!important;color:#15222d!important;border-color:#d6e0e7!important
+}
+html[data-theme="light"] .btn,
+html[data-theme="light"] .menuItem,
+html[data-theme="light"] .modeSwitch button,
+html[data-theme="light"] .profileTiles button,
+html[data-theme="light"] .settingsModeCard,
+html[data-theme="light"] .themeCard,
+html[data-theme="light"] .hamburgerBtn,
+html[data-theme="light"] .menuClose,
+html[data-theme="light"] input,
+html[data-theme="light"] select,
+html[data-theme="light"] textarea{
+  background:#f8fafb!important;color:#15222d!important;border-color:#cbd7df!important
+}
+html[data-theme="light"] .btn.active,
+html[data-theme="light"] .menuItem.active,
+html[data-theme="light"] .modeSwitch button.active,
+html[data-theme="light"] .profileTiles button.active,
+html[data-theme="light"] .settingsModeCard.active,
+html[data-theme="light"] .themeCard.active{
+  background:#5269ee!important;color:#fff!important;border-color:#5269ee!important
+}
+html[data-theme="light"] .btn.green{background:#0a9f6d!important;color:#fff!important;border-color:#0a9f6d!important}
+html[data-theme="light"] .btn.red{background:#d94758!important;color:#fff!important;border-color:#d94758!important}
+html[data-theme="light"] .liteTradeBtn.long{background:#0a9f6d!important;color:#fff!important}
+html[data-theme="light"] .liteTradeBtn.short{background:#d94758!important;color:#fff!important}
+html[data-theme="light"] .liteTradeDock{
+  background:rgba(255,255,255,.94)!important;border-color:#ccd8e0!important
+}
+html[data-theme="light"] .menuBackdrop{background:rgba(21,34,45,.28)}
+html[data-theme="light"] .muted,
+html[data-theme="light"] .lab,
+html[data-theme="light"] .menuEyebrow,
+html[data-theme="light"] .menuGroupTitle,
+html[data-theme="light"] .menuHint,
+html[data-theme="light"] .settingsModeCard span,
+html[data-theme="light"] .themeCard small,
+html[data-theme="light"] .liteAssistGrid span,
+html[data-theme="light"] .liteNetGrid span{
+  color:#647685!important
+}
+html[data-theme="light"] .liteWhy,
+html[data-theme="light"] .settingsInfo,
+html[data-theme="light"] .settingsRowCard,
+html[data-theme="light"] .alertOpt,
+html[data-theme="light"] .alert,
+html[data-theme="light"] .pushStatus{
+  background:#f7f9fb!important;color:#40515f!important;border-color:#d6e0e7!important
+}
+html[data-theme="light"] .chartPositionBox{
+  background:rgba(255,255,255,.90)!important;color:#15222d!important;border-color:#cbd7df!important
+}
+html[data-theme="light"] .hudAction,
+html[data-theme="light"] .quickHudBtn,
+html[data-theme="light"] .activeHudBtn{
+  background:#f8fafb!important;color:#15222d!important;border-color:#cbd7df!important
+}
+html[data-theme="light"] .quickHudBtn.long{background:#0a9f6d!important;color:#fff!important}
+html[data-theme="light"] .quickHudBtn.short{background:#d94758!important;color:#fff!important}
+html[data-theme="light"] #mainChartWrap,
+html[data-theme="light"] #simplePane,
+html[data-theme="light"] #proPane{background:#fff!important}
+
+@media(max-width:700px){
+  .themeChoice{grid-template-columns:1fr}
+  .themeCard{min-height:78px;display:grid;grid-template-columns:42px 1fr;text-align:left;justify-items:start}
+  .themeCard .themeIcon{grid-row:1/3;font-size:23px;align-self:center}
+  .themeCard b{align-self:end}
+  .themeCard small{align-self:start}
+  .liteTradeInline .liteTradeBtn{min-height:62px;font-size:15px}
+}
+
+
+/* V11.3 MULTI CRYPTO */
+.cryptoChoice{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.cryptoCard{
+  min-height:92px;border:1px solid #29404f;border-radius:14px;background:#0b151d;color:var(--text);
+  padding:10px 8px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px
+}
+.cryptoCard b{font-size:20px}
+.cryptoCard span{font-size:11px;font-weight:850}
+.cryptoCard small{font-size:9px;color:var(--muted)}
+.cryptoCard.active{background:#111a35;border-color:#6e7cff;box-shadow:0 0 0 1px rgba(110,124,255,.25)}
+html[data-theme="light"] .cryptoCard{background:#f8fafb!important;color:#15222d!important;border-color:#cbd7df!important}
+html[data-theme="light"] .cryptoCard.active{background:#5269ee!important;color:#fff!important;border-color:#5269ee!important}
+html[data-theme="light"] .cryptoCard.active small{color:#e8edff!important}
+@media(max-width:700px){
+  .cryptoChoice{grid-template-columns:repeat(2,1fr)}
+  .cryptoCard{min-height:76px}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -510,7 +686,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Botond Trading Platform V11.1</div>
+      <div class="brand">Botond Trading Platform V11.3</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="topRight">
@@ -663,6 +839,31 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         </div>
       </div>
 
+
+      <div class="settingsTab open">
+        <button class="settingsTabHead" type="button"><span>Megjelenés</span><i>⌄</i></button>
+        <div class="settingsTabBody">
+          <div class="themeChoice" id="themeChoice">
+            <button id="themeSystem" class="themeCard active" data-theme-choice="system" type="button">
+              <span class="themeIcon">◐</span>
+              <b>System</b>
+              <small>Az iPhone / iPad beállítását követi</small>
+            </button>
+            <button id="themeDark" class="themeCard" data-theme-choice="dark" type="button">
+              <span class="themeIcon">●</span>
+              <b>Dark</b>
+              <small>Sötét terminál mód</small>
+            </button>
+            <button id="themeLight" class="themeCard" data-theme-choice="light" type="button">
+              <span class="themeIcon">○</span>
+              <b>Light</b>
+              <small>Világos felület</small>
+            </button>
+          </div>
+          <div id="themeStatus" class="settingsInfo">System · a rendszer megjelenését követi.</div>
+        </div>
+      </div>
+
       <div class="settingsTab open">
         <button class="settingsTabHead" type="button"><span>Fiókprofil</span><i>⌄</i></button>
         <div class="settingsTabBody">
@@ -675,6 +876,31 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
             <button data-profile="200000" type="button">200K</button>
           </div>
           <div id="settingsProfileInfo" class="settingsInfo">—</div>
+        </div>
+      </div>
+
+
+      <div class="settingsTab open">
+        <button class="settingsTabHead" type="button"><span>Crypto</span><i>⌄</i></button>
+        <div class="settingsTabBody">
+          <div id="cryptoChoice" class="cryptoChoice">
+            <button data-asset="BTC" class="cryptoCard active" type="button">
+              <b>BTC</b><span>Bitcoin</span><small>BTC/USD</small>
+            </button>
+            <button data-asset="ETH" class="cryptoCard" type="button">
+              <b>ETH</b><span>Ethereum</span><small>ETH/USD</small>
+            </button>
+            <button data-asset="SOL" class="cryptoCard" type="button">
+              <b>SOL</b><span>Solana</span><small>SOL/USD</small>
+            </button>
+            <button data-asset="ADA" class="cryptoCard" type="button">
+              <b>ADA</b><span>Cardano</span><small>ADA/USD</small>
+            </button>
+            <button data-asset="ETC" class="cryptoCard" type="button">
+              <b>ETC</b><span>Ethereum Classic</span><small>ETC/USD</small>
+            </button>
+          </div>
+          <div id="cryptoStatus" class="settingsInfo">BTC/USD · Kraken spot + perpetual funding.</div>
         </div>
       </div>
 
@@ -750,10 +976,15 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         </div>
       </div>
 
+      <div class="liteTradeDock liteTradeInline">
+        <button id="liteLong" class="liteTradeBtn long" type="button">▲ BUY / LONG</button>
+        <button id="liteShort" class="liteTradeBtn short" type="button">▼ SELL / SHORT</button>
+      </div>
+
       <div class="liteAccordion open" data-lite-section>
         <button class="liteAccHead" type="button"><span>LIVE CHART · 1m</span><i>⌄</i></button>
         <div class="liteAccBody">
-          <div class="liteChartHead"><b>BTC/USD</b><span id="litePrice">—</span></div>
+          <div class="liteChartHead"><b id="liteMarketLabel">BTC/USD</b><span id="litePrice">—</span></div>
           <div id="liteChart" class="liteMainChart"></div>
         </div>
       </div>
@@ -777,7 +1008,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         <div class="liteAccBody">
           <div class="liteOneSecGrid">
             <div class="liteMiniCard">
-              <div class="liteChartHead"><b>BTC/USD · 1s</b><span id="liteBtc1sValue">—</span></div>
+              <div class="liteChartHead"><b id="liteMarket1sLabel">BTC/USD · 1s</b><span id="liteBtc1sValue">—</span></div>
               <div id="liteBtc1sChart" class="liteOneSecChart"></div>
             </div>
             <div class="liteMiniCard">
@@ -788,10 +1019,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         </div>
       </div>
 
-      <div class="liteTradeDock">
-        <button id="liteLong" class="liteTradeBtn long" type="button">▲ LONG</button>
-        <button id="liteShort" class="liteTradeBtn short" type="button">▼ SHORT</button>
-      </div>
+
     </section>
 
     <div class="modebar">
@@ -806,7 +1034,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         <div id="chartHost" class="panel chartPanel fullscreenHost">
           <div class="marketHead">
             <div>
-              <div class="symbol">BTC/USD · KRAKEN SPOT LIVE</div>
+              <div id="marketSymbolLabel" class="symbol">BTC/USD · KRAKEN SPOT LIVE</div>
               <div id="price" class="price">—</div>
               <div id="change" class="change muted">Historikus gyertyák betöltése…</div>
               <div id="rangeInfo" class="muted" style="margin-top:3px">Backfill: —</div>
@@ -861,10 +1089,10 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               <div id="macdChart"></div>
             </div>
             <div class="dualMiniWrap">
-              <div class="dualMiniTitle"><b>LIVE 1s MONITOR</b><span>1 másodperces BTC ár + nyitott pozíció nettó P&amp;L</span></div>
+              <div class="dualMiniTitle"><b>LIVE 1s MONITOR</b><span>1 másodperces kiválasztott crypto ár + nyitott pozíció nettó P&amp;L</span></div>
               <div class="dualMiniCharts">
                 <div class="miniMarketCard">
-                  <div class="miniMarketHead"><b>BTC/USD · 1s</b><span id="miniBtcValue" class="miniLiveValue">—</span></div>
+                  <div class="miniMarketHead"><b id="miniMarket1sLabel">BTC/USD · 1s</b><span id="miniBtcValue" class="miniLiveValue">—</span></div>
                   <div id="miniBtcChart" class="mini1sChart"></div>
                 </div>
                 <div class="miniMarketCard">
@@ -888,7 +1116,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
           <div id="proPane" class="hidden">
             <div id="tvChart"></div>
             <div class="legend">
-              <span>TradingView Advanced Chart · KRAKEN:BTCUSD · teljes rajz/indikátor eszköztár</span>
+              <span id="tvMarketLabel">TradingView Advanced Chart · KRAKEN:BTCUSD · teljes rajz/indikátor eszköztár</span>
             </div>
           </div>
 
@@ -989,7 +1217,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
         </div>
 
         <div id="orderEntryCard" class="panel tradeEntryCard">
-          <div class="flowHead"><div><b>LONG / SHORT POZÍCIÓNYITÁS · BTC/USD</b></div></div>
+          <div class="flowHead"><div><b id="orderMarketLabel">LONG / SHORT POZÍCIÓNYITÁS · BTC/USD</b></div></div>
           <form id="order">
             <div class="row">
               <div><label>Risk / trade %</label><input id="riskPct" type="number" min=".01" step=".01" value=".20"></div>
@@ -1000,7 +1228,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
                 </select>
               </div>
             </div>
-            <label>Quantity BTC</label>
+            <label id="qtyLabel">Quantity BTC</label>
             <input id="qty" type="number" min=".001" step=".001" value=".100" readonly>
             <div id="riskPreview" class="riskbox">
               <div class="lab">RISK SIZING</div>
@@ -1008,7 +1236,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
                 <div class="riskitem"><div class="lab">Risk budget</div><b id="riskBudget">—</b></div>
                 <div class="riskitem"><div class="lab">Planned risk</div><b id="plannedRisk">—</b></div>
                 <div class="riskitem"><div class="lab">Planned RR</div><b id="plannedRR">—</b></div>
-                <div class="riskitem"><div class="lab">Risk / BTC</div><b id="riskPerBtc">—</b></div>
+                <div class="riskitem"><div id="riskUnitLabel" class="lab">Risk / BTC</div><b id="riskPerBtc">—</b></div>
               </div>
             </div>
             <div class="fundingLiveBox">
@@ -1085,7 +1313,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
           </form>
         </div>
         <div id="orderFlowCard" class="panel flowCard">
-          <div class="flowHead"><div><b>KRAKEN ORDER FLOW · BTC/USD</b><div class="muted">L2 book + live taker tape · Kraken WebSocket v2</div></div><span id="flowLive" class="flowLive warn">CONNECTING</span></div>
+          <div class="flowHead"><div><b id="flowMarketLabel">KRAKEN ORDER FLOW · BTC/USD</b><div class="muted">L2 book + live taker tape · Kraken WebSocket v2</div></div><span id="flowLive" class="flowLive warn">CONNECTING</span></div>
           <div class="flowMetrics">
             <div class="flowMetric"><span class="lab">Spread</span><b id="flowSpread">—</b></div>
             <div class="flowMetric"><span class="lab">Bid imbalance</span><b id="flowImbalance">—</b></div>
@@ -1179,6 +1407,36 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 (()=>{
 const $=id=>document.getElementById(id);
 const fmt=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+const MARKET_ASSET_KEY='botiMarketAssetV11_3';
+const MARKET_ASSETS={
+  BTC:{key:'BTC',name:'Bitcoin',symbol:'BTC',pair:'BTC/USD',rest:'XBTUSD',ws:'BTC/USD',tv:'KRAKEN:BTCUSD',funding:['PF_XBTUSD','PF_BTCUSD'],qtyStep:.001,minQty:.001,qtyDecimals:3,priceDecimals:2},
+  ETH:{key:'ETH',name:'Ethereum',symbol:'ETH',pair:'ETH/USD',rest:'ETHUSD',ws:'ETH/USD',tv:'KRAKEN:ETHUSD',funding:['PF_ETHUSD'],qtyStep:.001,minQty:.001,qtyDecimals:3,priceDecimals:2},
+  SOL:{key:'SOL',name:'Solana',symbol:'SOL',pair:'SOL/USD',rest:'SOLUSD',ws:'SOL/USD',tv:'KRAKEN:SOLUSD',funding:['PF_SOLUSD'],qtyStep:.01,minQty:.01,qtyDecimals:2,priceDecimals:2},
+  ADA:{key:'ADA',name:'Cardano',symbol:'ADA',pair:'ADA/USD',rest:'ADAUSD',ws:'ADA/USD',tv:'KRAKEN:ADAUSD',funding:['PF_ADAUSD'],qtyStep:1,minQty:1,qtyDecimals:0,priceDecimals:5},
+  ETC:{key:'ETC',name:'Ethereum Classic',symbol:'ETC',pair:'ETC/USD',rest:'ETCUSD',ws:'ETC/USD',tv:'KRAKEN:ETCUSD',funding:['PF_ETCUSD'],qtyStep:.1,minQty:.1,qtyDecimals:1,priceDecimals:3}
+};
+let marketAsset=MARKET_ASSETS[localStorage.getItem(MARKET_ASSET_KEY)]?localStorage.getItem(MARKET_ASSET_KEY):'BTC';
+function assetCfg(){return MARKET_ASSETS[marketAsset]||MARKET_ASSETS.BTC}
+function marketLabel(){return assetCfg().pair}
+function assetSymbol(){return assetCfg().symbol}
+function qtyDecimals(){return assetCfg().qtyDecimals}
+function fmtQty(v){return Number(v).toFixed(qtyDecimals())}
+function fmtPrice(v){
+  const d=assetCfg().priceDecimals;
+  return Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+}
+function assetPriceFormat(){
+  const d=assetCfg().priceDecimals;
+  return {type:'price',precision:d,minMove:Math.pow(10,-d)};
+}
+function roundQtyDown(v){
+  const step=assetCfg().qtyStep;
+  const d=assetCfg().qtyDecimals;
+  const q=Math.floor((Number(v)+1e-12)/step)*step;
+  return Number(Math.max(0,q).toFixed(d));
+}
+
 const PROFILE_VALUES=[5000,10000,25000,50000,100000,200000], MAX_CANDLES=720;
 const PROFILE_STORE_PREFIX='botiPaperStateV9_3_';
 const ACTIVE_PROFILE_KEY='botiPaperActiveProfileV9_3';
@@ -1214,6 +1472,13 @@ function loadProfile(eq){
 let activeProfile=Number(localStorage.getItem(ACTIVE_PROFILE_KEY))||200000;
 if(!PROFILE_VALUES.includes(activeProfile))activeProfile=200000;
 let state=loadProfile(activeProfile);
+if(state.position){
+  const posAsset=String(state.position.asset||'BTC').toUpperCase();
+  if(MARKET_ASSETS[posAsset]){
+    marketAsset=posAsset;
+    localStorage.setItem(MARKET_ASSET_KEY,marketAsset);
+  }
+}
 const save=()=>{
   if(replayMode)return;
   localStorage.setItem(profileStore(state.startEquity),JSON.stringify(state));
@@ -1223,7 +1488,9 @@ const save=()=>{
 
 let side='long', interval=1, lastPrice=null, candles=[], ws=null, reconnectTimer=null, mode='simple', tvLoaded=false;
 const UI_MODE_KEY='botiUiModeV11_1';
+const THEME_KEY='botiThemeV11_2';
 let uiMode=localStorage.getItem(UI_MODE_KEY)==='lite'?'lite':'pro';
+let themeMode=['light','dark','system'].includes(localStorage.getItem(THEME_KEY))?localStorage.getItem(THEME_KEY):'system';
 let liteSyncTimer=null;
 let lastTrendState='NEUTRAL', mtfTimer=null;
 let mtfSignals={};
@@ -1258,7 +1525,7 @@ const INDICATOR_REFRESH_MS=650;
 const UI_REFRESH_MS=220;
 const WS_STALE_MS=15000;
 let lastEquityAlertBand=0,lastDailyAlertBand=0;
-let fundingRates=[],fundingSourceOk=false,fundingTimer=null,fundingSymbol='PF_XBTUSD',fundingLastSync=0;
+let fundingRates=[],fundingSourceOk=false,fundingTimer=null,fundingSymbol=assetCfg().funding[0],fundingLastSync=0;
 let miniBtcSeconds=[],miniNetSeconds=[],miniSecondTimer=null;
 const ALERT_STEP_PCT=1;
 const ALERT_SETTINGS_KEY='botiAlertSettingsV9_9';
@@ -1285,7 +1552,7 @@ try{
   if(!Array.isArray(alertSettings.supertrendTFs))alertSettings.supertrendTFs=[5,15,60];
 }catch(e){}
 const KRAKEN_FUNDING_URL='https://futures.kraken.com/derivatives/api/v3/historical-funding-rates';
-const FUNDING_SYMBOLS=['PF_XBTUSD','PF_BTCUSD'];
+function fundingSymbols(){return [...assetCfg().funding]}
 
 if(!window.LightweightCharts){$('status').textContent='CHART LIBRARY HIBA';return}
 
@@ -1415,18 +1682,18 @@ function scheduleFlowUI(){if(flowUiTimer)return;flowUiTimer=setTimeout(()=>{flow
 function renderFlowUI(){
   if(!$('flowSpread'))return;const bids=sortedBook(bookBids,true,8),asks=sortedBook(bookAsks,false,8);const bestBid=bids[0]?.price,bestAsk=asks[0]?.price;const spread=(bestAsk&&bestBid)?bestAsk-bestBid:null;
   const bq=bids.reduce((a,b)=>a+b.qty,0),aq=asks.reduce((a,b)=>a+b.qty,0),imb=(bq+aq)?bq/(bq+aq)*100:null;
-  $('flowSpread').textContent=spread===null?'—':'$'+spread.toFixed(2);$('flowImbalance').textContent=imb===null?'—':imb.toFixed(0)+'% BID';$('flowImbalance').className=imb>55?'good':imb<45?'bad':'warn';$('flowCvd').textContent=(cvd>=0?'+':'')+cvd.toFixed(3)+' BTC';$('flowCvd').className=cvd>0?'good':cvd<0?'bad':'warn';$('flowTps').textContent=String(tradesPerSecond.length);
+  $('flowSpread').textContent=spread===null?'—':'$'+fmtPrice(spread);$('flowImbalance').textContent=imb===null?'—':imb.toFixed(0)+'% BID';$('flowImbalance').className=imb>55?'good':imb<45?'bad':'warn';$('flowCvd').textContent=(cvd>=0?'+':'')+cvd.toFixed(Math.max(2,qtyDecimals()))+' '+assetSymbol();$('flowCvd').className=cvd>0?'good':cvd<0?'bad':'warn';$('flowTps').textContent=String(tradesPerSecond.length);
   const maxQ=Math.max(0.000001,...bids.map(x=>x.qty),...asks.map(x=>x.qty));
-  $('askBook').innerHTML=[...asks].reverse().map(x=>'<div class="bookRow askRow"><div class="bar" style="width:'+Math.min(100,x.qty/maxQ*100).toFixed(0)+'%"></div><span class="bad">'+x.price.toFixed(1)+'</span><span>'+x.qty.toFixed(4)+'</span></div>').join('');
-  $('bidBook').innerHTML=bids.map(x=>'<div class="bookRow bidRow"><div class="bar" style="width:'+Math.min(100,x.qty/maxQ*100).toFixed(0)+'%"></div><span class="good">'+x.price.toFixed(1)+'</span><span>'+x.qty.toFixed(4)+'</span></div>').join('');
-  $('midBook').textContent=(bestBid&&bestAsk)?'$'+((bestBid+bestAsk)/2).toFixed(1):'—';
-  $('tapeList').innerHTML=recentTape.slice(0,22).map(t=>'<div class="tapeRow"><span class="'+(t.side==='buy'?'good':'bad')+'">'+(t.side==='buy'?'BUY':'SELL')+'</span><span>'+t.price.toFixed(1)+'</span><span>'+t.qty.toFixed(4)+'</span></div>').join('');
+  $('askBook').innerHTML=[...asks].reverse().map(x=>'<div class="bookRow askRow"><div class="bar" style="width:'+Math.min(100,x.qty/maxQ*100).toFixed(0)+'%"></div><span class="bad">'+fmtPrice(x.price)+'</span><span>'+x.qty.toFixed(Math.max(2,qtyDecimals()))+'</span></div>').join('');
+  $('bidBook').innerHTML=bids.map(x=>'<div class="bookRow bidRow"><div class="bar" style="width:'+Math.min(100,x.qty/maxQ*100).toFixed(0)+'%"></div><span class="good">'+fmtPrice(x.price)+'</span><span>'+x.qty.toFixed(Math.max(2,qtyDecimals()))+'</span></div>').join('');
+  $('midBook').textContent=(bestBid&&bestAsk)?'$'+fmtPrice((bestBid+bestAsk)/2):'—';
+  $('tapeList').innerHTML=recentTape.slice(0,22).map(t=>'<div class="tapeRow"><span class="'+(t.side==='buy'?'good':'bad')+'">'+(t.side==='buy'?'BUY':'SELL')+'</span><span>'+fmtPrice(t.price)+'</span><span>'+t.qty.toFixed(Math.max(2,qtyDecimals()))+'</span></div>').join('');
   $('flowLive').textContent=(bids.length&&asks.length)?'LIVE':'WAIT';$('flowLive').className='flowLive '+((bids.length&&asks.length)?'good':'warn');
 }
 function removeLevelLines(){for(const l of [prevHighLine,prevLowLine,dayHighLine,dayLowLine]){if(l){try{candleSeries.removePriceLine(l)}catch(e){}}}prevHighLine=prevLowLine=dayHighLine=dayLowLine=null}
 function renderKeyLevels(){
   removeLevelLines();const lv=keyLevels(candles);if(!lv)return;
-  const item=(label,v)=>'<div class="sessionItem"><span class="lab">'+label+'</span><br><b>'+(v?'$'+fmt(v):'—')+'</b></div>';
+  const item=(label,v)=>'<div class="sessionItem"><span class="lab">'+label+'</span><br><b>'+(v?'$'+fmtPrice(v):'—')+'</b></div>';
   $('sessionLevels').innerHTML=item('PDH',lv.pdh)+item('PDL',lv.pdl)+item('DAY HIGH',lv.dayHigh)+item('DAY LOW',lv.dayLow);
   if(!showSession)return;
   if(lv.pdh)prevHighLine=candleSeries.createPriceLine({price:lv.pdh,color:'#e5ac43',lineWidth:1,lineStyle:2,axisLabelVisible:true,title:'PDH'});
@@ -1446,7 +1713,7 @@ function renderSwingLevels(structure){
   lows.forEach((l,idx)=>defs.push({price:l.price,label:idx===0?'S1':'S2',cls:l.label==='HL'?'good':'bad',title:l.label}));
   defs.forEach(d=>{
     swingLines.push(candleSeries.createPriceLine({price:d.price,color:d.label[0]==='R'?'#e5ac43':'#22c786',lineWidth:1,lineStyle:3,axisLabelVisible:false,title:d.label}));
-    if(host){const el=document.createElement('span');el.className='srPill '+(d.cls||'neutral');el.textContent=d.label+' $'+fmt(d.price)+' · '+d.title;host.appendChild(el)}
+    if(host){const el=document.createElement('span');el.className='srPill '+(d.cls||'neutral');el.textContent=d.label+' $'+fmtPrice(d.price)+' · '+d.title;host.appendChild(el)}
   });
 }
 function updateTrendTint(stateName){
@@ -1930,12 +2197,14 @@ async function refreshPushServerStatus(){
 function compactPushState(){
   const p=state.position;
   return {
+    asset:marketAsset,
+    symbol:marketLabel(),
     startEquity:Number(state.startEquity),
     equity:Number(state.equity),
     daily:Number(state.daily),
     day:Number(state.day),
     position:p?{
-      side:p.side,entry:Number(p.entry),entryTime:Number(p.entryTime),qty:Number(p.qty),
+      side:p.side,asset:String(p.asset||marketAsset),symbol:String(p.symbol||marketLabel()),entry:Number(p.entry),entryTime:Number(p.entryTime),qty:Number(p.qty),
       tp:Number(p.tp),sl:Number(p.sl),openFee:Number(p.openFee||0),
       fundingAccrued:Number(p.fundingAccrued||0),tf:p.tf||'',setup:p.setup||''
     }:null
@@ -1950,7 +2219,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'11.1.0',
+        appVersion:'11.3.0',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -2189,7 +2458,7 @@ async function fetchFundingForSymbol(symbol){
 async function loadFunding(){
   try{
     let rates=null,used=null,lastErr=null;
-    for(const symbol of FUNDING_SYMBOLS){
+    for(const symbol of fundingSymbols()){
       try{
         const got=await fetchFundingForSymbol(symbol);
         if(got.length){rates=got;used=symbol;break}
@@ -2517,7 +2786,7 @@ function updateFundingLiveCard(now=Date.now()){
   elapsedEl.textContent=elapsedText(now-Number(p.entryTime));
   accEl.textContent=acc===null?'N/A':fundingSignedText(acc);accEl.className=acc>0?'good':acc<0?'bad':'';
   const action=perHour>0?'KAP':perHour<0?'FIZET':'0';
-  note.textContent=p.side.toUpperCase()+' '+Number(p.qty).toFixed(3)+' BTC · jelenlegi rate mellett '+action+' · funding folyamatosan gyűlik; fee + funding külön látszik.';
+  note.textContent=p.side.toUpperCase()+' '+fmtQty(p.qty)+' '+String(p.asset||assetSymbol())+' · jelenlegi rate mellett '+action+' · funding folyamatosan gyűlik; fee + funding külön látszik.';
 }
 function netAtPrice(position,px,atMs){
   if(!position||!Number.isFinite(px))return null;
@@ -2553,7 +2822,7 @@ function renderMiniNetChart(){
 }
 function renderMiniBtcChart(fit=false){
   miniBtcSeries.setData(miniBtcSeconds);
-  $('miniBtcValue').textContent=lastPrice===null?'—':'$'+fmt(lastPrice);
+  $('miniBtcValue').textContent=lastPrice===null?'—':'$'+fmtPrice(lastPrice);
   if(fit){
     try{miniBtcChart.timeScale().fitContent()}catch(e){}
     try{miniNetChart.timeScale().fitContent()}catch(e){}
@@ -2566,7 +2835,7 @@ function sampleMiniSecond(nowMs=Date.now()){
   const btcPoint={time:t,value:px};
   pushRolling(miniBtcSeconds,btcPoint,600);
   miniBtcSeries.update(btcPoint);
-  $('miniBtcValue').textContent='$'+fmt(px);
+  $('miniBtcValue').textContent='$'+fmtPrice(px);
 
   const p=state.position;
   if(p){
@@ -2630,7 +2899,7 @@ function queueLivePrice(px,nowMs=Date.now()){
     lastMarketTickAt=Date.now();
     for(const tf of [1,5,15,60])updateMtfCachePrice(tf,q.px,q.nowMs);
     trackExcursions(q.px);
-    $('price').textContent='$'+fmt(q.px);
+    $('price').textContent='$'+fmtPrice(q.px);
     applyLivePriceToCandle(q.px,q.nowMs);
     updateFundingLiveCard();
     scheduleLiveUI();
@@ -2688,7 +2957,7 @@ function checkSupertrendConfirmedAlert(a){
   const close=Number(candles[i].close);
   fireAlert(
     bullish?'SUPERTREND BULLISH':'SUPERTREND BEARISH',
-    'BTC/USD · '+tfAlertLabel()+' · lezárt gyertya $'+fmt(close)+' · ST 10/3',
+    marketLabel()+' · '+tfAlertLabel()+' · lezárt gyertya $'+fmtPrice(close)+' · ST 10/3',
     bullish?'good':'bad'
   );
 }
@@ -2811,7 +3080,7 @@ function parseRestRow(r){
   return {time:Number(r[0]),open:Number(r[1]),high:Number(r[2]),low:Number(r[3]),close:Number(r[4]),vwap:Number(r[5]),volume:Number(r[6]),trades:Number(r[7]||0)};
 }
 async function fetchHistoryFor(tf){
-  const url='https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval='+tf;
+  const url='https://api.kraken.com/0/public/OHLC?pair='+encodeURIComponent(assetCfg().rest)+'&interval='+tf;
   const res=await fetch(url,{cache:'no-store'});
   if(!res.ok)throw new Error('HTTP '+res.status);
   const j=await res.json();
@@ -2877,22 +3146,22 @@ function connect(){
     // Ticker gives immediate market snapshot / fallback price.
     ws.send(JSON.stringify({
       method:'subscribe',
-      params:{channel:'ticker',symbol:['BTC/USD'],snapshot:true}
+      params:{channel:'ticker',symbol:[assetCfg().ws],snapshot:true}
     }));
 
     // Trade channel moves the visible candle on every Kraken execution.
     ws.send(JSON.stringify({
       method:'subscribe',
-      params:{channel:'trade',symbol:['BTC/USD'],snapshot:false}
+      params:{channel:'trade',symbol:[assetCfg().ws],snapshot:false}
     }));
 
     // L2 order book drives the pro order-flow panel.
-    ws.send(JSON.stringify({method:'subscribe',params:{channel:'book',symbol:['BTC/USD'],depth:25,snapshot:true}}));
+    ws.send(JSON.stringify({method:'subscribe',params:{channel:'book',symbol:[assetCfg().ws],depth:25,snapshot:true}}));
 
     // OHLC remains the authoritative official candle source.
     ws.send(JSON.stringify({
       method:'subscribe',
-      params:{channel:'ohlc',symbol:['BTC/USD'],interval:interval,snapshot:true}
+      params:{channel:'ohlc',symbol:[assetCfg().ws],interval:interval,snapshot:true}
     }));
 
     startWsWatchdog();
@@ -2995,6 +3264,152 @@ mainChart.subscribeCrosshairMove(param=>{
   }
 });
 
+
+function effectiveTheme(){
+  if(themeMode==='system'){
+    return window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  }
+  return themeMode==='light'?'light':'dark';
+}
+function chartPalette(){
+  const light=effectiveTheme()==='light';
+  return light
+    ?{bg:'#ffffff',text:'#465766',grid:'#d8e0e755',border:'#cbd6de',vwap:'#536674'}
+    :{bg:'#131722',text:'#b2b5be',grid:'#2a2e3955',border:'#2a2e39',vwap:'#e0e3eb'};
+}
+function applyChartTheme(){
+  const p=chartPalette();
+  const charts=[mainChart,rsiChart,macdChart,miniBtcChart,miniNetChart,liteChart,liteBtc1sChart,liteNet1sChart];
+  charts.forEach(ch=>{
+    try{
+      ch.applyOptions({
+        layout:{background:{type:'solid',color:p.bg},textColor:p.text},
+        grid:{vertLines:{color:p.grid},horzLines:{color:p.grid}},
+        rightPriceScale:{borderColor:p.border},
+        timeScale:{borderColor:p.border}
+      });
+    }catch(e){}
+  });
+  try{vwapSeries.applyOptions({color:p.vwap})}catch(e){}
+}
+function syncThemeUi(){
+  document.querySelectorAll('[data-theme-choice]').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.themeChoice===themeMode);
+  });
+  const eff=effectiveTheme();
+  if($('themeStatus')){
+    $('themeStatus').textContent=themeMode==='system'
+      ?'System · jelenleg '+(eff==='dark'?'sötét':'világos')+' rendszermegjelenést követ.'
+      :(themeMode==='dark'?'Dark · sötét terminál mód aktív.':'Light · világos mód aktív.');
+  }
+}
+function applyTheme(next,{save=true,reloadTv=true}={}){
+  next=['light','dark','system'].includes(next)?next:'system';
+  themeMode=next;
+  if(save)localStorage.setItem(THEME_KEY,themeMode);
+  const eff=effectiveTheme();
+  document.documentElement.setAttribute('data-theme',eff);
+  document.documentElement.setAttribute('data-theme-mode',themeMode);
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if(meta)meta.setAttribute('content',eff==='light'?'#f2f5f8':'#071018');
+  applyChartTheme();
+  syncThemeUi();
+  if(reloadTv&&mode==='pro'&&tvLoaded)loadTradingView(true);
+  setTimeout(resizeCharts,60);
+}
+const systemThemeMedia=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+if(systemThemeMedia){
+  const onSystemThemeChange=()=>{if(themeMode==='system')applyTheme('system',{save:false,reloadTv:true})};
+  if(systemThemeMedia.addEventListener)systemThemeMedia.addEventListener('change',onSystemThemeChange);
+  else if(systemThemeMedia.addListener)systemThemeMedia.addListener(onSystemThemeChange);
+}
+
+
+function applyAssetPriceFormat(){
+  const pf=assetPriceFormat();
+  const priceSeries=[
+    candleSeries,ema9Series,ema21Series,ema50Series,ema200Series,vwapSeries,
+    stBullSeries,stBearSeries,bbUpperSeries,bbMidSeries,bbLowerSeries,
+    miniBtcSeries,liteCandleSeries,liteBtc1sSeries
+  ].filter(Boolean);
+  priceSeries.forEach(s=>{try{s.applyOptions({priceFormat:pf})}catch(e){}});
+}
+function updateAssetUi(){
+  const a=assetCfg();
+  const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};
+  set('marketSymbolLabel',a.pair+' · KRAKEN SPOT LIVE');
+  set('liteMarketLabel',a.pair);
+  set('liteMarket1sLabel',a.pair+' · 1s');
+  set('miniMarket1sLabel',a.pair+' · 1s');
+  set('tvMarketLabel','TradingView Advanced Chart · '+a.tv+' · teljes rajz/indikátor eszköztár');
+  set('orderMarketLabel','LONG / SHORT POZÍCIÓNYITÁS · '+a.pair);
+  set('qtyLabel','Quantity '+a.symbol);
+  set('riskUnitLabel','Risk / '+a.symbol);
+  set('flowMarketLabel','KRAKEN ORDER FLOW · '+a.pair);
+
+  if($('qty')){
+    $('qty').min=String(a.minQty);
+    $('qty').step=String(a.qtyStep);
+    if(!state.position && $('qtyMode')?.value==='manual'){
+      const q=Number($('qty').value);
+      if(!Number.isFinite(q)||q<a.minQty)$('qty').value=String(a.minQty);
+    }
+  }
+  if($('editTp'))$('editTp').step=String(Math.pow(10,-a.priceDecimals));
+  if($('editSl'))$('editSl').step=String(Math.pow(10,-a.priceDecimals));
+
+  document.querySelectorAll('#cryptoChoice [data-asset]').forEach(btn=>btn.classList.toggle('active',btn.dataset.asset===marketAsset));
+  if($('cryptoStatus'))$('cryptoStatus').textContent=a.pair+' · Kraken spot + '+a.funding[0]+' perpetual funding · qty lépcső '+a.qtyStep+' '+a.symbol+'.';
+
+  applyAssetPriceFormat();
+  syncShellUi();
+}
+function clearMarketVisuals(){
+  candles=[];lastPrice=null;
+  mtfSignals={};mtfCandles={1:[],5:[],15:[],60:[]};
+  bookBids.clear();bookAsks.clear();recentTape=[];cvd=0;tradesPerSecond=[];
+  fundingRates=[];fundingSourceOk=false;fundingSymbol=assetCfg().funding[0];fundingLastSync=0;
+  miniBtcSeconds=[];miniNetSeconds=[];
+  const series=[
+    candleSeries,volumeSeries,ema9Series,ema21Series,ema50Series,ema200Series,vwapSeries,
+    stBullSeries,stBearSeries,bbUpperSeries,bbMidSeries,bbLowerSeries,
+    miniBtcSeries,miniNetSeries,liteCandleSeries,liteBtc1sSeries,liteNet1sSeries
+  ].filter(Boolean);
+  series.forEach(s=>{try{s.setData([])}catch(e){}});
+  try{rsiSeries.setData([])}catch(e){}
+  try{macdSeries.setData([]);macdSignalSeries.setData([]);macdHistSeries.setData([])}catch(e){}
+  $('price').textContent='—';$('litePrice').textContent='—';$('miniBtcValue').textContent='—';$('liteBtc1sValue').textContent='—';
+  renderFlowUI();
+}
+async function setMarketAsset(next,{force=false}={}){
+  next=String(next||'').toUpperCase();
+  if(!MARKET_ASSETS[next])return false;
+  if(next===marketAsset){updateAssetUi();return true}
+  if(state.position && !force){
+    pushAppAlert('Crypto váltás előtt zárd a nyitott '+String(state.position.asset||marketAsset)+' pozíciót.','warn');
+    return false;
+  }
+
+  if(ws){try{ws.onclose=null;ws.close()}catch(e){}}
+  clearTimeout(reconnectTimer);clearInterval(wsWatchdog);
+
+  marketAsset=next;
+  localStorage.setItem(MARKET_ASSET_KEY,marketAsset);
+  clearMarketVisuals();
+  updateAssetUi();
+  setStatus(false,'MARKET SWITCH…');
+
+  await loadHistory();
+  await refreshMTF();
+  connect();
+  loadFunding();
+  if(mode==='pro'&&tvLoaded)loadTradingView(true);
+  schedulePushBackendSync(true);
+  syncLiteUi(true);
+  pushAppAlert(marketLabel()+' aktív piac.','good');
+  return true;
+}
+
 function setFullChartMode(force){
   const app=$('app'),btn=$('maxChart');
   const on=typeof force==='boolean'?force:!app.classList.contains('maxchart');
@@ -3018,8 +3433,8 @@ function loadTradingView(force=false){
   const inner=document.createElement('div');inner.className='tradingview-widget-container__widget';inner.style.height='100%';inner.style.width='100%';wrap.appendChild(inner);host.appendChild(wrap);
   const sc=document.createElement('script');sc.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';sc.async=true;sc.type='text/javascript';
   sc.innerHTML=JSON.stringify({
-    autosize:true,symbol:'KRAKEN:BTCUSD',interval:String(interval),timezone:'Europe/Budapest',theme:'dark',style:'1',
-    backgroundColor:'#0d1720',gridColor:'rgba(65,80,92,0.25)',withdateranges:true,hide_side_toolbar:false,
+    autosize:true,symbol:assetCfg().tv,interval:String(interval),timezone:'Europe/Budapest',theme:effectiveTheme(),style:'1',
+    backgroundColor:effectiveTheme()==='light'?'#ffffff':'#0d1720',gridColor:effectiveTheme()==='light'?'rgba(110,125,138,0.20)':'rgba(65,80,92,0.25)',withdateranges:true,hide_side_toolbar:false,
     hide_top_toolbar:false,hide_legend:false,hide_volume:false,allow_symbol_change:false,save_image:false,
     support_host:'https://www.tradingview.com'
   });
@@ -3088,7 +3503,7 @@ function updateEntryAssist(){
   if(s.mode==='LONG'){label='▲ LONG INDÍTHATÓ';cls='good'}else if(s.mode==='SHORT'){label='▼ SHORT INDÍTHATÓ';cls='bad'}else if(s.mode==='LONG_WEAK'){label='▲ LONG · GYENGÉBB';cls='warn'}else if(s.mode==='SHORT_WEAK'){label='▼ SHORT · GYENGÉBB';cls='warn'}else if(s.mode==='WAIT_LONG'){label='▲ LONG SETUP · VÁRJ';cls='warn'}else if(s.mode==='WAIT_SHORT'){label='▼ SHORT SETUP · VÁRJ';cls='warn'}
   sig.textContent=label;sig.className='entryAssistSignal '+cls;str.textContent=s.strength||'—';str.className='confPill '+cls;
   if(s.valid){
-    entry.textContent='$'+fmt(s.entryLow)+' – $'+fmt(s.entryHigh);tp.textContent='$'+fmt(s.tp)+' · '+s.tpPct.toFixed(2)+'%';sl.textContent='$'+fmt(s.sl)+' · '+s.slPct.toFixed(2)+'%';rr.textContent=s.rr.toFixed(2)+'R';
+    entry.textContent='$'+fmtPrice(s.entryLow)+' – $'+fmtPrice(s.entryHigh);tp.textContent='$'+fmtPrice(s.tp)+' · '+s.tpPct.toFixed(2)+'%';sl.textContent='$'+fmtPrice(s.sl)+' · '+s.slPct.toFixed(2)+'%';rr.textContent=s.rr.toFixed(2)+'R';
     why.textContent=s.reason+' LIVE MTF: 1 mp-enként újraszámolva. TP/SL: az 5 perces ATR volatilitásához igazítva, kb. '+s.rr.toFixed(1)+'R cél/stop aránnyal.';
     apply.disabled=false;sideBtn.disabled=false;sideBtn.textContent=s.side==='long'?'▲ LONG kiválasztása':'▼ SHORT kiválasztása';
   }else{entry.textContent=tp.textContent=sl.textContent=rr.textContent='—';why.textContent=s.reason||'Nincs tiszta belépő.';apply.disabled=true;sideBtn.disabled=true;sideBtn.textContent='Irány kiválasztása'}
@@ -3235,7 +3650,7 @@ function buildJournalAOA(trades){
       i+1,
       journalValue(t,'date',''),
       journalValue(t,'clock',journalValue(t,'time','')),
-      'BTC/USD',
+      journalValue(t,'symbol','BTC/USD'),
       String(journalValue(t,'side','')).toUpperCase(),
       journalValue(t,'setup',''),
       journalValue(t,'tf',''),
@@ -3399,6 +3814,7 @@ function syncShellUi(){
   $('settingsModePro').classList.toggle('active',uiMode==='pro');
   $('menuModeLite').classList.toggle('active',uiMode==='lite');
   $('menuModePro').classList.toggle('active',uiMode==='pro');
+  syncThemeUi();
 
   $('settingsRiskPct').value=$('riskPct').value;
   $('settingsLeverage').value=$('lev').value;
@@ -3514,14 +3930,14 @@ function syncLiteUi(forceFit=false){
   $('liteEntryRr').textContent=$('entryAssistRR')?.textContent||'—';
   $('liteEntryWhy').textContent=$('entryAssistWhy')?.textContent||'—';
 
-  $('litePrice').textContent=lastPrice===null?'—':'$'+fmt(lastPrice);
+  $('litePrice').textContent=lastPrice===null?'—':'$'+fmtPrice(lastPrice);
   $('liteEquity').textContent=$('equity')?.textContent||'—';
   $('liteDaily').textContent=$('daily')?.textContent||'—';
 
   const p=state.position, net=liteNetValue();
   $('liteLiveNet').textContent=net===null?'—':(net>=0?'+':'')+'$'+fmt(net);
   $('liteLiveNet').className=net>0?'good':net<0?'bad':'';
-  $('litePosition').textContent=p?(String(p.side).toUpperCase()+' · '+Number(p.qty).toFixed(3)+' BTC'):'NINCS';
+  $('litePosition').textContent=p?(String(p.side).toUpperCase()+' · '+fmtQty(p.qty)+' '+String(p.asset||assetSymbol())):'NINCS';
   $('litePosition').className=p?(p.side==='long'?'good':'bad'):'';
 
   const funding=p?calculateFundingAccrued(p,Date.now()):null;
@@ -3544,7 +3960,7 @@ function syncLiteUi(forceFit=false){
   const netPts=miniNetSeconds.slice(-180);
   liteBtc1sSeries.setData(btcPts);
   liteNet1sSeries.setData(netPts);
-  $('liteBtc1sValue').textContent=lastPrice===null?'—':'$'+fmt(lastPrice);
+  $('liteBtc1sValue').textContent=lastPrice===null?'—':'$'+fmtPrice(lastPrice);
   $('liteNet1sValue').textContent=net===null?'—':(net>=0?'+':'')+'$'+fmt(net);
   $('liteNet1sValue').className=net>0?'good':net<0?'bad':'';
 
@@ -3572,7 +3988,7 @@ function riskSizing(levels){
   const feeRiskPerBtc=(lastPrice*entryRate)+(levels.sl*exitRate);
   const riskPerBtc=priceRiskPerBtc+feeRiskPerBtc;
   let qty=riskPerBtc>0?budget/riskPerBtc:0;
-  qty=Math.max(0,Math.floor(qty*1000)/1000);
+  qty=roundQtyDown(qty);
   // Funding market-driven, so planned risk sizing excludes future unknown funding.
   const plannedRiskUsd=qty*riskPerBtc;
 
@@ -3587,7 +4003,7 @@ function syncQuantity(levels){
   $('qty').readOnly=auto;
   if(auto){
     const r=riskSizing(levels);
-    if(r&&r.qty>0)$('qty').value=r.qty.toFixed(3);
+    if(r&&r.qty>0)$('qty').value=r.qty.toFixed(qtyDecimals());
   }
 }
 
@@ -3613,7 +4029,7 @@ function trackExcursions(px){
   }
 }
 function updateTradeUI(){
-  if(lastPrice!==null)$('price').textContent='$'+fmt(lastPrice);
+  if(lastPrice!==null)$('price').textContent='$'+fmtPrice(lastPrice);
   if(state.position)syncPositionFunding();
   const liveEq=state.equity+unreal()+fundingLive();
   const liveDaily=Number(state.daily)+unreal()+fundingLive();
@@ -3649,8 +4065,8 @@ function updateTradeUI(){
     const liveR=Number(p.plannedRiskUsd)>0?netEst/Number(p.plannedRiskUsd):0;
     $('livePnl').textContent='Gross '+(u>=0?'+':'')+'$'+fmt(u)+' · Net est. '+(netEst>=0?'+':'')+'$'+fmt(netEst)+' · '+(liveR>=0?'+':'')+liveR.toFixed(2)+'R';
     $('livePnl').className='pnl '+(netEst>=0?'good':'bad');
-    $('pSide').textContent=p.side.toUpperCase();$('pEntry').textContent='$'+fmt(p.entry);$('pQty').textContent=p.qty.toFixed(3)+' BTC';
-    $('pTp').textContent='$'+fmt(p.tp);$('pSl').textContent='$'+fmt(p.sl);$('pLow').textContent='$'+fmt(p.lowest);$('pHigh').textContent='$'+fmt(p.highest);
+    $('pSide').textContent=p.side.toUpperCase();$('pEntry').textContent='$'+fmtPrice(p.entry);$('pQty').textContent=fmtQty(p.qty)+' '+String(p.asset||assetSymbol());
+    $('pTp').textContent='$'+fmtPrice(p.tp);$('pSl').textContent='$'+fmtPrice(p.sl);$('pLow').textContent='$'+fmtPrice(p.lowest);$('pHigh').textContent='$'+fmtPrice(p.highest);
     $('pMae').textContent=(p.maeUsd>=0?'+':'')+'$'+fmt(p.maeUsd)+' · '+(p.maePct>=0?'+':'')+p.maePct.toFixed(3)+'%';$('pMae').className='val '+(p.maeUsd<0?'bad':'good');
     $('pMfe').textContent=(p.mfeUsd>=0?'+':'')+'$'+fmt(p.mfeUsd)+' · '+(p.mfePct>=0?'+':'')+p.mfePct.toFixed(3)+'%';$('pMfe').className='val '+(p.mfeUsd>=0?'good':'bad');
     $('pOpenFee').textContent=(p.openFee>=0?'$':'-$')+fmt(Math.abs(p.openFee));
@@ -3664,7 +4080,7 @@ function updateTradeUI(){
     }else{
       $('pFunding').textContent='N/A';$('pFunding').className='val warn';
     }
-    $('levelEdit').classList.remove('hidden');if(document.activeElement!==$('editTp'))$('editTp').value=Number(p.tp).toFixed(1);if(document.activeElement!==$('editSl'))$('editSl').value=Number(p.sl).toFixed(1);
+    $('levelEdit').classList.remove('hidden');if(document.activeElement!==$('editTp'))$('editTp').value=Number(p.tp).toFixed(assetCfg().priceDecimals);if(document.activeElement!==$('editSl'))$('editSl').value=Number(p.sl).toFixed(assetCfg().priceDecimals);
     checkStops();
   }else{
     removePositionLines();
@@ -3769,7 +4185,7 @@ function closePosition(reason='MANUAL'){
 
   state.trades.push({
     day:state.day,date:now.toLocaleDateString('hu-HU'),clock:now.toLocaleTimeString('hu-HU',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),
-    time:now.toLocaleString('hu-HU'),symbol:'BTC/USD',side:p.side,setup:p.setup||'',tf:p.tf||tfLabel(),
+    time:now.toLocaleString('hu-HU'),symbol:String(p.symbol||marketLabel()),asset:String(p.asset||marketAsset),side:p.side,setup:p.setup||'',tf:p.tf||tfLabel(),
     entry:p.entry,stop:p.sl,target:p.tp,exit:lastPrice,qty:p.qty,
     riskPct:p.riskPct, riskBudgetUsd:p.riskBudgetUsd, plannedRiskUsd:p.plannedRiskUsd, plannedRR:p.plannedRR, realizedR,
     openFee:p.openFee,closeFee,totalFee,funding,gross,net,reason,
@@ -3784,13 +4200,13 @@ function closePosition(reason='MANUAL'){
 
   if(reason==='TP'&&alertSettings.tp){
     fireAlert('TP ELÉRVE',
-      String(p.side).toUpperCase()+' · BTC/USD · Exit $'+fmt(lastPrice)+' · Net '+(net>=0?'+':'')+'$'+fmt(net),
+      String(p.side).toUpperCase()+' · '+String(p.symbol||marketLabel())+' · Exit $'+fmtPrice(lastPrice)+' · Net '+(net>=0?'+':'')+'$'+fmt(net),
       'good'
     );
   }
   if(reason==='SL'&&alertSettings.sl){
     fireAlert('SL ELÉRVE',
-      String(p.side).toUpperCase()+' · BTC/USD · Exit $'+fmt(lastPrice)+' · Net '+(net>=0?'+':'')+'$'+fmt(net),
+      String(p.side).toUpperCase()+' · '+String(p.symbol||marketLabel())+' · Exit $'+fmtPrice(lastPrice)+' · Net '+(net>=0?'+':'')+'$'+fmt(net),
       'bad'
     );
   }
@@ -3813,7 +4229,7 @@ function renderHistory(){
       '<td>'+(state.trades.length-i)+'</td>'+
       '<td>'+journalValue(t,'date','')+'</td>'+
       '<td>'+journalValue(t,'clock',journalValue(t,'time',''))+'</td>'+
-      '<td>BTC/USD</td>'+
+      '<td>'+journalValue(t,'symbol','BTC/USD')+'</td>'+
       '<td>'+String(journalValue(t,'side','')).toUpperCase()+'</td>'+
       '<td>'+journalValue(t,'setup','')+'</td>'+
       '<td>'+journalValue(t,'tf','')+'</td>'+
@@ -3891,13 +4307,13 @@ function openPositionFromCurrentSettings(sideOverride=null,feedbackKind='open'){
   if(!l){$('msg').textContent='TP/SL szintek nem számolhatók.';return false}
   syncQuantity(l);
   const r=riskSizing(l);
-  const qty=Math.max(.001,Number($('qty').value)||.001),tier=selectedFeeTier();
+  const qty=Math.max(assetCfg().minQty,roundQtyDown(Number($('qty').value)||assetCfg().minQty)),tier=selectedFeeTier();
   const entryExec=$('entryExec').value,exitExec=$('exitExec').value;
   const openFee=feeFor(lastPrice,qty,entryExec,tier);
   state.equity-=openFee;
   state.daily-=openFee;
   state.position={
-    side,entry:lastPrice,entryTime:Date.now(),qty,
+    side,asset:marketAsset,symbol:marketLabel(),entry:lastPrice,entryTime:Date.now(),qty,
     tp:l.tp,sl:l.sl,tpPct:l.tpPct,slPct:l.slPct,leverage:Number($('lev').value),
     feeTier:{...tier},entryExec,exitExec,openFee,
     riskPct:r?Number(r.riskPct):Number($('riskPct').value)||.20,
@@ -3908,7 +4324,7 @@ function openPositionFromCurrentSettings(sideOverride=null,feedbackKind='open'){
     lowest:lastPrice,highest:lastPrice,maeUsd:0,mfeUsd:0,maePct:0,mfePct:0
   };
   save();syncPositionLines();loadFunding();updateTradeUI();
-  $('msg').textContent=side.toUpperCase()+' pozíció nyitva · '+qty.toFixed(3)+' BTC';
+  $('msg').textContent=side.toUpperCase()+' '+marketLabel()+' pozíció nyitva · '+fmtQty(qty)+' '+assetSymbol();
   if(feedbackKind)tradeFeedback(feedbackKind);
   return true;
 }
@@ -3958,6 +4374,8 @@ $('menuModeLite').addEventListener('click',()=>setUiMode('lite'));
 $('menuModePro').addEventListener('click',()=>setUiMode('pro'));
 $('settingsModeLite').addEventListener('click',()=>setUiMode('lite',{navigate:false}));
 $('settingsModePro').addEventListener('click',()=>setUiMode('pro',{navigate:false}));
+document.querySelectorAll('[data-theme-choice]').forEach(btn=>btn.addEventListener('click',()=>applyTheme(btn.dataset.themeChoice)));
+document.querySelectorAll('#cryptoChoice [data-asset]').forEach(btn=>btn.addEventListener('click',()=>setMarketAsset(btn.dataset.asset)));
 $('menuResetProfile').addEventListener('click',()=>{$('resetAll').click();closeAppMenu()});
 
 document.querySelectorAll('#settingsProfiles [data-profile]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -4065,6 +4483,8 @@ $('qty').readOnly=true;
 setSide('long');
 $('app').classList.toggle('ui-lite',uiMode==='lite');
 $('liteDashboard').classList.toggle('hidden',uiMode!=='lite');
+applyTheme(themeMode,{save:false,reloadTv:false});
+updateAssetUi();
 syncShellUi();
 startLiteSync();
 if(state.position)syncPositionLines();
