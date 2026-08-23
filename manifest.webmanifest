@@ -1,13 +1,13 @@
 {
   "id": "/boti-paper-trader/",
-  "name": "Botond Trading Platform V11.0",
+  "name": "Botond Trading Platform V11.0.1",
   "short_name": "Botond Trading",
-  "start_url": "./?v=11.0.0",
+  "start_url": "./?v=11.0.1",
   "scope": "./",
   "display": "standalone",
   "background_color": "#071018",
   "theme_color": "#071018",
-  "description": "Responsive iPad/iPhone BTC/USD paper trading platform with live Entry Assist, compact order-flow panels and unified full-chart toggle.",
+  "description": "Responsive iPad/iPhone trading platform with iPhone 13 Pro Max fitted splash screen and live trading UI.",
   "icons": [
     {
       "src": "boti-icon-v1041-192.png?v=1080",

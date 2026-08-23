@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071018">
-<link rel="manifest" href="manifest.webmanifest?v=1041">
+<link rel="manifest" href="manifest.webmanifest?v=1101">
 <link rel="apple-touch-icon" sizes="180x180" href="boti-icon-v1041-180.png?v=1041">
 <link rel="icon" type="image/png" sizes="192x192" href="boti-icon-v1041-192.png?v=1041">
 <link rel="icon" type="image/png" sizes="512x512" href="boti-icon-v1041-512.png?v=1041">
-<title>Botond Trading Platform V11.0 · iPAD + iPHONE UI</title>
+<title>Botond Trading Platform V11.0.1 · iPHONE SPLASH FIX</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -193,17 +193,57 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 .dualMiniWrap{margin-top:8px;border-top:1px solid #172631;padding-top:8px}.dualMiniTitle{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:0 5px 6px;color:#b2b5be;font-size:10px}.dualMiniCharts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.miniMarketCard{border:1px solid #2a2e39;background:#131722;border-radius:6px;overflow:hidden}.miniMarketHead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-bottom:1px solid #2a2e39;font-size:10px;color:#b2b5be}.miniMarketHead b{font-size:11px;color:#eef5fb}.miniLiveValue{font-weight:950;font-size:12px}.mini1sChart{height:180px;width:100%}
 @media(max-width:760px){.fundingLiveGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.dualMiniCharts{grid-template-columns:1fr}.mini1sChart{height:165px}}
 
-/* V10.9 SPLASH */
+/* V11.0.1 RESPONSIVE SPLASH */
 #appSplash{
-  position:fixed;inset:0;z-index:99999;background:#050d16;
+  position:fixed;inset:0;z-index:99999;
+  background:
+    radial-gradient(circle at 50% 43%,rgba(28,107,177,.16),transparent 34%),
+    linear-gradient(180deg,#06111d 0%,#030912 100%);
   display:flex;align-items:center;justify-content:center;
+  padding:
+    calc(env(safe-area-inset-top) + 20px)
+    calc(env(safe-area-inset-right) + 20px)
+    calc(env(safe-area-inset-bottom) + 20px)
+    calc(env(safe-area-inset-left) + 20px);
   opacity:1;visibility:visible;
-  transition:opacity .55s ease,visibility .55s ease;
+  transition:opacity .42s ease,visibility .42s ease;
+  overflow:hidden;
+}
+#appSplash::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.24;
+  background-image:
+    linear-gradient(rgba(34,199,134,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(34,199,134,.05) 1px,transparent 1px);
+  background-size:36px 36px;
+  transform:perspective(560px) rotateX(64deg) scale(1.8);
+  transform-origin:50% 100%;
 }
 #appSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
-#appSplash img{
-  width:100%;height:100%;object-fit:cover;display:block;
+.splashInner{
+  position:relative;z-index:1;width:min(88vw,440px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;transform:translateY(-2vh);
 }
+.splashLogo{
+  display:block;width:min(66vw,300px);height:auto;max-height:42vh;
+  object-fit:contain;filter:drop-shadow(0 0 24px rgba(74,155,255,.22));
+}
+.splashTitle{
+  margin-top:18px;color:#f6f9fc;font-weight:800;letter-spacing:.01em;
+  font-size:clamp(22px,6.2vw,31px);line-height:1.12;white-space:nowrap;
+  text-shadow:0 2px 16px rgba(0,0,0,.5);
+}
+.splashLine{
+  width:min(54vw,220px);height:2px;margin-top:18px;border-radius:999px;
+  background:linear-gradient(90deg,transparent,#3aaeff,transparent);
+  box-shadow:0 0 14px rgba(58,174,255,.7);
+}
+@media(max-width:430px){
+  .splashInner{width:94vw}
+  .splashLogo{width:min(68vw,286px)}
+  .splashTitle{font-size:clamp(21px,6vw,28px)}
+}
+
 
 
 /* V11.0 responsive iPad/iPhone UI */
@@ -245,6 +285,48 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
   .flowGrid{gap:7px}
 }
 
+
+/* V11.0.1 iPhone fit — iPhone 13 Pro Max (428px CSS width) + smaller iPhones */
+@media(max-width:700px){
+  html,body{
+    width:100%;max-width:100%;min-width:0;margin:0;overflow-x:hidden;
+  }
+  body{min-height:100dvh}
+  .app{
+    width:100%;max-width:100%;min-width:0;margin:0;
+    padding:
+      8px
+      max(8px,env(safe-area-inset-right))
+      calc(14px + env(safe-area-inset-bottom))
+      max(8px,env(safe-area-inset-left));
+  }
+  .layout,.sidecol,.panel,.chartPanel,.marketHead,.modebar,.tabs{
+    width:100%;max-width:100%;min-width:0;
+  }
+  .layout{display:flex;flex-direction:column;gap:10px}
+  .sidecol{display:flex;flex-direction:column;gap:10px}
+  #mainChart{
+    height:min(52dvh,480px);
+    min-height:350px;
+    max-height:480px;
+  }
+  #mainChartWrap{width:100%;max-width:100%;overflow:hidden}
+  #tvChart{height:min(68dvh,650px)}
+  input,select,textarea{font-size:16px}
+  .top{gap:7px}
+  .brand{font-size:18px}
+  .price{font-size:25px}
+  .marketHead{padding-left:2px;padding-right:2px}
+  .terminalTools{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+  .terminalTools .btn{flex:0 0 auto}
+  .confluenceStrip{right:8px!important;overflow:hidden}
+  .entryAssistGrid{grid-template-columns:1fr 1fr}
+  .entryAssistActions{display:grid;grid-template-columns:1fr 1fr}
+  .entryAssistActions .btn{min-width:0}
+  .flowGrid{grid-template-columns:1fr}
+  .analyticsGrid{grid-template-columns:1fr 1fr}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.2/dist/lightweight-charts.standalone.production.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -253,13 +335,36 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <body>
 
 <div id="appSplash" aria-label="Botond Trading Platform betöltés">
-  <img src="botond-trading-splash.png?v=1090" alt="Botond Trading Platform">
+  <div class="splashInner">
+    <img class="splashLogo" src="boti-icon-v1041-512.png?v=1101" alt="">
+    <div class="splashTitle">Botond Trading Platform</div>
+    <div class="splashLine"></div>
+  </div>
 </div>
+<script>
+(function(){
+  var splash=document.getElementById('appSplash');
+  if(!splash)return;
+  var hidden=false;
+  function hideSplash(){
+    if(hidden)return;
+    hidden=true;
+    splash.classList.add('hide');
+    window.setTimeout(function(){
+      if(splash && splash.parentNode)splash.parentNode.removeChild(splash);
+    },520);
+  }
+  // Független a fő app JS-től: akkor is továbblép, ha később runtime hiba történik.
+  window.setTimeout(hideSplash,1450);
+  window.addEventListener('pageshow',function(){window.setTimeout(hideSplash,1000);},{once:true});
+  window.addEventListener('load',function(){window.setTimeout(hideSplash,650);},{once:true});
+})();
+</script>
 
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Botond Trading Platform V11.0</div>
+      <div class="brand">Botond Trading Platform V11.0.1</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
@@ -2836,13 +2941,10 @@ function switchProfile(eq){
   removePositionLines();
   resetAlertBands();
   
-const splashEl=$('appSplash');
-if(splashEl){
-  const hideSplash=()=>splashEl.classList.add('hide');
-  setTimeout(hideSplash,1700);
-  window.addEventListener('load',()=>setTimeout(hideSplash,900),{once:true});
+syncProfileUI();
+  updateTradeUI();
+  $('msg').textContent='Profil betöltve: $'+fmt(eq)+' · Daily limit $'+fmt(dailyLimit())+' · Max DD $'+fmt(maxDD());
 }
-
 
 function setupFlowCollapsibles(){
   document.querySelectorAll('.flowCollapse').forEach(box=>{
@@ -2898,10 +3000,7 @@ function setupIphoneBottomDock(){
 
 setupFlowCollapsibles();
 setupIphoneBottomDock();
-syncProfileUI();
-  updateTradeUI();
-  $('msg').textContent='Profil betöltve: $'+fmt(eq)+' · Daily limit $'+fmt(dailyLimit())+' · Max DD $'+fmt(maxDD());
-}
+
 function riskSizing(levels){
   if(!levels||lastPrice===null)return null;
   const riskPct=Math.max(.01,Number($('riskPct').value)||.20);
