@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="boti-icon-v1041-180.png?v=1041">
 <link rel="icon" type="image/png" sizes="192x192" href="boti-icon-v1041-192.png?v=1041">
 <link rel="icon" type="image/png" sizes="512x512" href="boti-icon-v1041-512.png?v=1041">
-<title>Boti Kraken Paper Trader V10.7 TV STYLE SIGNALS</title>
+<title>Boti Kraken Paper Trader V10.7.3 PINCH + MTF FIX</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -673,6 +673,8 @@ let currentVisualState={trend:'NEUTRAL',confidence:0,structure:'—',rsi:null,ma
 let showBB=false,showStructure=false,showSession=false;
 let proGestureMode=localStorage.getItem('botiProGestureMode')!=='0';
 let lastChartTapAt=0;
+let chartTouchPointers=new Set();
+let chartMultiTouchUntil=0;
 const bookBids=new Map(),bookAsks=new Map();
 let recentTape=[],cvd=0,tradesPerSecond=[],flowUiTimer=null;
 let lastStructure={state:'NEUTRAL',label:'—',markers:[]};
@@ -1124,8 +1126,23 @@ function resetChartView(){
 function initProChartGestures(){
   const host=$('mainChart');if(!host)return;
   applyProGestureMode();
+
+  // iPad FIX: a kétujjas pinch két gyors pointerup eseményt generálhatott,
+  // amit a régi dupla-tap logika tévesen chart-resetnek érzékelt.
+  host.addEventListener('pointerdown',ev=>{
+    if(ev.pointerType!=='touch')return;
+    chartTouchPointers.add(ev.pointerId);
+    if(chartTouchPointers.size>=2){
+      chartMultiTouchUntil=Date.now()+850;
+      lastChartTapAt=0;
+    }
+  },{passive:true});
+
   host.addEventListener('pointerup',ev=>{
-    if(levelDrag||ev.pointerType!=='touch')return;
+    if(ev.pointerType!=='touch')return;
+    const wasMulti=chartTouchPointers.size>=2 || Date.now()<chartMultiTouchUntil;
+    chartTouchPointers.delete(ev.pointerId);
+    if(levelDrag||wasMulti){lastChartTapAt=0;return}
     const now=Date.now();
     if(now-lastChartTapAt<330){
       lastChartTapAt=0;
@@ -1135,6 +1152,11 @@ function initProChartGestures(){
     }
     lastChartTapAt=now;
   },{passive:false});
+
+  host.addEventListener('pointercancel',ev=>{
+    if(ev.pointerType==='touch')chartTouchPointers.delete(ev.pointerId);
+    lastChartTapAt=0;
+  },{passive:true});
 }
 
 
@@ -1314,7 +1336,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.7.0',
+        appVersion:'10.7.3',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -2254,20 +2276,37 @@ function clampNum(v,min,max){return Math.max(min,Math.min(max,v))}
 function latestFinite(arr){for(let i=arr.length-1;i>=0;i--)if(Number.isFinite(arr[i]))return arr[i];return null}
 function entryAssistDirectionSummary(){
   const frames=[1,5,15,60];
-  if(frames.some(tf=>!mtfSignals[tf]||!mtfSignals[tf].state||mtfSignals[tf].state==='NEUTRAL'))return {mode:'WAIT',strength:'NINCS',reason:'A négy idősík még nem ad teljes, egyértelmű jelet.'};
+  const stateText=tf=>mtfSignals[tf]?.state==='BULLISH'?'BULL':mtfSignals[tf]?.state==='BEARISH'?'BEAR':'WAIT';
+  const mtfText='MTF: 1m '+stateText(1)+' · 5m '+stateText(5)+' · 15m '+stateText(15)+' · 1h '+stateText(60)+'. ';
+  if(frames.some(tf=>!mtfSignals[tf]||!mtfSignals[tf].state||mtfSignals[tf].state==='NEUTRAL')){
+    return {mode:'WAIT',strength:'FRISSÜL',reason:mtfText+'Még nincs kész mind a négy idősík jele.'};
+  }
   const s1=mtfSignals[1].state,s5=mtfSignals[5].state,s15=mtfSignals[15].state,s60=mtfSignals[60].state;
-  const bull=[s1,s5,s15,s60].filter(s=>s==='BULLISH').length,bear=4-bull;
-  if(s5==='BULLISH'&&s15==='BULLISH'&&s60==='BULLISH'){
-    if(s1==='BULLISH')return {mode:'LONG',strength:'ERŐS',bull,bear,reason:'1m + 5m + 15m + 1h bullish. A rövid és magasabb idősík ugyanabba az irányba áll.'};
-    return {mode:'WAIT_LONG',strength:'SETUP',bull,bear,reason:'5m + 15m + 1h bullish, de az 1m még bearish. Várj 1m bullish visszafordulásra / visszatesztre.'};
+  const states=[s1,s5,s15,s60];
+  const bull=states.filter(s=>s==='BULLISH').length,bear=states.filter(s=>s==='BEARISH').length;
+
+  // Fő szabály: 3/4 vagy 4/4 idősík egyezése már indítható irány.
+  if(bull>=3){
+    return {mode:'LONG',strength:bull===4?'ERŐS':'JÓ',bull,bear,
+      reason:mtfText+bull+'/4 idősík bullish. LONG csak akkor induljon, ha az aktuális ár nem szakadt már túl messze a belépő zónától.'};
   }
-  if(s5==='BEARISH'&&s15==='BEARISH'&&s60==='BEARISH'){
-    if(s1==='BEARISH')return {mode:'SHORT',strength:'ERŐS',bull,bear,reason:'1m + 5m + 15m + 1h bearish. A rövid és magasabb idősík ugyanabba az irányba áll.'};
-    return {mode:'WAIT_SHORT',strength:'SETUP',bull,bear,reason:'5m + 15m + 1h bearish, de az 1m még bullish. Várj 1m bearish visszafordulásra / visszatesztre.'};
+  if(bear>=3){
+    return {mode:'SHORT',strength:bear===4?'ERŐS':'JÓ',bull,bear,
+      reason:mtfText+bear+'/4 idősík bearish. SHORT csak akkor induljon, ha az aktuális ár nem szakadt már túl messze a belépő zónától.'};
   }
-  if(s1==='BULLISH'&&s5==='BULLISH'&&s15==='BULLISH')return {mode:'LONG_WEAK',strength:'KÖZEPES',bull,bear,reason:'1m + 5m + 15m bullish, de az 1h bearish. Ez magasabb idősík ellen menő, gyengébb LONG.'};
-  if(s1==='BEARISH'&&s5==='BEARISH'&&s15==='BEARISH')return {mode:'SHORT_WEAK',strength:'KÖZEPES',bull,bear,reason:'1m + 5m + 15m bearish, de az 1h bullish. Ez magasabb idősík ellen menő, gyengébb SHORT.'};
-  return {mode:'WAIT',strength:'NINCS',bull,bear,reason:'Az idősíkok nem állnak össze tiszta irányba. Ilyenkor ne erőltesd a belépést.'};
+
+  // 2-2 esetén a 5m+15m együttállás setupot ad, de még várunk egy harmadik idősíkra.
+  if(s5==='BULLISH'&&s15==='BULLISH'){
+    return {mode:'WAIT_LONG',strength:'SETUP',bull,bear,
+      reason:mtfText+'5m és 15m bullish, de még csak 2/4 az egyezés. Várj 1m vagy 1h bullish megerősítésre.'};
+  }
+  if(s5==='BEARISH'&&s15==='BEARISH'){
+    return {mode:'WAIT_SHORT',strength:'SETUP',bull,bear,
+      reason:mtfText+'5m és 15m bearish, de még csak 2/4 az egyezés. Várj 1m vagy 1h bearish megerősítésre.'};
+  }
+
+  return {mode:'WAIT',strength:'NINCS',bull,bear,
+    reason:mtfText+'A 5m és 15m sem áll egy irányba, ezért most nincs tiszta belépő.'};
 }
 function buildEntryAssist(){
   const dir=entryAssistDirectionSummary(),px=Number(lastPrice);
