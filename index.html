@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="boti-icon-v1041-180.png?v=1041">
 <link rel="icon" type="image/png" sizes="192x192" href="boti-icon-v1041-192.png?v=1041">
 <link rel="icon" type="image/png" sizes="512x512" href="boti-icon-v1041-512.png?v=1041">
-<title>Boti Kraken Paper Trader V10.4.5 SAFE ROLLBACK</title>
+<title>Boti Kraken Paper Trader V10.6 ENTRY ASSIST</title>
 <style>
 :root{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;
@@ -89,6 +89,15 @@ body{min-height:100vh}
 .mtf{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
 .mtfbox{text-align:center;border:1px solid #223541;border-radius:9px;background:#0a141c;padding:7px 4px}
 .mtfbox b{display:block;font-size:11px;margin-top:3px}
+.entryAssist{margin-top:12px;border:1px solid #2a4050;border-radius:12px;background:#09141c;padding:10px}
+.entryAssistHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.entryAssistSignal{font-size:21px;font-weight:950;letter-spacing:-.02em}
+.entryAssistSignal.good{color:var(--green)}.entryAssistSignal.bad{color:var(--red)}.entryAssistSignal.warn{color:var(--amber)}
+.entryAssistGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.entryAssistItem{border:1px solid #20333f;background:#0d1821;border-radius:9px;padding:7px}.entryAssistItem .lab{font-size:9px}.entryAssistItem b{display:block;font-size:12px;margin-top:2px}
+.entryAssistWhy{margin-top:8px;padding:8px 9px;border-radius:9px;background:#101b23;border:1px solid #20333f;font-size:11px;line-height:1.45;color:#c8d6e0}
+.entryAssistActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.entryAssistActions .btn{flex:1;min-width:140px}
+@media(max-width:760px){.entryAssistGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .orderHead{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--line)}
 .orderHead .btn{flex:1}.orderHead.inline{padding:8px 0 0;border-bottom:0}
 form{padding:12px}
@@ -167,7 +176,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 <main id="app" class="app">
   <div id="mainTop" class="top">
     <div>
-      <div class="brand">Boti Kraken Paper Trader V10.4.5 SAFE ROLLBACK</div>
+      <div class="brand">Boti Kraken Paper Trader V10.6 ENTRY ASSIST</div>
       <div id="accountSummary" class="muted">200 000 $ paper account · 0.20% auto risk · 10x default leverage · FAST LIVE · 24/7 PUSH · Order Flow · PRO Terminal</div>
     </div>
     <div class="live"><span id="dot" class="dot"></span><span id="status">CONNECTING…</span></div>
@@ -289,7 +298,7 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
               <button id="toggleStructure" class="btn active" type="button">Structure</button>
               <button id="toggleSession" class="btn active" type="button">Session levels</button>
               <button id="toggleGestures" class="btn active" type="button">📱 PRO gesztus</button>
-              <span class="muted">ATR · ADX/DMI · Volume spike · BOS/CHOCH · Order flow · Auto S/R vizualizáció</span>
+              <span class="muted">ATR · ADX/DMI · Volume spike · BOS/CHOCH · Order flow · Simple bull/bear engine</span>
             </div>
             <div id="mainChartWrap">
               <div id="trendTint" class="trendTint"></div>
@@ -381,39 +390,55 @@ th,td{padding:9px 7px;border-bottom:1px solid #1d2c37;text-align:left;white-spac
 
       <aside class="sidecol">
         <div class="panel trendCard">
-          <div class="trendTitle">CONFIRMED TREND ENGINE · AKTUÁLIS IDŐSÍK</div>
-          <div id="trendState" class="trendState warn">● NEUTRAL</div>
-          <div id="trendText" class="muted">Historikus indikátor-adatok betöltése…</div>
+          <div class="trendTitle">SIMPLE TREND ENGINE · FIX 4 INDIKÁTOR</div>
+          <div id="trendState" class="trendState warn">● VÁRAKOZÁS</div>
+          <div id="trendText" class="muted">EMA 9/21 · VWAP · MACD · Supertrend · minden idősíkon ugyanaz.</div>
           <div class="confbar"><div id="confFill" class="conffill"></div></div>
 
           <div class="setup">
             <div class="lab">EGYSZERŰ JELZÉS</div>
             <strong id="setupState" class="warn">VÁRAKOZÁS</strong>
-            <div id="setupText" class="muted" style="margin-top:3px">Nincs elég adat.</div>
+            <div id="setupText" class="muted" style="margin-top:3px">3 vagy 4 egyező jel = irány. 2-2 esetén a Supertrend dönt.</div>
           </div>
 
           <div class="siggrid">
             <div class="sig"><span class="lab">EMA 9 / 21</span><b id="emaFastSig">—</b></div>
-            <div class="sig"><span class="lab">EMA 50 / 200</span><b id="emaMainSig">—</b></div>
             <div class="sig"><span class="lab">Price / VWAP</span><b id="vwapSig">—</b></div>
-            <div class="sig"><span class="lab">MACD momentum</span><b id="macdSig">—</b></div>
-            <div class="sig"><span class="lab">Supertrend</span><b id="superSig">—</b></div>
-            <div class="sig"><span class="lab">RSI regime</span><b id="rsiSig">—</b></div>
+            <div class="sig"><span class="lab">MACD 12/26/9</span><b id="macdSig">—</b></div>
+            <div class="sig"><span class="lab">Supertrend 10/3</span><b id="superSig">—</b></div>
           </div>
 
           <div class="metrics">
             <div class="metric"><div class="lab">Bull / Bear votes</div><div id="voteSig" class="val">0 / 0</div></div>
             <div class="metric"><div class="lab">Confidence</div><div id="confSig" class="val">0%</div></div>
-            <div class="metric"><div class="lab">RSI 14</div><div id="rsiVal" class="val">—</div></div>
+            <div class="metric"><div class="lab">2-2 tie-break</div><div id="tieBreakSig" class="val">—</div></div>
             <div class="metric"><div class="lab">MACD histogram</div><div id="macdHist" class="val">—</div></div>
           </div>
 
-          <div class="trendTitle" style="margin-top:12px">MULTI-TIMEFRAME</div>
+          <div class="trendTitle" style="margin-top:12px">MULTI-TIMEFRAME · FIX DÖNTÉS</div>
           <div class="mtf">
             <div class="mtfbox"><span class="lab">1m</span><b id="mtf1">—</b></div>
             <div class="mtfbox"><span class="lab">5m</span><b id="mtf5">—</b></div>
             <div class="mtfbox"><span class="lab">15m</span><b id="mtf15">—</b></div>
             <div class="mtfbox"><span class="lab">1h</span><b id="mtf60">—</b></div>
+          </div>
+
+          <div class="entryAssist">
+            <div class="entryAssistHead">
+              <div><div class="lab">ENTRY ASSIST · TECHNIKAI JAVASLAT</div><div id="entryAssistSignal" class="entryAssistSignal warn">VÁRAKOZÁS</div></div>
+              <div id="entryAssistStrength" class="confPill warn">—</div>
+            </div>
+            <div class="entryAssistGrid">
+              <div class="entryAssistItem"><span class="lab">Belépő zóna</span><b id="entryAssistEntry">—</b></div>
+              <div class="entryAssistItem"><span class="lab">TP</span><b id="entryAssistTp">—</b></div>
+              <div class="entryAssistItem"><span class="lab">SL</span><b id="entryAssistSl">—</b></div>
+              <div class="entryAssistItem"><span class="lab">RR</span><b id="entryAssistRR">—</b></div>
+            </div>
+            <div id="entryAssistWhy" class="entryAssistWhy">A rendszer a 1m / 5m / 15m / 1h irányt és az 5 perces volatilitást figyeli.</div>
+            <div class="entryAssistActions">
+              <button id="applyEntryAssist" class="btn" type="button" disabled>TP / SL alkalmazása</button>
+              <button id="selectEntryAssistSide" class="btn" type="button" disabled>Irány kiválasztása</button>
+            </div>
           </div>
         </div>
 
@@ -617,6 +642,8 @@ const save=()=>{
 
 let side='long', interval=1, lastPrice=null, candles=[], ws=null, reconnectTimer=null, mode='simple', tvLoaded=false;
 let lastTrendState='NEUTRAL', mtfTimer=null;
+let mtfSignals={};
+let entryAssistSuggestion=null;
 let entryPriceLine=null,tpPriceLine=null,slPriceLine=null,bePriceLine=null;
 let levelDrag=null;
 let bbUpperSeries=null,bbMidSeries=null,bbLowerSeries=null;
@@ -798,18 +825,14 @@ function updateTrendTint(stateName){
 function updateConfluenceStrip(v,a,i,atr,adx,volX){
   const host=$('confluenceStrip'); if(!host)return;
   const pills=[
-    ['Trend',v.state,v.state==='BULLISH'?'good':v.state==='BEARISH'?'bad':'warn'],
-    ['Fast EMA',labelVote(v.items.fast),v.items.fast>0?'good':v.items.fast<0?'bad':'neutral'],
-    ['Main EMA',i>=199?labelVote(v.items.main):'WAIT 200',v.items.main>0?'good':v.items.main<0?'bad':'warn'],
-    ['VWAP',labelVote(v.items.vwap),v.items.vwap>0?'good':v.items.vwap<0?'bad':'neutral'],
-    ['MACD',labelVote(v.items.macd),v.items.macd>0?'good':v.items.macd<0?'bad':'neutral'],
-    ['Super',labelVote(v.items.super),v.items.super>0?'good':v.items.super<0?'bad':'neutral'],
-    ['RSI',a.rsi[i]===null?'—':a.rsi[i].toFixed(1),a.rsi[i]>55?'good':a.rsi[i]<45?'bad':'warn'],
-    ['ADX',adx===null?'—':adx.toFixed(1),adx>=25?'good':adx>=18?'warn':'neutral'],
-    ['Vol',volX?volX.toFixed(2)+'x':'—',volX>=2?'good':volX>=1.2?'warn':'neutral'],
-    ['Struct',lastStructure.label||'—',classForState(lastStructure.state||'NEUTRAL')]
+    ['Trend',v.state==='BULLISH'?'BULL':v.state==='BEARISH'?'BEAR':'WAIT',v.state==='BULLISH'?'good':v.state==='BEARISH'?'bad':'warn'],
+    ['EMA 9/21',labelVote(v.items.fast),v.items.fast>0?'good':v.items.fast<0?'bad':'warn'],
+    ['VWAP',labelVote(v.items.vwap),v.items.vwap>0?'good':v.items.vwap<0?'bad':'warn'],
+    ['MACD',labelVote(v.items.macd),v.items.macd>0?'good':v.items.macd<0?'bad':'warn'],
+    ['Supertrend',labelVote(v.items.super),v.items.super>0?'good':v.items.super<0?'bad':'warn'],
+    ['Rule',v.tieBreakUsed?'2-2 → ST':'3/4 megerősítve',v.tieBreakUsed?'warn':'neutral']
   ];
-  host.innerHTML=pills.map(([lab,val,cls])=>'<span class="confPill '+cls+'"><b>'+lab+'</b> '+val+'</span>').join('');
+  host.innerHTML=pills.map(([lab,val,cls])=>'<span class="confPill ' + cls + '"><b>' + lab + '</b> ' + val + '</span>').join('');
 }
 function nearestCandleTimeFromMs(ms){
   if(!candles.length)return null;
@@ -1273,7 +1296,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.4.5',
+        appVersion:'10.6.0',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -1716,44 +1739,48 @@ function compute(cs){
 }
 function voteAt(a,cs,i){
   const votes={bull:0,bear:0,items:{}};
-  const push=(name,v)=>{items[name]=v;if(v>0)votes.bull++;if(v<0)votes.bear++};
   const items=votes.items;
+  const push=(name,v)=>{items[name]=v;if(v>0)votes.bull++;if(v<0)votes.bear++};
+
+  if(i<1||!Number.isFinite(a.closes[i])||!Number.isFinite(a.vw[i])){
+    push('fast',0);push('vwap',0);push('macd',0);push('super',0);
+    return {...votes,state:'NEUTRAL',confidence:0,tieBreakUsed:false};
+  }
 
   let fast=0;
-  if(i>1){
-    if(a.e9[i]>a.e21[i]&&a.e9[i]>a.e9[i-1]&&a.e21[i]>=a.e21[i-1])fast=1;
-    else if(a.e9[i]<a.e21[i]&&a.e9[i]<a.e9[i-1]&&a.e21[i]<=a.e21[i-1])fast=-1;
+  if(Number.isFinite(a.e9[i])&&Number.isFinite(a.e21[i])){
+    if(a.e9[i]>a.e21[i])fast=1;
+    else if(a.e9[i]<a.e21[i])fast=-1;
   }
   push('fast',fast);
 
-  let main=0;
-  if(i>=199){
-    if(a.e50[i]>a.e200[i]&&a.closes[i]>a.e50[i])main=1;
-    else if(a.e50[i]<a.e200[i]&&a.closes[i]<a.e50[i])main=-1;
-  }
-  push('main',main);
-
   const dev=(a.closes[i]-a.vw[i])/a.vw[i];
-  push('vwap',dev>0.0002?1:dev<-0.0002?-1:0);
+  push('vwap',dev>=0?1:-1);
 
-  let mom=0;
-  if(i>0){
-    if(a.macd.hist[i]>0&&a.macd.hist[i]>=a.macd.hist[i-1])mom=1;
-    else if(a.macd.hist[i]<0&&a.macd.hist[i]<=a.macd.hist[i-1])mom=-1;
+  let macd=0;
+  if(Number.isFinite(a.macd.macd[i])&&Number.isFinite(a.macd.signal[i])&&Number.isFinite(a.macd.hist[i])){
+    if(a.macd.macd[i]>a.macd.signal[i]&&a.macd.hist[i]>=0)macd=1;
+    else if(a.macd.macd[i]<a.macd.signal[i]&&a.macd.hist[i]<=0)macd=-1;
+    else macd=a.macd.hist[i]>=0?1:-1;
   }
-  push('macd',mom);
+  push('macd',macd);
 
-  push('super',a.st.dir[i]||0);
-
-  const rv=a.rsi[i];
-  push('rsi',rv===null?0:rv>55?1:rv<45?-1:0);
+  let superDir=Number(a.st.dir[i]||0);
+  if(!superDir&&i>0)superDir=Number(a.st.dir[i-1]||0);
+  if(!superDir)superDir=1;
+  push('super',superDir>0?1:-1);
 
   let state='NEUTRAL';
-  if(votes.bull>=4&&votes.bull-votes.bear>=2)state='BULLISH';
-  if(votes.bear>=4&&votes.bear-votes.bull>=2)state='BEARISH';
-  return {...votes,state,confidence:Math.round(Math.max(votes.bull,votes.bear)/6*100)};
+  let tieBreakUsed=false;
+  if(votes.bull>=3)state='BULLISH';
+  else if(votes.bear>=3)state='BEARISH';
+  else if(votes.bull===2&&votes.bear===2){
+    tieBreakUsed=true;
+    state=items.super>0?'BULLISH':'BEARISH';
+  }
+  return {...votes,state,confidence:Math.round(Math.max(votes.bull,votes.bear)/4*100),tieBreakUsed};
 }
-function labelVote(v){return v>0?'BULLISH':v<0?'BEARISH':'NEUTRAL'}
+function labelVote(v){return v>0?'BULL':v<0?'BEAR':'WAIT'}
 function classForState(s){return s==='BULLISH'?'good':s==='BEARISH'?'bad':'warn'}
 
 
@@ -1929,40 +1956,44 @@ function renderAllIndicators(){
   renderSwingLevels(lastStructure);
   updateConfluenceStrip(v,a,i,atr,adx,volX);
   updateTrend(v,a,i);
+  updateEntryAssist();
   updateChartPositionBox();
 }
 function updateTrend(v,a,i){
   const st=v.state;
-  $('trendState').textContent=st==='BULLISH'?'▲ BULLISH':st==='BEARISH'?'▼ BEARISH':'● NEUTRAL';
+  $('trendState').textContent=st==='BULLISH'?'▲ BULL':st==='BEARISH'?'▼ BEAR':'● VÁRAKOZÁS';
   $('trendState').className='trendState '+classForState(st);
-  $('trendText').textContent=st==='BULLISH'?'Legalább 4/6 bullish feltétel, kevés ellentétes jel.':
-    st==='BEARISH'?'Legalább 4/6 bearish feltétel, kevés ellentétes jel.':'A jelek kevertek — nincs megerősített fő irány.';
+  $('trendText').textContent=st==='BULLISH'?
+    (v.tieBreakUsed?'2-2 döntetlen volt, ezért a Supertrend bullish irányba döntött.':'Legalább 3 a 4 fix indikátorból bullish állapotban van.'):
+    st==='BEARISH'?
+    (v.tieBreakUsed?'2-2 döntetlen volt, ezért a Supertrend bearish irányba döntött.':'Legalább 3 a 4 fix indikátorból bearish állapotban van.'):
+    'EMA 9/21 · VWAP · MACD · Supertrend alapján várunk a megerősítésre.';
   $('confFill').style.width=v.confidence+'%';$('confFill').style.background=st==='BULLISH'?'#22c786':st==='BEARISH'?'#ef5a6a':'#e5ac43';
 
   $('emaFastSig').textContent=labelVote(v.items.fast);
-  $('emaMainSig').textContent=i>=199?labelVote(v.items.main):'WAIT 200';
   $('vwapSig').textContent=labelVote(v.items.vwap);
   $('macdSig').textContent=labelVote(v.items.macd);
   $('superSig').textContent=labelVote(v.items.super);
-  $('rsiSig').textContent=labelVote(v.items.rsi);
   $('voteSig').textContent=v.bull+' / '+v.bear;
   $('confSig').textContent=v.confidence+'%';
-  $('rsiVal').textContent=a.rsi[i]===null?'—':a.rsi[i].toFixed(1);
-  $('macdHist').textContent=a.macd.hist[i].toFixed(2);
+  $('tieBreakSig').textContent=v.tieBreakUsed?(v.items.super>0?'BULL · ST':'BEAR · ST'):'NEM';
+  $('macdHist').textContent=Number.isFinite(a.macd.hist[i])?a.macd.hist[i].toFixed(2):'—';
 
   if(st!==lastTrendState&&(st==='BULLISH'||st==='BEARISH')){
     $('setupState').textContent=st==='BULLISH'?'ÚJ LONG JEL':'ÚJ SHORT JEL';
     $('setupState').className=classForState(st);
-    $('setupText').textContent='Most váltott a megerősített trend '+(st==='BULLISH'?'bullish':'bearish')+' állapotba.';
+    $('setupText').textContent=v.tieBreakUsed?
+      'A jel 2-2 állás után a Supertrend irányába billent.':
+      'A fix 4 indikátorból legalább 3 ugyanabba az irányba állt.';
   }else if(st==='BULLISH'){
     $('setupState').textContent='LONG BIAS';$('setupState').className='good';
-    $('setupText').textContent='Bullish trend aktív; belépéshez figyeld a visszatesztet.';
+    $('setupText').textContent=v.tieBreakUsed?'Bullish bias · 2-2 után a Supertrend döntött.':'Bullish bias · 3/4 vagy 4/4 bullish megerősítés.';
   }else if(st==='BEARISH'){
     $('setupState').textContent='SHORT BIAS';$('setupState').className='bad';
-    $('setupText').textContent='Bearish trend aktív; belépéshez figyeld a visszatesztet.';
+    $('setupText').textContent=v.tieBreakUsed?'Bearish bias · 2-2 után a Supertrend döntött.':'Bearish bias · 3/4 vagy 4/4 bearish megerősítés.';
   }else{
     $('setupState').textContent='VÁRAKOZÁS';$('setupState').className='warn';
-    $('setupText').textContent='Nincs elég megerősítés.';
+    $('setupText').textContent='Nincs elég használható adat.';
   }
   updateTrendTint(st);
   lastTrendState=st;
@@ -2201,16 +2232,65 @@ function setMode(m){
   if(simple)setTimeout(()=>{resizeCharts();showRecent()},50);else loadTradingView(false);
 }
 
+function clampNum(v,min,max){return Math.max(min,Math.min(max,v))}
+function latestFinite(arr){for(let i=arr.length-1;i>=0;i--)if(Number.isFinite(arr[i]))return arr[i];return null}
+function entryAssistDirectionSummary(){
+  const frames=[1,5,15,60];
+  if(frames.some(tf=>!mtfSignals[tf]||!mtfSignals[tf].state||mtfSignals[tf].state==='NEUTRAL'))return {mode:'WAIT',strength:'NINCS',reason:'A négy idősík még nem ad teljes, egyértelmű jelet.'};
+  const s1=mtfSignals[1].state,s5=mtfSignals[5].state,s15=mtfSignals[15].state,s60=mtfSignals[60].state;
+  const bull=[s1,s5,s15,s60].filter(s=>s==='BULLISH').length,bear=4-bull;
+  if(s5==='BULLISH'&&s15==='BULLISH'&&s60==='BULLISH'){
+    if(s1==='BULLISH')return {mode:'LONG',strength:'ERŐS',bull,bear,reason:'1m + 5m + 15m + 1h bullish. A rövid és magasabb idősík ugyanabba az irányba áll.'};
+    return {mode:'WAIT_LONG',strength:'SETUP',bull,bear,reason:'5m + 15m + 1h bullish, de az 1m még bearish. Várj 1m bullish visszafordulásra / visszatesztre.'};
+  }
+  if(s5==='BEARISH'&&s15==='BEARISH'&&s60==='BEARISH'){
+    if(s1==='BEARISH')return {mode:'SHORT',strength:'ERŐS',bull,bear,reason:'1m + 5m + 15m + 1h bearish. A rövid és magasabb idősík ugyanabba az irányba áll.'};
+    return {mode:'WAIT_SHORT',strength:'SETUP',bull,bear,reason:'5m + 15m + 1h bearish, de az 1m még bullish. Várj 1m bearish visszafordulásra / visszatesztre.'};
+  }
+  if(s1==='BULLISH'&&s5==='BULLISH'&&s15==='BULLISH')return {mode:'LONG_WEAK',strength:'KÖZEPES',bull,bear,reason:'1m + 5m + 15m bullish, de az 1h bearish. Ez magasabb idősík ellen menő, gyengébb LONG.'};
+  if(s1==='BEARISH'&&s5==='BEARISH'&&s15==='BEARISH')return {mode:'SHORT_WEAK',strength:'KÖZEPES',bull,bear,reason:'1m + 5m + 15m bearish, de az 1h bullish. Ez magasabb idősík ellen menő, gyengébb SHORT.'};
+  return {mode:'WAIT',strength:'NINCS',bull,bear,reason:'Az idősíkok nem állnak össze tiszta irányba. Ilyenkor ne erőltesd a belépést.'};
+}
+function buildEntryAssist(){
+  const dir=entryAssistDirectionSummary(),px=Number(lastPrice);
+  if(!Number.isFinite(px)||px<=0)return {...dir,valid:false};
+  const s5=mtfSignals[5]||{},atr=Number(s5.atr),atrPct=Number.isFinite(atr)&&atr>0?atr/px*100:.30;
+  const slPct=clampNum(atrPct*.90,.25,.55),tpPct=clampNum(slPct*1.80,.45,1.00);
+  let side=null;if(['LONG','LONG_WEAK','WAIT_LONG'].includes(dir.mode))side='long';if(['SHORT','SHORT_WEAK','WAIT_SHORT'].includes(dir.mode))side='short';
+  if(!side)return {...dir,valid:false,slPct,tpPct};
+  const tp=side==='long'?px*(1+tpPct/100):px*(1-tpPct/100),sl=side==='long'?px*(1-slPct/100):px*(1+slPct/100),rr=tpPct/slPct;
+  const refs=[Number(s5.ema9),Number(s5.ema21),Number(s5.vwap)].filter(x=>Number.isFinite(x)&&x>0);
+  const center=refs.length?refs.reduce((a,b)=>a+b,0)/refs.length:px,half=px*.0006;
+  return {...dir,valid:true,side,slPct,tpPct,tp,sl,rr,entryLow:center-half,entryHigh:center+half,atrPct};
+}
+function updateEntryAssist(){
+  const s=buildEntryAssist();entryAssistSuggestion=s;
+  const sig=$('entryAssistSignal'),str=$('entryAssistStrength'),entry=$('entryAssistEntry'),tp=$('entryAssistTp'),sl=$('entryAssistSl'),rr=$('entryAssistRR'),why=$('entryAssistWhy'),apply=$('applyEntryAssist'),sideBtn=$('selectEntryAssistSide');
+  if(!sig)return;
+  let label='VÁRAKOZÁS',cls='warn';
+  if(s.mode==='LONG'){label='▲ LONG INDÍTHATÓ';cls='good'}else if(s.mode==='SHORT'){label='▼ SHORT INDÍTHATÓ';cls='bad'}else if(s.mode==='LONG_WEAK'){label='▲ LONG · GYENGÉBB';cls='warn'}else if(s.mode==='SHORT_WEAK'){label='▼ SHORT · GYENGÉBB';cls='warn'}else if(s.mode==='WAIT_LONG'){label='▲ LONG SETUP · VÁRJ';cls='warn'}else if(s.mode==='WAIT_SHORT'){label='▼ SHORT SETUP · VÁRJ';cls='warn'}
+  sig.textContent=label;sig.className='entryAssistSignal '+cls;str.textContent=s.strength||'—';str.className='confPill '+cls;
+  if(s.valid){
+    entry.textContent='$'+fmt(s.entryLow)+' – $'+fmt(s.entryHigh);tp.textContent='$'+fmt(s.tp)+' · '+s.tpPct.toFixed(2)+'%';sl.textContent='$'+fmt(s.sl)+' · '+s.slPct.toFixed(2)+'%';rr.textContent=s.rr.toFixed(2)+'R';
+    why.textContent=s.reason+' TP/SL: az 5 perces ATR volatilitásához igazítva, kb. '+s.rr.toFixed(1)+'R cél/stop aránnyal.';
+    apply.disabled=false;sideBtn.disabled=false;sideBtn.textContent=s.side==='long'?'▲ LONG kiválasztása':'▼ SHORT kiválasztása';
+  }else{entry.textContent=tp.textContent=sl.textContent=rr.textContent='—';why.textContent=s.reason||'Nincs tiszta belépő.';apply.disabled=true;sideBtn.disabled=true;sideBtn.textContent='Irány kiválasztása'}
+}
 async function refreshMTF(){
   for(const tf of [1,5,15,60]){
     try{
       const cs=tf===interval&&candles.length?candles:await fetchHistoryFor(tf);
-      const a=compute(cs);let st='NEUTRAL';
-      if(a){st=voteAt(a,cs,cs.length-1).state}
-      const el=$('mtf'+tf);el.textContent=st==='BULLISH'?'BULL':st==='BEARISH'?'BEAR':'NEUT';
-      el.className=classForState(st);
-    }catch(e){$('mtf'+tf).textContent='ERR';$('mtf'+tf).className='warn'}
+      const a=compute(cs);let st='NEUTRAL',v={bull:0,bear:0,tieBreakUsed:false,items:{}};
+      if(a){v=voteAt(a,cs,cs.length-1);st=v.state}
+      const i=cs.length-1;
+      mtfSignals[tf]={state:st,bull:v.bull||0,bear:v.bear||0,tieBreakUsed:!!v.tieBreakUsed,close:Number(cs[i]?.close)||null,atr:a?latestFinite(a.adx.atr):null,ema9:a?latestFinite(a.e9):null,ema21:a?latestFinite(a.e21):null,vwap:a?latestFinite(a.vw):null};
+      const el=$('mtf'+tf);
+      if(st==='BULLISH'){el.textContent='BULL '+Math.max(v.bull,v.bear)+'/4';el.className='good'}
+      else if(st==='BEARISH'){el.textContent='BEAR '+Math.max(v.bull,v.bear)+'/4';el.className='bad'}
+      else{el.textContent='WAIT';el.className='warn'}
+    }catch(e){mtfSignals[tf]={state:'NEUTRAL'};$('mtf'+tf).textContent='ERR';$('mtf'+tf).className='warn'}
   }
+  updateEntryAssist();
 }
 
 
@@ -2690,6 +2770,15 @@ function openPositionFromCurrentSettings(sideOverride=null,feedbackKind='open'){
   if(feedbackKind)tradeFeedback(feedbackKind);
   return true;
 }
+$('applyEntryAssist').addEventListener('click',()=>{
+  const s=entryAssistSuggestion;if(!s||!s.valid)return;
+  $('tpPct').value=s.tpPct.toFixed(2);$('slPct').value=s.slPct.toFixed(2);updateTradeUI();
+  $('msg').textContent='Entry Assist TP/SL alkalmazva · TP '+s.tpPct.toFixed(2)+'% · SL '+s.slPct.toFixed(2)+'%';
+});
+$('selectEntryAssistSide').addEventListener('click',()=>{
+  const s=entryAssistSuggestion;if(!s||!s.valid||!s.side)return;
+  setSide(s.side);$('msg').textContent=(s.side==='long'?'LONG':'SHORT')+' kiválasztva az Entry Assist alapján.';
+});
 $('order').addEventListener('submit',e=>{e.preventDefault();requestTradeAction(side,{openIfFlat:true,source:'primary'})});
 $('closePos').addEventListener('click',()=>closePosition('MANUAL'));
 $('applyLevels').addEventListener('click',()=>{const p=state.position;if(!p)return;const tp=Number($('editTp').value),sl=Number($('editSl').value);if(!Number.isFinite(tp)||!Number.isFinite(sl)){pushAppAlert('Érvénytelen TP/SL ár.','bad');return}if(p.side==='long'&&!(tp>p.entry&&sl<p.entry)){pushAppAlert('LONG-nál TP > entry és SL < entry szükséges.','warn');return}if(p.side==='short'&&!(tp<p.entry&&sl>p.entry)){pushAppAlert('SHORT-nál TP < entry és SL > entry szükséges.','warn');return}p.tp=tp;p.sl=sl;save();syncPositionLines();updateTradeUI();schedulePushBackendSync(true);pushAppAlert('TP/SL frissítve a charton és a háttér monitorban.','good')});
