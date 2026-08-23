@@ -1310,7 +1310,7 @@ async function refreshPushServerStatus(){
     const r=await fetch(pushBaseUrl()+'/status?clientId='+encodeURIComponent(pushClientId),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();
     const age=j.lastRun?Math.max(0,Math.round((Date.now()-j.lastRun)/1000)):null;const pushAge=j.lastPushAt?Math.max(0,Math.round((Date.now()-j.lastPushAt)/1000)):null;
     $('pushServerStatus').textContent='Server monitor: '+(age===null?'még nincs cron futás':age+' mp-e futott')+' · subscription '+(j.subscriptionPresent?'OK':'HIÁNYZIK')+(pushAge!==null?' · last push '+pushAge+' mp':'');
-    $('pushServerStatus').className='pushStatus '+(age!==null&&age<180&&j.subscriptionPresent?'good':'warn');
+    $('pushServerStatus').className='pushStatus '+(age!==null&&age<900&&j.subscriptionPresent?'good':'warn');
   }catch(err){$('pushServerStatus').textContent='Server monitor hiba: '+String(err&&err.message||err);$('pushServerStatus').className='pushStatus bad'}
 }
 function compactPushState(){
@@ -1336,7 +1336,7 @@ async function syncPushBackend(){
       body:JSON.stringify({
         clientId:pushClientId,
         subscriptionId:pushSubscriptionId||'',
-        appVersion:'10.7.3',
+        appVersion:'10.7.4',
         state:compactPushState(),
         alerts:alertSettings
       })
@@ -2935,10 +2935,10 @@ $('closeDay').addEventListener('click',()=>{
 syncProfileUI();
 loadPushConfigUI();
 initOneSignalPush();
-setInterval(()=>schedulePushBackendSync(true),30000);pushStatusTimer=setInterval(refreshPushServerStatus,30000);setTimeout(refreshPushServerStatus,2500);
+pushStatusTimer=setInterval(refreshPushServerStatus,60000);setTimeout(refreshPushServerStatus,2500);
 $('profileSelect').value=String(state.startEquity);
 if(pushConfigured()){
-  $('notifyInfo').textContent='Háttér PUSH konfigurálva · Cloudflare percenként monitoroz akkor is, ha az app zárva van.';
+  $('notifyInfo').textContent='Háttér PUSH konfigurálva · Cloudflare percenként monitoroz; az app csak változáskor szinkronizál, így nem égeti a KV írási limitet.';
 }
 resetAlertBands();
 $('riskPct').value='.20';
